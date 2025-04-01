@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -11,7 +11,7 @@ import {
   ColumnFiltersState,
   getFilteredRowModel,
   getPaginationRowModel,
-} from '@tanstack/react-table';
+} from '@tanstack/react-table'
 import {
   Table,
   TableBody,
@@ -19,9 +19,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,21 +29,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, ArrowUpDown, ExternalLink, Mail } from 'lucide-react';
-import { format } from 'date-fns';
+} from '@/components/ui/dropdown-menu'
+import { Badge } from '@/components/ui/badge'
+import { format } from 'date-fns'
+import { ArrowUpDown, Mail, MoreHorizontal } from 'lucide-react'
 
 // Define submission type
 export type Submission = {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  files: string[];
-  createdAt: Date;
-  status: 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'ARCHIVED';
-};
+  id: string
+  name: string
+  email: string
+  message: string
+  files: string[]
+  createdAt: Date
+  status: 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'ARCHIVED'
+}
 
 // Define columns
 const columns: ColumnDef<Submission>[] = [
@@ -52,15 +52,15 @@ const columns: ColumnDef<Submission>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
+          variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
-      );
+      )
     },
-    cell: ({ row }) => <div className="font-medium">{row.getValue('name')}</div>,
+    cell: ({ row }) => <div className='font-medium'>{row.getValue('name')}</div>,
   },
   {
     accessorKey: 'email',
@@ -68,10 +68,10 @@ const columns: ColumnDef<Submission>[] = [
     cell: ({ row }) => (
       <a
         href={`mailto:${row.getValue('email')}`}
-        className="flex items-center text-blue-600 hover:underline"
+        className='flex items-center text-blue-600 hover:underline'
       >
         {row.getValue('email')}
-        <Mail className="ml-1 h-3 w-3" />
+        <Mail className='ml-1 h-3 w-3' />
       </a>
     ),
   },
@@ -79,51 +79,58 @@ const columns: ColumnDef<Submission>[] = [
     accessorKey: 'message',
     header: 'Message',
     cell: ({ row }) => {
-      const message: string = row.getValue('message');
+      const message: string = row.getValue('message')
       // Truncate long messages
       return (
-        <div className="max-w-[500px] truncate" title={message}>
+        <div className='max-w-[500px] truncate' title={message}>
           {message}
         </div>
-      );
+      )
     },
   },
   {
     accessorKey: 'files',
     header: 'Files',
     cell: ({ row }) => {
-      const files: string[] = row.getValue('files');
+      const files: string[] = row.getValue('files')
       return (
-        <div className="flex gap-1">
+        <div className='flex gap-1'>
           {files.length > 0 ? (
-            <Badge>{files.length} file{files.length > 1 ? 's' : ''}</Badge>
+            <Badge>
+              {files.length} file{files.length > 1 ? 's' : ''}
+            </Badge>
           ) : (
-            <span className="text-muted-foreground text-sm">No files</span>
+            <span className='text-muted-foreground text-sm'>No files</span>
           )}
         </div>
-      );
+      )
     },
   },
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => {
-      const status: string = row.getValue('status');
+    cell: ({ row }): React.ReactNode => {
+      const status: string = row.getValue('status')
       return (
         <Badge
           variant={
             status === 'PENDING'
               ? 'default'
               : status === 'CONTACTED'
-              ? 'secondary'
-              : status === 'RESOLVED'
-              ? 'success'
-              : 'outline'
+                ? 'secondary'
+                : status === 'RESOLVED'
+                  ? 'secondary' // Changed from 'success' to 'secondary'
+                  : 'outline'
+          }
+          className={
+            status === 'RESOLVED'
+              ? 'bg-green-500 hover:bg-green-600' // Add custom styling for resolved status
+              : undefined
           }
         >
           {status}
         </Badge>
-      );
+      )
     },
   },
   {
@@ -131,37 +138,35 @@ const columns: ColumnDef<Submission>[] = [
     header: ({ column }) => {
       return (
         <Button
-          variant="ghost"
+          variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
-      );
+      )
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue('createdAt'));
-      return <div>{format(date, 'MMM dd, yyyy')}</div>;
+      const date = new Date(row.getValue('createdAt'))
+      return <div>{format(date, 'MMM dd, yyyy')}</div>
     },
   },
   {
     id: 'actions',
     cell: ({ row }) => {
-      const submission = row.original;
+      const submission = row.original
 
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <MoreHorizontal className='h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(submission.id)}
-            >
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(submission.id)}>
               Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -172,20 +177,18 @@ const columns: ColumnDef<Submission>[] = [
             <DropdownMenuItem>View Details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      );
+      )
     },
   },
-];
+]
 
 interface DataTableProps {
-  data: Submission[];
+  data: Submission[]
 }
 
 export function DataTable({ data }: DataTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'createdAt', desc: true },
-  ]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'createdAt', desc: true }])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
   const table = useReactTable({
     data,
@@ -200,31 +203,29 @@ export function DataTable({ data }: DataTableProps) {
       sorting,
       columnFilters,
     },
-  });
+  })
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className='space-y-4'>
+      <div className='flex items-center justify-between'>
         <Input
-          placeholder="Filter by name..."
+          placeholder='Filter by name...'
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
+          onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+          className='max-w-sm'
         />
-        <div className="flex gap-2">
+        <div className='flex gap-2'>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
             Previous
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
@@ -232,7 +233,7 @@ export function DataTable({ data }: DataTableProps) {
           </Button>
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className='rounded-md border'>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -241,10 +242,7 @@ export function DataTable({ data }: DataTableProps) {
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
@@ -253,26 +251,17 @@ export function DataTable({ data }: DataTableProps) {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className='h-24 text-center'>
                   No results.
                 </TableCell>
               </TableRow>
@@ -280,12 +269,11 @@ export function DataTable({ data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-sm text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
-          {table.getPageCount()}
+      <div className='flex items-center justify-end space-x-2 py-4'>
+        <div className='text-sm text-muted-foreground'>
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
       </div>
     </div>
-  );
+  )
 }

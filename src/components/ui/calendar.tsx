@@ -1,88 +1,56 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import { DayPicker } from "react-day-picker"
+import React, { forwardRef } from 'react'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import { cn } from '@/lib/utils'
+import type { MiddlewareReturn } from '@floating-ui/core'
+import type { MiddlewareState } from '@floating-ui/dom'
 
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
-
-function Calendar({
-  className,
-  classNames,
-  showOutsideDays = true,
-  ...props
-}: CalendarProps & { className?: string; classNames?: any }) {
-  return (
-    <DayPicker
-      showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
-      classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
-        nav_button: cn(
-          buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
-        ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
-        head_cell:
-          "text-muted-foreground rounded-md w-8 font-normal text-[0.8rem]",
-        row: "flex w-full mt-2",
-        cell: cn(
-          "relative p-0 text-center text-sm focus-within:relative focus-within:z-20 [&:has([aria-selected])]:bg-accent [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected].day-range-end)]:rounded-r-md",
-          props.mode === "range"
-            ? "[&:has(>.day-range-end)]:rounded-r-md [&:has(>.day-range-start)]:rounded-l-md first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md"
-            : "[&:has([aria-selected])]:rounded-md"
-        ),
-        day: cn(
-          buttonVariants({ variant: "ghost" }),
-          "h-8 w-8 p-0 font-normal aria-selected:opacity-100"
-        ),
-        day_range_start: "day-range-start",
-        day_range_end: "day-range-end",
-        day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
-        day_outside:
-          "day-outside text-muted-foreground aria-selected:bg-accent/50 aria-selected:text-muted-foreground",
-        day_disabled: "text-muted-foreground opacity-50",
-        day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
-        ...classNames,
-      }}
-      components={{
-        IconLeft: ({ className, ...props }) => (
-          <ChevronLeft
-            className={cn(
-              "h-5 w-5 text-tattoo-red hover:text-tattoo-red-dark transition-colors",
-              className
-            )}
-            {...props}
-          />
-        ),
-        IconRight: ({ className, ...props }) => (
-          <ChevronRight
-            className={cn(
-              "h-5 w-5 text-tattoo-red hover:text-tattoo-red-dark transition-colors",
-              className
-            )}
-            {...props}
-          />
-        ),
-      }}
-      {...props}
-    />
-  )
+interface CalendarProps {
+  value?: Date
+  onChange: (date: Date | null) => void
+  className?: string
+  placeholder?: string
+  disabled?: boolean
+  minDate?: Date
+  maxDate?: Date
 }
-Calendar.displayName = "Calendar"
 
-export { Calendar }
+export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
+  ({ value, onChange, className, placeholder = 'Select date', disabled, minDate, maxDate }, ref) => {
+    return (
+      <div ref={ref} className={cn('relative', className)}>
+        <DatePicker
+          selected={value}
+          onChange={onChange}
+          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          placeholderText={placeholder}
+          disabled={disabled}
+          minDate={minDate}
+          maxDate={maxDate}
+          dateFormat="MMMM d, yyyy"
+          showPopperArrow={false}
+          // Add tattoo-studio theme customizations
+          calendarClassName="bg-tattoo-gray border border-tattoo-white/10 rounded-md shadow-lg"
+          dayClassName={date => "hover:bg-tattoo-red/20 rounded-full"}
+          popperClassName="z-50"
+          popperModifiers={[
+            {
+              name: "offset",
+              options: {
+                offset: [0, 8]
+              },
+              fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn>
+              {
+                throw new Error('Function not implemented.')
+              }
+            }
+          ]}
+        />
+      </div>
+    )
+  }
+)
+
+Calendar.displayName = 'Calendar'

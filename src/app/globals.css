@@ -31,35 +31,35 @@
   .shadow-glow {
     box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   }
-  
+
   .bg-fixed {
     background-attachment: fixed;
   }
-  
+
   .tattoo-heading {
     @apply text-4xl md:text-5xl font-bold text-tattoo-white;
   }
-  
+
   .tattoo-script {
     @apply font-script text-5xl md:text-6xl tracking-wide;
   }
-  
+
   .tattoo-display {
     @apply font-display text-4xl md:text-5xl tracking-wider uppercase;
   }
-  
+
   .tattoo-subheading {
     @apply text-2xl font-bold text-tattoo-white;
   }
-  
+
   .tattoo-paragraph {
     @apply text-lg text-tattoo-white/80 leading-relaxed;
   }
-  
+
   .tattoo-container {
     @apply container max-w-6xl mx-auto py-12 px-4 md:px-6;
   }
-  
+
   .tattoo-card {
     @apply bg-tattoo-black p-6 rounded-lg shadow-lg border border-tattoo-white/10;
   }

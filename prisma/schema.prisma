@@ -15,17 +15,42 @@ model ContactSubmission {
   files       String[]
   createdAt   DateTime @default(now())
   status      String   @default("PENDING")
+  updatedAt   DateTime @updatedAt
+  assignedTo  String?  // Optional field to track who is handling this submission
 }
 
 model Appointment {
-  id          String   @id @default(uuid())
-  clientName  String
-  clientEmail String
-  date        DateTime
-  duration    Int
-  notes       String?
-  createdAt   DateTime @default(now())
-  status      String   @default("REQUESTED")
+  id            String   @id @default(cuid())
+  clientName    String
+  clientEmail   String
+  clientPhone   String
+  date          DateTime
+  time          String
+  duration      Int
+  tattooType    String
+  bodyPart      String
+  designDescription String
+  referenceImages String[]
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  status        String   @default("PENDING")
+  depositPaid   Boolean  @default(false)
+  depositAmount Float?
+}
+
+// Artist model to track tattoo artists
+model Artist {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  bio           String?
+  specialties   String[]
+  portfolioImages String[]
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  userId        String?
 }
 
 // NextAuth.js Models
@@ -35,8 +60,11 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  role          String    @default("USER")
   accounts      Account[]
   sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Account {
@@ -72,4 +100,47 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+
+model GalleryItem {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  imageUrl      String
+  category      String
+  tags          String[]
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PortfolioProject {
+  id            String   @id @default(cuid())
+  title         String
+  description   String
+  beforeImages  String[] // URLs to before images
+  afterImages   String[] // URLs to after images
+  processVideo  String?  // URL to process video if available
+  clientStory   String?  // Client testimonial or story
+  featured      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model StudioInfo {
+  id            String   @id @default(cuid())
+  name          String
+  address       String
+  city          String
+  state         String
+  zipCode       String
+  phone         String
+  email         String
+  hours         Json
+  aboutText     String   @db.Text
+  policies      String   @db.Text
+  faqItems      Json
+  socialLinks   Json
+  updatedAt     DateTime @updatedAt
 }

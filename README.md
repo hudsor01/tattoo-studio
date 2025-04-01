@@ -49,6 +49,7 @@ npm install
 ```
 
 3. Set up environment variables:
+
    - Copy `.env` to `.env.local`
    - Update the variables with your own values for:
      - Database connection
@@ -88,6 +89,7 @@ This project is ready to deploy to Vercel:
 4. Deploy!
 
 For production, consider using:
+
 - Vercel Postgres or Neon for the database
 - Vercel Blob Storage or maintain Uploadthing for file storage
 
@@ -96,6 +98,7 @@ For production, consider using:
 ### Color Scheme
 
 The black, red, blue, and white color scheme is defined in:
+
 - `tailwind.config.js` - Color definitions
 - `src/styles/globals.css` - Theme variables
 
@@ -106,6 +109,7 @@ Replace the placeholder images in the `/public` directory with your own tattoo i
 ### Content
 
 Update the content in the page files to match your studio's information:
+
 - Artist information
 - Studio details
 - Gallery images
