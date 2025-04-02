@@ -14,7 +14,15 @@ export default async function AdminSubmissions() {
   let submissions: Submission[] = [];
 
   try {
-    submissions = await getSubmissions();
+    // Cast the returned data to ensure status is compatible with Submission type
+    const dbSubmissions = await getSubmissions();
+    submissions = dbSubmissions.map(sub => ({
+      ...sub,
+      // Ensure status is one of the expected values, default to PENDING if not
+      status: ['PENDING', 'CONTACTED', 'RESOLVED', 'ARCHIVED'].includes(sub.status)
+        ? sub.status as 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'ARCHIVED'
+        : 'PENDING'
+    })) as Submission[];
   } catch (error) {
     console.error('Failed to fetch submissions:', error);
     // Just use empty array if database is not available
