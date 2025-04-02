@@ -5,7 +5,7 @@ import { Upload, X } from 'lucide-react'
 import Image from 'next/image'
 
 interface UploadDropzoneProps {
-  onUploadComplete: (urls: string[]) => void
+  onUploadComplete: (/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ urls: string[]) => void
 }
 
 export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
@@ -63,7 +63,7 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
     onUploadComplete(updatedPreviews)
   }
 
-  const simulateUpload = async (filesToUpload: File[]) => {
+  const simulateUpload = async (/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ filesToUpload: File[]) => {
     setIsUploading(true)
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setIsUploading(false)

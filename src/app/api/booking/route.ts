@@ -113,12 +113,6 @@ export async function POST(req: NextRequest) {
         designDescription: validatedData.designDescription,
         notes: validatedData.designDescription,
         status: 'REQUESTED',
-        clientName: validatedData.clientName,
-        clientEmail: validatedData.clientEmail,
-        date: new Date(`${validatedData.date.toDateString()} ${validatedData.time}`),
-        duration: validatedData.duration,
-        notes: validatedData.designDescription,
-        status: 'REQUESTED',
       },
     })
 

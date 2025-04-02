@@ -19,6 +19,57 @@ interface ExtendedJWT extends JWT {
 
 const prisma = new PrismaClient()
 
+// Define providers based on available environment variables
+const providers = []
+
+// Only add GitHub provider if credentials are available
+if (process.env.GITHUB_ID && process.env.GITHUB_SECRET) {
+  providers.push(
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    })
+  )
+}
+
+// Only add Google provider if credentials are available
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.push(
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  )
+}
+
+// Always add Credentials provider for development and testing
+providers.push(
+  CredentialsProvider({
+    name: 'Credentials',
+    credentials: {
+      email: { label: 'Email', type: 'email' },
+      password: { label: 'Password', type: 'password' },
+    },
+    async authorize(credentials): Promise<User | null> {
+      // For development and testing - only allow specific admin credentials
+      if (
+        credentials?.email &&
+        credentials.email === process.env.ADMIN_EMAIL &&
+        credentials?.password === process.env.ADMIN_PASSWORD
+      ) {
+        return {
+          id: 'admin',
+          name: 'Admin User',
+          email: credentials.email as string,
+          image: null,
+          role: 'ADMIN',
+        }
+      }
+      return null
+    },
+  })
+)
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -26,40 +77,7 @@ export const {
   signOut,
 } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID || '',
-      clientSecret: process.env.GITHUB_SECRET || '',
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || '',
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
-    }),
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials): Promise<User | null> {
-        // For development and testing - only allow specific admin credentials
-        if (
-          credentials?.email &&
-          credentials.email === process.env.ADMIN_EMAIL &&
-          credentials?.password === process.env.ADMIN_PASSWORD
-        ) {
-          return {
-            id: 'admin',
-            name: 'Admin User',
-            email: credentials.email as string,
-            image: null,
-            role: 'ADMIN',
-          }
-        }
-        return null
-      },
-    }),
-  ],
+  providers,
   callbacks: {
     async session({ session, user, token }): Promise<Session> {
       const extendedToken = token as ExtendedJWT
@@ -72,7 +90,7 @@ export const {
       }
       return session
     },
-    async jwt({ token = {}, user, trigger }): Promise<ExtendedJWT> {
+    async jwt({ token = {}, user }): Promise<ExtendedJWT> {
       const extendedToken: ExtendedJWT = {
         ...token,
         id: token.id ?? user?.id ?? '',

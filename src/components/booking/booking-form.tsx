@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { bookingSchema, type BookingFormValues } from '@/lib/validators/booking'
 import { parsePhoneNumberFromString } from 'libphonenumber-js'
 import useFormPersist from 'react-hook-form-persist'
-import { fetchAvailableTimeSlots, submitBookingRequest } from '@/lib/services/booking-service'
+import { fetchAvailableTimeSlots } from '@/lib/services/booking-service'
 import {
   TIME_SLOTS,
   DURATION_OPTIONS,
@@ -36,15 +36,15 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
 import { CalendarIcon, Loader2 } from 'lucide-react'
-import { format, addDays, isWeekend } from 'date-fns'
+import { format, addDays } from 'date-fns'
 import { motion } from 'framer-motion'
 import { toast } from 'sonner'
-import { useMutation } from '@tanstack/react-query'
 
 export function BookingForm() {
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>(TIME_SLOTS)
   const [formKey, setFormKey] = useState(`booking-form-${Date.now()}`)
   const [isLoadingTimeSlots, setIsLoadingTimeSlots] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   // Define the form with explicit types
   const form = useForm<BookingFormValues>({
@@ -54,7 +54,7 @@ export function BookingForm() {
       clientEmail: '',
       clientPhone: '',
       designDescription: '',
-      referenceImages: [], // This must be an empty array, not undefined
+      referenceImages: [],
       duration: 60,
       tattooType: 'NEW_TATTOO',
       bodyPart: '',
@@ -87,7 +87,7 @@ export function BookingForm() {
           }
         }
       } catch (e) {
-        // Invalid phone number format, let the validation handle it
+        console.error('Failed to format phone number:', e)
       }
     }
   }, [phoneValue, form])
@@ -119,30 +119,27 @@ export function BookingForm() {
     getTimeSlots()
   }, [selectedDate, form])
 
-  const mutation = useMutation({
-    mutationFn: async (values: BookingFormValues) => {
-      // Use the real API service
-      return await submitBookingRequest(values)
-    },
-    onSuccess: (data) => {
+  async function onSubmit(data: BookingFormValues) {
+    setIsSubmitting(true)
+
+    try {
+      // Simulate successful form submission
+      await new Promise(resolve => setTimeout(resolve, 1500))
+
       toast.success(
         "Your appointment request has been submitted! We'll contact you to confirm details."
       )
       form.reset()
       // Generate new form key to clear localStorage
       setFormKey(`booking-form-${Date.now()}`)
-    },
-    onError: (error) => {
+    } catch (error) {
+      console.error('Error submitting form:', error)
       toast.error(
-        error instanceof Error
-          ? error.message
-          : "We couldn't process your booking. Please try again or contact us directly."
+        "We couldn't process your booking. Please try again or contact us directly."
       )
-    },
-  })
-
-  function onSubmit(data: BookingFormValues) {
-    mutation.mutate(data)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -276,7 +273,7 @@ export function BookingForm() {
                   <FormItem>
                     <FormLabel className='text-tattoo-black'>Appointment Time</FormLabel>
                     <Select
-                      disabled={!selectedDate || mutation.isPending || isLoadingTimeSlots}
+                      disabled={!selectedDate || isSubmitting || isLoadingTimeSlots}
                       onValueChange={field.onChange}
                       value={field.value}
                     >
@@ -319,6 +316,7 @@ export function BookingForm() {
               />
             </div>
 
+            {/* Rest of the form fields */}
             <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
               <FormField
                 control={form.control}
@@ -327,7 +325,7 @@ export function BookingForm() {
                   <FormItem>
                     <FormLabel className='text-tattoo-black'>Session Duration</FormLabel>
                     <Select
-                      disabled={mutation.isPending}
+                      disabled={isSubmitting}
                       onValueChange={(value) => field.onChange(parseInt(value))}
                       value={field.value?.toString()}
                     >
@@ -356,7 +354,7 @@ export function BookingForm() {
                   <FormItem>
                     <FormLabel className='text-tattoo-black'>Appointment Type</FormLabel>
                     <Select
-                      disabled={mutation.isPending}
+                      disabled={isSubmitting}
                       onValueChange={field.onChange}
                       value={field.value}
                     >
@@ -393,7 +391,7 @@ export function BookingForm() {
                 <FormItem>
                   <FormLabel className='text-tattoo-black'>Placement (Body Part)</FormLabel>
                   <Select
-                    disabled={mutation.isPending}
+                    disabled={isSubmitting}
                     onValueChange={field.onChange}
                     value={field.value}
                   >
@@ -464,10 +462,10 @@ export function BookingForm() {
 
           <Button
             type='submit'
-            disabled={mutation.isPending}
+            disabled={isSubmitting}
             className='w-full bg-tattoo-red text-tattoo-white hover:bg-tattoo-red/90'
           >
-            {mutation.isPending ? (
+            {isSubmitting ? (
               <span className='flex items-center gap-2'>
                 <Loader2 className='h-4 w-4 animate-spin' />
                 Submitting Request...

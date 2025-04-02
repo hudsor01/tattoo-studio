@@ -16,7 +16,6 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Loader2, Github, Mail } from 'lucide-react'
-import { signIn } from 'next-auth/react'
 import { toast } from 'sonner'
 
 const loginSchema = z.object({
@@ -41,43 +40,40 @@ export function LoginForm() {
 
   const isLoading = form.formState.isSubmitting || isGitHubLoading || isGoogleLoading
 
+  // Placeholder function for form submission (no actual auth)
   async function onSubmit(values: LoginFormValues) {
     try {
-      const result = await signIn('credentials', {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      })
+      // Simulate loading
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-      if (result?.error) {
-        toast.error('Invalid credentials. Please try again.')
-        return
-      }
-
-      toast.success('Login successful!')
-      router.push('/admin')
-      router.refresh()
+      // Placeholder - just show success message and redirect
+      toast.success('Login successful! (This is a demo)')
+      router.push('/')
     } catch (_error) {
       toast.error('Something went wrong. Please try again.')
     }
   }
 
+  // Placeholder function for GitHub login
   const handleGitHubLogin = async () => {
     try {
       setIsGitHubLoading(true)
-      await signIn('github', { callbackUrl: '/admin' })
-    } catch (error) {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      toast.info('GitHub login is not implemented yet')
+    } catch (_error) {
       toast.error('Failed to login with GitHub')
     } finally {
       setIsGitHubLoading(false)
     }
   }
 
+  // Placeholder function for Google login
   const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true)
-      await signIn('google', { callbackUrl: '/admin' })
-    } catch (error) {
+      await new Promise(resolve => setTimeout(resolve, 1500))
+      toast.info('Google login is not implemented yet')
+    } catch (_error) {
       toast.error('Failed to login with Google')
     } finally {
       setIsGoogleLoading(false)

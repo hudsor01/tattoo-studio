@@ -1,20 +1,14 @@
 import { Metadata } from 'next'
 import Image from 'next/image'
 import { LoginForm } from '@/components/forms/login-form'
-import { auth } from '@/lib/auth'
-import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: 'Login | Tattoo Studio Admin',
   description: 'Admin login portal for Tattoo Studio',
 }
 
-export default async function LoginPage() {
-  // Redirect if already logged in
-  const session = await auth()
-  if (session?.user) {
-    redirect('/admin')
-  }
+export default function LoginPage() {
+  // No auth check for now since we're only handling marketing pages
 
   return (
     <div className='min-h-screen grid lg:grid-cols-2'>

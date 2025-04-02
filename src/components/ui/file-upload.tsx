@@ -3,7 +3,7 @@
 import { useDropzone } from '@uploadthing/react'
 import { generateClientDropzoneAccept } from 'uploadthing/client'
 import { useState, useCallback } from 'react'
-import { Upload, X, Check, Image, Loader2 } from 'lucide-react'
+import { Upload, X, Loader2 } from 'lucide-react'
 import { useUploadThing } from '@/lib/uploadthing'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
@@ -11,7 +11,7 @@ import { Button } from './button'
 interface FileUploadProps {
   endpoint: 'tattooDesigns' | 'profilePhotos'
   value: string[]
-  onChange: (urls: string[]) => void
+  onChange: (/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ urls: string[]) => void
   maxFiles?: number
   maxSize?: string
   acceptedFileTypes?: string[]

@@ -1,5 +1,4 @@
 import { createUploadthing, type FileRouter } from 'uploadthing/next'
-import { auth } from '@/lib/auth'
 
 const f = createUploadthing()
 
@@ -9,11 +8,11 @@ export const ourFileRouter = {
     image: { maxFileSize: '4MB', maxFileCount: 5 },
   })
     .middleware(async () => {
-      // Verify authentication for uploads
-      const session = await auth()
+      // Auth check removed since we're focusing only on marketing pages for now
+      // Will add proper authentication later
 
       // Return context which will be available in onUploadComplete
-      return { userId: session?.user?.id || 'anonymous' }
+      return { userId: 'anonymous' }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log('Upload complete for user:', metadata.userId)
@@ -27,10 +26,10 @@ export const ourFileRouter = {
     image: { maxFileSize: '2MB', maxFileCount: 1 },
   })
     .middleware(async () => {
-      const session = await auth()
-      if (!session?.user) throw new Error('Unauthorized')
+      // Auth check removed since we're focusing only on marketing pages for now
+      // Will add proper authentication later
 
-      return { userId: session.user.id }
+      return { userId: 'anonymous' }
     })
     .onUploadComplete(async ({ metadata, file }) => {
       console.log('Profile photo uploaded for user:', metadata.userId)

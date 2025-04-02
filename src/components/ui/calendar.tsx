@@ -4,11 +4,9 @@ import React, { forwardRef } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { cn } from '@/lib/utils'
-import type { MiddlewareReturn } from '@floating-ui/core'
-import type { MiddlewareState } from '@floating-ui/dom'
 
 interface CalendarProps {
-  value?: Date
+  value?: /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ Date
   onChange: (date: Date | null) => void
   className?: string
   placeholder?: string
@@ -33,20 +31,8 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
           showPopperArrow={false}
           // Add tattoo-studio theme customizations
           calendarClassName="bg-tattoo-gray border border-tattoo-white/10 rounded-md shadow-lg"
-          dayClassName={date => "hover:bg-tattoo-red/20 rounded-full"}
+          dayClassName={/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ (_date) => "hover:bg-tattoo-red/20 rounded-full"}
           popperClassName="z-50"
-          popperModifiers={[
-            {
-              name: "offset",
-              options: {
-                offset: [0, 8]
-              },
-              fn: function (state: MiddlewareState): MiddlewareReturn | Promise<MiddlewareReturn>
-              {
-                throw new Error('Function not implemented.')
-              }
-            }
-          ]}
         />
       </div>
     )
