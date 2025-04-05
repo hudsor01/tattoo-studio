@@ -39,10 +39,8 @@ export function Footer() {
           <div>
             <h3 className='text-xl font-bold mb-4'>Contact</h3>
             <address className='not-italic text-gray-400'>
-              <p>123 Tattoo Street</p>
-              <p>Los Angeles, CA 90001</p>
-              <p className='mt-2'>contact@fernandogovea.com</p>
-              <p>(555) 123-4567</p>
+              <p>Dallas/Fort Worth Metroplex, Texas</p>
+              <p className='mt-2'>fennyg83@gmail.com</p>
             </address>
           </div>
         </div>

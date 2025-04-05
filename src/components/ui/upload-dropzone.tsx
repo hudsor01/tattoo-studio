@@ -105,9 +105,9 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
       </div>
 
       {isUploading && (
-        <div className='flex items-center justify-center py-2 px-3 bg-tattoo-blue/10 rounded-md'>
-          <div className='animate-spin mr-2 h-4 w-4 border-2 border-tattoo-blue border-t-transparent rounded-full'></div>
-          <p className='text-sm text-tattoo-blue'>Uploading files...</p>
+        <div className='flex items-center justify-center py-2 px-3 bg-tattoo-red-light/10 rounded-md'>
+          <div className='animate-spin mr-2 h-4 w-4 border-2 border-tattoo-red-light border-t-transparent rounded-full'></div>
+          <p className='text-sm text-tattoo-red-light'>Uploading files...</p>
         </div>
       )}
 

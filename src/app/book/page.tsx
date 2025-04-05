@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function BookingPage() {
   return (
-    <main className='bg-tattoo-white min-h-screen'>
+    <main className='bg-tattoo-black min-h-screen'>
       {/* Header Banner */}
       <div className='relative h-[40vh] overflow-hidden'>
         <Image
@@ -28,7 +28,7 @@ export default function BookingPage() {
             Book Your <span className='text-tattoo-red'>Appointment</span>
           </h1>
           <p className='text-xl text-tattoo-white/90 max-w-2xl'>
-            Reserve your session with our talented artists
+            Reserve your session with Fernando Govea
           </p>
         </div>
       </div>
@@ -42,9 +42,9 @@ export default function BookingPage() {
 
           <div className='space-y-8'>
             {/* Information Card */}
-            <div className='bg-tattoo-black p-6 rounded-lg shadow-lg border border-tattoo-red/20'>
+            <div className='bg-tattoo-black/50 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white/10 hover:border-tattoo-red transition-all'>
               <h2 className='text-xl font-bold mb-6 text-tattoo-white'>
-                Before Your <span className='text-tattoo-blue'>Appointment</span>
+                Before Your <span className='text-tattoo-red-light'>Appointment</span>
               </h2>
 
               <div className='space-y-6'>
@@ -64,13 +64,13 @@ export default function BookingPage() {
                 </div>
 
                 <div className='flex gap-4'>
-                  <div className='shrink-0 w-10 h-10 rounded-full bg-tattoo-blue/20 flex items-center justify-center'>
-                    <CreditCard className='w-5 h-5 text-tattoo-blue' />
+                  <div className='shrink-0 w-10 h-10 rounded-full bg-tattoo-red-light/20 flex items-center justify-center'>
+                    <CreditCard className='w-5 h-5 text-tattoo-red-light' />
                   </div>
                   <div>
                     <h3 className='font-medium text-tattoo-white'>Deposits & Payment</h3>
                     <p className='text-sm text-tattoo-white/70 mt-2'>
-                      We require a non-refundable deposit to secure your appointment. This deposit
+                      A non-refundable deposit is required to secure your appointment. This deposit
                       will be applied to your final tattoo cost. We accept cash, credit cards, and
                       mobile payments.
                     </p>
@@ -84,7 +84,7 @@ export default function BookingPage() {
                   <div>
                     <h3 className='font-medium text-tattoo-white'>Cancellation Policy</h3>
                     <p className='text-sm text-tattoo-white/70 mt-2'>
-                      We require at least 48 hours notice for cancellations or rescheduling.
+                      At least 48 hours notice is required for cancellations or rescheduling.
                       Deposits are non-refundable for cancellations with less than 48 hours notice.
                     </p>
                   </div>
@@ -93,9 +93,9 @@ export default function BookingPage() {
             </div>
 
             {/* Featured Artist Card */}
-            <div className='bg-tattoo-red p-6 rounded-lg shadow-lg'>
+            <div className='bg-gradient-to-b from-tattoo-red to-tattoo-red-dark p-6 rounded-lg shadow-lg'>
               <h2 className='text-xl font-bold mb-4 text-tattoo-white'>
-                Featured <span className='text-tattoo-black'>Artist</span>
+                Featured <span className='text-black'>Artist</span>
               </h2>
 
               <div className='aspect-square relative mb-4 rounded-lg overflow-hidden'>
@@ -107,7 +107,7 @@ export default function BookingPage() {
                 />
               </div>
 
-              <h3 className='text-lg font-bold text-tattoo-white'>Fernando</h3>
+              <h3 className='text-lg font-bold text-tattoo-white'>Fernando Govea</h3>
               <p className='text-tattoo-white/80 text-sm mb-4'>
                 Specializing in black & grey realism, traditional, and Japanese styles.
               </p>
@@ -116,12 +116,12 @@ export default function BookingPage() {
                 className='w-full bg-tattoo-black text-tattoo-white hover:bg-opacity-90'
                 asChild
               >
-                <Link href='/artists/fernando'>View Portfolio</Link>
+                <Link href='/about'>View About Fernando</Link>
               </Button>
             </div>
 
             {/* Need Help Card */}
-            <div className='bg-tattoo-blue p-6 rounded-lg shadow-lg'>
+            <div className='bg-gradient-to-b from-black to-tattoo-black/90 p-6 rounded-lg shadow-lg border border-white/10'>
               <div className='flex gap-4 items-start'>
                 <div className='shrink-0 w-10 h-10 rounded-full bg-tattoo-white/20 flex items-center justify-center'>
                   <Info className='w-5 h-5 text-tattoo-white' />
@@ -133,11 +133,8 @@ export default function BookingPage() {
                     us directly.
                   </p>
                   <div className='text-sm text-tattoo-white/90'>
-                    <p className='mb-1'>
-                      <span className='font-medium'>Phone:</span> (555) 123-4567
-                    </p>
                     <p>
-                      <span className='font-medium'>Email:</span> bookings@tattoo-studio.com
+                      <span className='font-medium'>Email:</span> fennyg83@gmail.com
                     </p>
                   </div>
                 </div>

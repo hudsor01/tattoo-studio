@@ -3,16 +3,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Navbar } from '@/components/layout/navbar'
-import { Footer } from '@/components/layout/footer'
 import { GalleryGrid } from '@/components/gallery-grid'
 import { motion } from 'framer-motion'
 
 export default function HomePage() {
   return (
-    <div className='flex min-h-screen flex-col'>
-      <Navbar />
-
+    <main className='flex min-h-screen flex-col'>
       {/* Hero Section */}
       <section className='relative'>
         <div className='absolute inset-0 bg-gradient-to-r from-tattoo-black/70 to-tattoo-black/50 z-10' />
@@ -47,14 +43,26 @@ export default function HomePage() {
                 size='lg'
                 asChild
               >
-                <Link href='/book'>Book Appointment</Link>
+                <Link
+                  href='/book'
+                  onClick={(e) => {
+                    // Stop propagation to prevent any parent handlers from triggering
+                    e.stopPropagation();
+                  }}
+                >Book Appointment</Link>
               </Button>
               <Button
                 size='lg'
                 variant='outline'
                 className='border-tattoo-white text-tattoo-white hover:bg-tattoo-white/20'
               >
-                <Link href='/gallery'>View My Work</Link>
+                <Link
+                  href='/gallery'
+                  onClick={(e) => {
+                    // Stop propagation to prevent any parent handlers from triggering
+                    e.stopPropagation();
+                  }}
+                >View My Work</Link>
               </Button>
             </div>
           </div>
@@ -81,7 +89,13 @@ export default function HomePage() {
               size='lg'
               asChild
             >
-              <Link href='/gallery'>View Full Gallery</Link>
+              <Link
+                href='/gallery'
+                onClick={(e) => {
+                  // Stop propagation to prevent any parent handlers from triggering
+                  e.stopPropagation();
+                }}
+              >View Full Gallery</Link>
             </Button>
           </div>
         </div>
@@ -231,7 +245,13 @@ export default function HomePage() {
 
           <div className='text-center mt-10'>
             <Button className='bg-tattoo-red text-tattoo-white hover:bg-opacity-90' asChild>
-              <Link href='/faq'>View All FAQs</Link>
+              <Link
+                href='/faq'
+                onClick={(e) => {
+                  // Stop propagation to prevent any parent handlers from triggering
+                  e.stopPropagation();
+                }}
+              >View All FAQs</Link>
             </Button>
           </div>
         </div>
@@ -251,12 +271,16 @@ export default function HomePage() {
             size='lg'
             asChild
           >
-            <Link href='/contact'>Get In Touch</Link>
+            <Link
+              href='/contact'
+              onClick={(e) => {
+                // Stop propagation to prevent any parent handlers from triggering
+                e.stopPropagation();
+              }}
+            >Get In Touch</Link>
           </Button>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </main>
   )
 }

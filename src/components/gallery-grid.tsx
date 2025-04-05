@@ -14,16 +14,16 @@ export function GalleryGrid() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null)
 
   const galleryImages: GalleryImage[] = [
-    { src: '/IMG_1610.HEIC', alt: 'Detailed arm tattoo', category: 'Black and Grey' },
-    { src: '/IMG_2889.JPG', alt: 'Greek-inspired circular tattoo', category: 'Black and Grey' },
-    { src: '/IMG_2947.JPG', alt: 'Tattoo workspace', category: 'Studio' },
-    { src: '/IMG_3534.JPG', alt: 'Detailed tattoo artwork', category: 'Black and Grey' },
-    { src: '/IMG_3896.JPG', alt: 'Religious tattoo design', category: 'Black and Grey' },
-    { src: '/IMG_3947.JPG', alt: 'Detailed portrait tattoo', category: 'Black and Grey' },
-    { src: '/IMG_4246.JPG', alt: 'Fine line tattoo work', category: 'Black and Grey' },
-    { src: '/IMG_4249.JPG', alt: 'Religious figure tattoo', category: 'Black and Grey' },
-    { src: '/IMG_4284.JPG', alt: 'Detailed religious tattoo', category: 'Black and Grey' },
-    { src: '/IMG_4454.JPG', alt: 'Portrait tattoo artwork', category: 'Black and Grey' },
+    { src: '/images/IMG_2889.JPG', alt: 'Greek-inspired circular tattoo', category: 'Black and Grey' },
+    { src: '/images/IMG_2947.JPG', alt: 'Tattoo workspace', category: 'Studio' },
+    { src: '/images/IMG_3534.JPG', alt: 'Detailed tattoo artwork', category: 'Black and Grey' },
+    { src: '/images/IMG_3896.JPG', alt: 'Religious tattoo design', category: 'Black and Grey' },
+    { src: '/images/IMG_3947.JPG', alt: 'Detailed portrait tattoo', category: 'Black and Grey' },
+    { src: '/images/IMG_4246.JPG', alt: 'Fine line tattoo work', category: 'Black and Grey' },
+    { src: '/images/IMG_4249.JPG', alt: 'Religious figure tattoo', category: 'Black and Grey' },
+    { src: '/images/IMG_4284.JPG', alt: 'Detailed religious tattoo', category: 'Black and Grey' },
+    { src: '/images/IMG_4454.JPG', alt: 'Portrait tattoo artwork', category: 'Black and Grey' },
+    { src: '/images/5082639F-3D97-45F8-8BFE-D28EBEE539DF.jpg', alt: 'Tattoo session in progress', category: 'Studio' },
   ]
 
   return (

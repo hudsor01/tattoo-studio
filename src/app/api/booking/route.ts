@@ -1,34 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import { bookingSchema } from '@/lib/validators/booking'
-import kv from '@vercel/kv'
 import { Resend } from 'resend'
+import { checkRateLimit } from '@/lib/utils/rate-limit'
+import { logError } from '@/lib/utils/error-logger'
+
 const prisma = new PrismaClient()
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
-
-// Rate limiting function
-async function checkRateLimit(ip: string): Promise<boolean> {
-  // Skip rate limiting if not in production or KV is not configured
-  if (process.env.NODE_ENV !== 'production' || !process.env.KV_URL) {
-    return true
-  }
-
-  try {
-    const key = `ratelimit:booking:${ip}`
-    const count = await kv.incr(key)
-
-    // Set expiration if this is the first request
-    if (count === 1) {
-      await kv.expire(key, 60 * 60 * 24) // 24 hours
-    }
-
-    // Limit to 3 booking requests per day
-    return count <= 3
-  } catch (error) {
-    console.error('Rate limiting error:', error)
-    return true // Allow request if rate limiting fails
-  }
-}
 
 async function sendNotificationEmails(validatedData: any, studioEmail: string) {
   if (!resend) return
@@ -84,8 +62,13 @@ export async function POST(req: NextRequest) {
   // Get client IP for rate limiting
   const ip = req.headers.get('x-forwarded-for') || 'unknown'
 
-  // Check rate limit
-  const isAllowed = await checkRateLimit(ip)
+  // Check rate limit using the centralized utility
+  const isAllowed = await checkRateLimit(ip, {
+    limit: 3,
+    duration: 60 * 60 * 24, // 24 hours
+    identifier: 'booking'
+  })
+  
   if (!isAllowed) {
     return NextResponse.json(
       { error: 'Too many booking requests. Please try again tomorrow.' },
@@ -128,7 +111,15 @@ export async function POST(req: NextRequest) {
       },
     })
   } catch (error: any) {
-    console.error('Booking request error:', error)
+    // Use the enhanced error logging
+    logError(error, 'Booking request failed', {
+      context: {
+        endpoint: '/api/booking',
+        ip,
+        // Include partial data that doesn't contain sensitive information
+        partialData: req.headers.get('content-type')
+      }
+    })
 
     if (error.name === 'ZodError') {
       return NextResponse.json(

@@ -37,6 +37,23 @@ model Appointment {
   status        String   @default("PENDING")
   depositPaid   Boolean  @default(false)
   depositAmount Float?
+  payments      Payment[]
+}
+
+// Payment model to track deposits and payments
+model Payment {
+  id            String   @id @default(cuid())
+  appointmentId String
+  amount        Float
+  paymentType   String   // "DEPOSIT", "BALANCE", "FULL"
+  paymentMethod String   // "CREDIT_CARD", "CASH", etc.
+  last4         String?  // Last 4 digits of card if applicable
+  status        String   @default("PENDING") // "PENDING", "COMPLETED", "FAILED", "REFUNDED"
+  transactionId String?  // External payment processor transaction ID
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  appointment   Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
 }
 
 // Artist model to track tattoo artists

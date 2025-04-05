@@ -1,57 +1,159 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { X, Menu } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { cn } from '@/lib/utils'
 
 export function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Handle scroll detection
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    // Initial check
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [pathname])
+
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/gallery', label: 'Gallery' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
+  ]
+
   return (
-    <header className='sticky top-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm border-b border-white/10'>
+    <header
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300',
+        isScrolled
+          ? 'bg-tattoo-black shadow-lg py-2'
+          : 'bg-gradient-to-b from-tattoo-black/90 to-transparent py-4'
+      )}
+    >
       <div className='container mx-auto px-4'>
-        <div className='flex h-16 items-center justify-between'>
+        <div className='flex items-center justify-between'>
           <div className='flex items-center'>
-            <Link href='/' className='text-white font-bold text-xl'>
+            <Link href='/' className='font-script text-2xl text-tattoo-white hover:text-tattoo-red transition-colors' onClick={(e) => {
+              // Stop propagation to prevent any parent handlers from triggering
+              e.stopPropagation();
+            }}>
               Ink 37
             </Link>
           </div>
+
+          {/* Desktop Navigation */}
           <nav className='hidden md:flex items-center space-x-6'>
-            <Link href='/' className='text-white hover:text-red-500 transition-colors'>
-              Home
-            </Link>
-            <Link href='/gallery' className='text-white hover:text-red-500 transition-colors'>
-              Gallery
-            </Link>
-            <Link href='/about' className='text-white hover:text-red-500 transition-colors'>
-              About
-            </Link>
-            <Link href='/contact' className='text-white hover:text-red-500 transition-colors'>
-              Contact
-            </Link>
-            <Button className='bg-tattoo-red text-white hover:bg-tattoo-red-dark' asChild>
-              <Link href='/book'>Book Now</Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={cn(
+                  'text-tattoo-white hover:text-tattoo-red transition-colors text-sm font-medium',
+                  pathname === link.href && 'text-tattoo-red'
+                )}
+                onClick={(e) => {
+                  // Ensure navigation happens properly
+                  if (link.href === '/about') {
+                    console.log('Navigating to About page');
+                  }
+                  // Stop propagation to prevent any parent handlers from triggering
+                  e.stopPropagation();
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Button
+              className={cn(
+                'bg-tattoo-red text-tattoo-white hover:bg-tattoo-red-dark transition-all',
+                isScrolled ? 'px-4 py-1.5' : 'px-5 py-2'
+              )}
+              asChild
+            >
+              <Link
+                href='/book'
+                onClick={(e) => {
+                  // Stop propagation to prevent any parent handlers from triggering
+                  e.stopPropagation();
+                }}
+              >Book Now</Link>
             </Button>
           </nav>
+
+          {/* Mobile Menu Toggle */}
           <div className='md:hidden'>
-            {/* Mobile menu button - you can implement a mobile menu here */}
-            <Button variant='ghost' className='text-white'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='24'
-                height='24'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-              >
-                <line x1='3' y1='12' x2='21' y2='12'></line>
-                <line x1='3' y1='6' x2='21' y2='6'></line>
-                <line x1='3' y1='18' x2='21' y2='18'></line>
-              </svg>
+            <Button
+              variant='ghost'
+              size='icon'
+              className='text-tattoo-white hover:bg-tattoo-white/10'
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </Button>
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className='md:hidden bg-tattoo-black border-t border-white/10'
+          >
+            <div className='container mx-auto px-4 py-4 flex flex-col space-y-4'>
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    'text-tattoo-white hover:text-tattoo-red transition-colors py-2 text-lg',
+                    pathname === link.href && 'text-tattoo-red'
+                  )}
+                  onClick={(e) => {
+                    // Stop propagation to prevent any parent handlers from triggering
+                    e.stopPropagation();
+                  }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <Button className='bg-tattoo-red text-tattoo-white hover:bg-tattoo-red-dark w-full mt-2' asChild>
+                <Link
+                  href='/book'
+                  onClick={(e) => {
+                    // Stop propagation to prevent any parent handlers from triggering
+                    e.stopPropagation();
+                  }}
+                >Book Now</Link>
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   )
 }

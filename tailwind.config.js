@@ -10,9 +10,10 @@ module.exports = {
       colors: {
         'tattoo-red': '#d62828',
         'tattoo-red-dark': '#b21e1e',
+        'tattoo-red-light': '#f04d4d', /* Added a lighter red to replace blue */
         'tattoo-black': '#0a0a0a',
         'tattoo-white': '#ffffff',
-        'tattoo-blue': '#4361ee',
+        'tattoo-gray': '#333333', /* Added a dark gray as an accent color */
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
