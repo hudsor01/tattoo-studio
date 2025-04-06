@@ -24,10 +24,10 @@ export default function BookingPage() {
         />
         <div className='absolute inset-0 bg-gradient-to-b from-tattoo-black/80 to-tattoo-black/40'></div>
         <div className='absolute inset-0 flex flex-col items-center justify-center text-center px-4'>
-          <h1 className='text-4xl md:text-5xl font-bold text-tattoo-white mb-4'>
+          <h1 className='tattoo-heading text-shadow-bold mb-4'>
             Book Your <span className='text-tattoo-red'>Appointment</span>
           </h1>
-          <p className='text-xl text-tattoo-white/90 max-w-2xl'>
+          <p className='tattoo-paragraph max-w-2xl'>
             Reserve your session with Fernando Govea
           </p>
         </div>
@@ -43,8 +43,11 @@ export default function BookingPage() {
           <div className='space-y-8'>
             {/* Information Card */}
             <div className='bg-tattoo-black/50 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white/10 hover:border-tattoo-red transition-all'>
-              <h2 className='text-xl font-bold mb-6 text-tattoo-white'>
-                Before Your <span className='text-tattoo-red-light'>Appointment</span>
+              <h2 className='text-2xl font-extrabold mb-6 text-tattoo-white'>
+                Before Your <span className='text-tattoo-red-light relative'>
+                  Appointment
+                  <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-tattoo-red-light/60'></span>
+                </span>
               </h2>
 
               <div className='space-y-6'>
@@ -94,8 +97,11 @@ export default function BookingPage() {
 
             {/* Featured Artist Card */}
             <div className='bg-gradient-to-b from-tattoo-red to-tattoo-red-dark p-6 rounded-lg shadow-lg'>
-              <h2 className='text-xl font-bold mb-4 text-tattoo-white'>
-                Featured <span className='text-black'>Artist</span>
+              <h2 className='text-2xl font-extrabold mb-4 text-tattoo-white'>
+                Featured <span className='text-black relative'>
+                  Artist
+                  <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-black/60'></span>
+                </span>
               </h2>
 
               <div className='aspect-square relative mb-4 rounded-lg overflow-hidden'>
@@ -127,8 +133,8 @@ export default function BookingPage() {
                   <Info className='w-5 h-5 text-tattoo-white' />
                 </div>
                 <div>
-                  <h3 className='font-medium text-tattoo-white text-lg'>Need Assistance?</h3>
-                  <p className='text-sm text-tattoo-white/80 mt-2 mb-4'>
+                  <h3 className='font-bold text-tattoo-white text-xl mb-2'>Need Assistance?</h3>
+                  <p className='text-tattoo-white/80 mt-2 mb-4'>
                     If you have any questions or need help booking your appointment, please contact
                     us directly.
                   </p>

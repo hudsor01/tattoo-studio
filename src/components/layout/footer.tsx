@@ -6,12 +6,12 @@ export function Footer() {
       <div className='container mx-auto px-4'>
         <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
           <div>
-            <h3 className='text-xl font-bold mb-4'>Fernando Govea</h3>
+            <h3 className='text-2xl font-bold mb-4 text-tattoo-white'>Fernando <span className='text-tattoo-red'>Govea</span></h3>
             <p className='text-gray-400'>Custom tattoo artistry with precision and passion</p>
           </div>
 
           <div>
-            <h3 className='text-xl font-bold mb-4'>Quick Links</h3>
+            <h3 className='text-2xl font-bold mb-4 text-tattoo-white'>Quick <span className='text-tattoo-red'>Links</span></h3>
             <ul className='space-y-2'>
               <li>
                 <Link href='/gallery' className='text-gray-400 hover:text-white'>
@@ -37,7 +37,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className='text-xl font-bold mb-4'>Contact</h3>
+            <h3 className='text-2xl font-bold mb-4 text-tattoo-white'>Contact <span className='text-tattoo-red'>Info</span></h3>
             <address className='not-italic text-gray-400'>
               <p>Dallas/Fort Worth Metroplex, Texas</p>
               <p className='mt-2'>fennyg83@gmail.com</p>

@@ -196,8 +196,11 @@ export function BookingForm() {
           </svg>
         </div>
 
-        <h2 className='text-2xl font-bold mb-4 text-tattoo-white'>
-          Your Appointment is <span className='text-tattoo-red'>Confirmed</span>
+        <h2 className='text-2xl font-extrabold mb-4 text-tattoo-white'>
+          Your Appointment is <span className='text-tattoo-red relative'>
+            Confirmed
+            <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-tattoo-red/60'></span>
+          </span>
         </h2>
 
         <p className="text-tattoo-white/80 mb-6">
@@ -233,8 +236,11 @@ export function BookingForm() {
       transition={{ duration: 0.5 }}
       className='p-6 bg-tattoo-black/50 backdrop-blur-sm rounded-lg shadow-md border border-white/10'
     >
-      <h2 className='text-2xl font-bold mb-6 text-tattoo-white'>
-        Request an <span className='text-tattoo-red'>Appointment</span>
+      <h2 className='text-2xl font-extrabold mb-6 text-tattoo-white'>
+        Request an <span className='text-tattoo-red relative'>
+          Appointment
+          <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-tattoo-red/60'></span>
+        </span>
       </h2>
 
       <Form {...form}>

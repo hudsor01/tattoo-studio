@@ -52,7 +52,7 @@ export function Navbar() {
       <div className='container mx-auto px-4'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center'>
-            <Link href='/' className='font-script text-2xl text-tattoo-white hover:text-tattoo-red transition-colors' onClick={(e) => {
+            <Link href='/' className='font-script text-3xl text-tattoo-white hover:text-tattoo-red transition-colors text-shadow-bold' onClick={(e) => {
               // Stop propagation to prevent any parent handlers from triggering
               e.stopPropagation();
             }}>
@@ -63,39 +63,24 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <nav className='hidden md:flex items-center space-x-6'>
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 className={cn(
                   'text-tattoo-white hover:text-tattoo-red transition-colors text-sm font-medium',
                   pathname === link.href && 'text-tattoo-red'
                 )}
-                onClick={(e) => {
-                  // Ensure navigation happens properly
-                  if (link.href === '/about') {
-                    console.log('Navigating to About page');
-                  }
-                  // Stop propagation to prevent any parent handlers from triggering
-                  e.stopPropagation();
-                }}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
             <Button
               className={cn(
                 'bg-tattoo-red text-tattoo-white hover:bg-tattoo-red-dark transition-all',
                 isScrolled ? 'px-4 py-1.5' : 'px-5 py-2'
               )}
-              asChild
             >
-              <Link
-                href='/book'
-                onClick={(e) => {
-                  // Stop propagation to prevent any parent handlers from triggering
-                  e.stopPropagation();
-                }}
-              >Book Now</Link>
+              <a href='/book'>Book Now</a>
             </Button>
           </nav>
 
@@ -126,29 +111,19 @@ export function Navbar() {
           >
             <div className='container mx-auto px-4 py-4 flex flex-col space-y-4'>
               {navLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
                   className={cn(
                     'text-tattoo-white hover:text-tattoo-red transition-colors py-2 text-lg',
                     pathname === link.href && 'text-tattoo-red'
                   )}
-                  onClick={(e) => {
-                    // Stop propagation to prevent any parent handlers from triggering
-                    e.stopPropagation();
-                  }}
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
-              <Button className='bg-tattoo-red text-tattoo-white hover:bg-tattoo-red-dark w-full mt-2' asChild>
-                <Link
-                  href='/book'
-                  onClick={(e) => {
-                    // Stop propagation to prevent any parent handlers from triggering
-                    e.stopPropagation();
-                  }}
-                >Book Now</Link>
+              <Button className='bg-tattoo-red text-tattoo-white hover:bg-tattoo-red-dark w-full mt-2'>
+                <a href='/book'>Book Now</a>
               </Button>
             </div>
           </motion.div>

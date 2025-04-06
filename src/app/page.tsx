@@ -27,14 +27,14 @@ export default function HomePage() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className='tattoo-script text-shadow-glow mb-2 text-tattoo-white'
+              className='tattoo-script text-shadow-bold mb-4 text-tattoo-white'
             >
               Ink 37
             </motion.h1>
-            <h2 className='tattoo-display text-tattoo-white mb-4'>
+            <h2 className='tattoo-display text-tattoo-white mb-6'>
               Fernando <span className='text-tattoo-red'>Govea</span>
             </h2>
-            <p className='text-xl md:text-2xl text-tattoo-white/90 mb-8 max-w-3xl mx-auto'>
+            <p className='tattoo-paragraph max-w-3xl mx-auto mb-10'>
               Custom tattoos crafted with precision and passion
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
@@ -72,9 +72,12 @@ export default function HomePage() {
       {/* Featured Work Section */}
       <section className='py-20 bg-tattoo-black'>
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-12'>
-            <h2 className='tattoo-display text-tattoo-white mb-4'>
-              Featured <span className='text-tattoo-red'>Work</span>
+          <div className='text-center mb-16'>
+            <h2 className='tattoo-section-title'>
+              Featured <span className='text-tattoo-red relative'>
+                Work
+                <span className='absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80'></span>
+              </span>
             </h2>
             <p className='tattoo-paragraph max-w-2xl mx-auto'>
               Browse through some of my best tattoo creations and get inspired for your next piece
@@ -104,9 +107,12 @@ export default function HomePage() {
       {/* Tattoo Process Section */}
       <section className='py-20 bg-zinc-900'>
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-12'>
-            <h2 className='tattoo-display text-tattoo-white mb-4'>
-              My <span className='text-tattoo-red'>Process</span>
+          <div className='text-center mb-16'>
+            <h2 className='tattoo-section-title'>
+              My <span className='text-tattoo-red relative'>
+                Process
+                <span className='absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80'></span>
+              </span>
             </h2>
             <p className='tattoo-paragraph max-w-2xl mx-auto'>
               From concept to completion, here's how we'll work together to create your perfect
@@ -148,9 +154,12 @@ export default function HomePage() {
       {/* Testimonials Section */}
       <section className='py-20 bg-tattoo-black'>
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-12'>
-            <h2 className='tattoo-display text-tattoo-white mb-4'>
-              Client <span className='text-tattoo-red'>Testimonials</span>
+          <div className='text-center mb-16'>
+            <h2 className='tattoo-section-title'>
+              Client <span className='text-tattoo-red relative'>
+                Testimonials
+                <span className='absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80'></span>
+              </span>
             </h2>
             <p className='tattoo-paragraph max-w-2xl mx-auto'>
               What my clients say about their tattoo experience
@@ -198,9 +207,12 @@ export default function HomePage() {
       {/* FAQ Section */}
       <section className='py-20 bg-zinc-900'>
         <div className='container mx-auto px-4'>
-          <div className='text-center mb-12'>
-            <h2 className='tattoo-display text-tattoo-white mb-4'>
-              Frequently <span className='text-tattoo-red'>Asked Questions</span>
+          <div className='text-center mb-16'>
+            <h2 className='tattoo-section-title'>
+              Frequently <span className='text-tattoo-red relative'>
+                Asked Questions
+                <span className='absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80'></span>
+              </span>
             </h2>
             <p className='tattoo-paragraph max-w-2xl mx-auto'>
               Everything you need to know before getting tattooed
@@ -260,24 +272,17 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className='py-20 bg-tattoo-red text-white'>
         <div className='container mx-auto px-4 text-center'>
-          <h2 className='tattoo-display mb-6'>
-            Ready To Get <span className='text-black'>Inked?</span>
+          <h2 className='tattoo-heading text-shadow-bold mb-6'>
+            Ready To Get <span className='text-black font-extrabold'>Inked?</span>
           </h2>
-          <p className='text-xl max-w-2xl mx-auto mb-8'>
+          <p className='text-xl md:text-2xl max-w-2xl mx-auto mb-10'>
             Contact me today to discuss your ideas and schedule a consultation
           </p>
           <Button
             className='bg-black text-white hover:bg-opacity-90 border-2 border-white'
             size='lg'
-            asChild
           >
-            <Link
-              href='/contact'
-              onClick={(e) => {
-                // Stop propagation to prevent any parent handlers from triggering
-                e.stopPropagation();
-              }}
-            >Get In Touch</Link>
+            <a href='/contact'>Get In Touch</a>
           </Button>
         </div>
       </section>

@@ -70,7 +70,7 @@ export default function AboutPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="font-script text-2xl text-tattoo-red mb-4"
+            className="font-script text-3xl text-tattoo-red mb-6"
           >
             The Artist
           </motion.p>
@@ -79,7 +79,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-            className="text-6xl md:text-7xl lg:text-8xl font-display font-bold text-tattoo-white mb-2 tracking-wider uppercase"
+            className="tattoo-heading text-shadow-bold mb-4 tracking-wider uppercase"
           >
             Fernando <span className="text-tattoo-red relative">
               Govea
@@ -153,8 +153,11 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="tattoo-display text-tattoo-white mb-6">
-                  My <span className="text-tattoo-red">Journey</span>
+                <h2 className="tattoo-section-title">
+                  My <span className="text-tattoo-red relative">
+                    Journey
+                    <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
+                  </span>
                 </h2>
 
                 <div className="space-y-6 text-tattoo-white/80 text-lg">
@@ -193,7 +196,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="tattoo-display text-tattoo-white mb-4">
+            <h2 className="tattoo-section-title">
               My <span className="text-tattoo-blue relative">
                 Specialties
                 <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-blue/80"></span>
@@ -244,8 +247,11 @@ export default function AboutPage() {
               transition={{ duration: 0.6 }}
               className="max-w-3xl mx-auto text-center"
             >
-              <h2 className="tattoo-display text-tattoo-white mb-8">
-                My <span className="text-tattoo-red">Philosophy</span>
+              <h2 className="tattoo-section-title">
+                My <span className="text-tattoo-red relative">
+                  Philosophy
+                  <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
+                </span>
               </h2>
 
               <p className="text-2xl text-tattoo-white/90 mb-6 font-light italic">
@@ -268,8 +274,11 @@ export default function AboutPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="tattoo-display text-tattoo-white mb-4">
-              Career <span className="text-tattoo-blue">Milestones</span>
+            <h2 className="tattoo-section-title">
+              Career <span className="text-tattoo-blue relative">
+                Milestones
+                <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-blue/80"></span>
+              </span>
             </h2>
             <p className="tattoo-paragraph max-w-2xl mx-auto">
               Key moments in my journey as a tattoo artist
@@ -316,8 +325,10 @@ export default function AboutPage() {
             className="bg-gradient-to-r from-tattoo-red/90 to-tattoo-red-dark/90 rounded-xl overflow-hidden shadow-lg"
           >
             <div className="p-8 md:p-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Start Your Tattoo Journey?</h2>
-              <p className="text-white/90 max-w-2xl mx-auto mb-8">
+              <h2 className="tattoo-heading text-shadow-bold mb-6 text-white">
+                Ready to Start Your <span className="text-tattoo-black">Tattoo Journey?</span>
+              </h2>
+              <p className="text-white/90 text-xl max-w-2xl mx-auto mb-10">
                 Whether you have a specific design in mind or just an idea that needs refining, I'd love to help bring your vision to life.
               </p>
 

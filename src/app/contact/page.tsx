@@ -113,11 +113,11 @@ export default function ContactPage() {
   return (
     <main className="bg-tattoo-black min-h-screen">
       {/* Hero Section */}
-      <div className="relative h-[60vh] overflow-hidden" ref={containerRef}>
+      <div className="relative h-[70vh] overflow-hidden" ref={containerRef}>
         <div className="absolute inset-0 z-10">
           <motion.div style={{ opacity, scale }} className="h-full w-full">
             <Image
-              src="/IMG_2947.JPG"
+              src="/images/IMG_2947.JPG"
               alt="Fernando Govea's tattoo workspace"
               fill
               className="object-cover object-center opacity-70"
@@ -128,12 +128,12 @@ export default function ContactPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-tattoo-black/70 via-tattoo-black/60 to-tattoo-black"></div>
         </div>
 
-        <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto">
+        <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6 max-w-5xl mx-auto">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="font-script text-2xl text-tattoo-red mb-4"
+            className="font-script text-3xl text-tattoo-red mb-6"
           >
             Get in Touch
           </motion.p>
@@ -142,7 +142,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-tattoo-white mb-2 tracking-wider uppercase"
+            className="tattoo-heading text-shadow-bold mb-6 tracking-wider uppercase"
           >
             Contact <span className="text-tattoo-red relative">
               Me
@@ -154,10 +154,21 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, type: "spring", stiffness: 100 }}
-            className="text-xl text-tattoo-white/90 max-w-3xl mb-2 leading-relaxed"
+            className="text-xl md:text-2xl text-tattoo-white/90 max-w-3xl mb-6 leading-relaxed"
           >
             Share your ideas and let's create something unique together
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex gap-4 mt-4"
+          >
+            <Button asChild className="bg-tattoo-red hover:bg-tattoo-red/90 text-white px-6 py-2">
+              <a href="#contact-section">Get Started</a>
+            </Button>
+          </motion.div>
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 z-20">
@@ -168,26 +179,26 @@ export default function ContactPage() {
       </div>
 
       {/* Main Content */}
-      <div className="container max-w-7xl mx-auto px-4 py-12">
+      <div className="container max-w-7xl mx-auto px-4 py-24" id="contact-section">
         {/* Contact Preference Selection */}
-        <section className="mb-16">
+        <section className="mb-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-gradient-to-r from-tattoo-black/80 to-tattoo-black p-6 rounded-lg border border-tattoo-white/10"
+            className="bg-gradient-to-r from-tattoo-black/80 to-tattoo-black p-8 md:p-10 rounded-2xl border border-tattoo-white/10 shadow-lg"
           >
-            <h3 className="text-xl font-bold text-tattoo-white mb-4 text-center">How would you prefer to connect?</h3>
+            <h3 className="text-2xl font-bold text-tattoo-white mb-8 text-center">How would you prefer to connect?</h3>
 
             <RadioGroup
               value={preferredContact}
               onValueChange={setPreferredContact}
-              className="flex flex-wrap justify-center gap-4"
+              className="flex flex-wrap justify-center gap-6"
             >
-              <div className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer
+              <div className={`p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-lg
                 ${preferredContact === 'email'
-                  ? 'border-tattoo-red/50 bg-tattoo-red/10'
+                  ? 'border-tattoo-red/50 bg-tattoo-red/10 shadow-tattoo-red/20 shadow-md'
                   : 'border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-white/30'}`}
               >
                 <RadioGroupItem value="email" id="contact-email" className="sr-only" />
@@ -195,15 +206,21 @@ export default function ContactPage() {
                   htmlFor="contact-email"
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  <Mail className={`w-8 h-8 mb-2 ${preferredContact === 'email' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
-                  <span className={`font-medium ${preferredContact === 'email' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Email</span>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${preferredContact === 'email' ? 'bg-tattoo-red/20' : 'bg-tattoo-white/5'}`}
+                  >
+                    <Mail className={`w-8 h-8 ${preferredContact === 'email' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
+                  </motion.div>
+                  <span className={`font-bold text-lg mb-2 ${preferredContact === 'email' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Email</span>
                   <span className="text-sm text-tattoo-white/60 mt-1">Detailed responses</span>
                 </Label>
               </div>
 
-              <div className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer
+              <div className={`p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-lg
                 ${preferredContact === 'form'
-                  ? 'border-tattoo-red/50 bg-tattoo-red/10'
+                  ? 'border-tattoo-red/50 bg-tattoo-red/10 shadow-tattoo-red/20 shadow-md'
                   : 'border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-white/30'}`}
               >
                 <RadioGroupItem value="form" id="contact-form" className="sr-only" />
@@ -211,15 +228,21 @@ export default function ContactPage() {
                   htmlFor="contact-form"
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  <MessageSquare className={`w-8 h-8 mb-2 ${preferredContact === 'form' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
-                  <span className={`font-medium ${preferredContact === 'form' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Contact Form</span>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${preferredContact === 'form' ? 'bg-tattoo-red/20' : 'bg-tattoo-white/5'}`}
+                  >
+                    <MessageSquare className={`w-8 h-8 ${preferredContact === 'form' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
+                  </motion.div>
+                  <span className={`font-bold text-lg mb-2 ${preferredContact === 'form' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Contact Form</span>
                   <span className="text-sm text-tattoo-white/60 mt-1">Upload images</span>
                 </Label>
               </div>
 
-              <div className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer
+              <div className={`p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-lg
                 ${preferredContact === 'social'
-                  ? 'border-tattoo-red/50 bg-tattoo-red/10'
+                  ? 'border-tattoo-red/50 bg-tattoo-red/10 shadow-tattoo-red/20 shadow-md'
                   : 'border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-white/30'}`}
               >
                 <RadioGroupItem value="social" id="contact-social" className="sr-only" />
@@ -227,15 +250,21 @@ export default function ContactPage() {
                   htmlFor="contact-social"
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  <Instagram className={`w-8 h-8 mb-2 ${preferredContact === 'social' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
-                  <span className={`font-medium ${preferredContact === 'social' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Social Media</span>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${preferredContact === 'social' ? 'bg-tattoo-red/20' : 'bg-tattoo-white/5'}`}
+                  >
+                    <Instagram className={`w-8 h-8 ${preferredContact === 'social' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
+                  </motion.div>
+                  <span className={`font-bold text-lg mb-2 ${preferredContact === 'social' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Social Media</span>
                   <span className="text-sm text-tattoo-white/60 mt-1">Quick DMs</span>
                 </Label>
               </div>
 
-              <div className={`p-4 rounded-lg border transition-all duration-300 cursor-pointer
+              <div className={`p-6 rounded-xl border-2 transition-all duration-300 cursor-pointer transform hover:scale-105 hover:shadow-lg
                 ${preferredContact === 'booking'
-                  ? 'border-tattoo-red/50 bg-tattoo-red/10'
+                  ? 'border-tattoo-red/50 bg-tattoo-red/10 shadow-tattoo-red/20 shadow-md'
                   : 'border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-white/30'}`}
               >
                 <RadioGroupItem value="booking" id="contact-booking" className="sr-only" />
@@ -243,8 +272,14 @@ export default function ContactPage() {
                   htmlFor="contact-booking"
                   className="flex flex-col items-center cursor-pointer"
                 >
-                  <Calendar className={`w-8 h-8 mb-2 ${preferredContact === 'booking' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
-                  <span className={`font-medium ${preferredContact === 'booking' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Book Directly</span>
+                  <motion.div
+                    whileHover={{ y: -5 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-colors duration-300 ${preferredContact === 'booking' ? 'bg-tattoo-red/20' : 'bg-tattoo-white/5'}`}
+                  >
+                    <Calendar className={`w-8 h-8 ${preferredContact === 'booking' ? 'text-tattoo-red' : 'text-tattoo-white/70'}`} />
+                  </motion.div>
+                  <span className={`font-bold text-lg mb-2 ${preferredContact === 'booking' ? 'text-tattoo-red' : 'text-tattoo-white'}`}>Book Directly</span>
                   <span className="text-sm text-tattoo-white/60 mt-1">Skip to booking</span>
                 </Label>
               </div>
@@ -263,95 +298,150 @@ export default function ContactPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="tattoo-display text-tattoo-white mb-6">
-                Reach <span className="text-tattoo-red">Out</span>
+              <h2 className="tattoo-section-title">
+                Reach <span className="text-tattoo-red relative">
+                  Out
+                  <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
+                </span>
               </h2>
 
               <div className="space-y-8 mt-8">
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
-                    <Mail className="w-5 h-5 text-tattoo-red" />
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="flex items-start space-x-5 bg-tattoo-black/20 p-5 rounded-xl border border-tattoo-white/5 hover:border-tattoo-red/20 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
+                    <Mail className="w-6 h-6 text-tattoo-red" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-tattoo-white mb-1">Email</h3>
-                    <p className="text-tattoo-white/70 mb-1">For inquiries and appointments</p>
-                    <a href="mailto:fennyg83@gmail.com" className="text-tattoo-red hover:text-tattoo-red/80 transition-colors">
-                      fennyg83@gmail.com
-                    </a>
-                    <button
-                      onClick={() => copyToClipboard('fennyg83@gmail.com', 'Email')}
-                      className="ml-2 text-tattoo-red hover:text-tattoo-red/80 transition-colors"
-                    >
-                      <Copy className="w-4 h-4 inline-block" />
-                    </button>
-                    {copySuccess === 'Email' && <span className="ml-2 text-tattoo-green">Copied!</span>}
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5 h-5 text-tattoo-red" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-tattoo-white mb-1">Location</h3>
-                    <p className="text-tattoo-white/70 mb-1">Private studio by appointment only</p>
-                    <p className="text-tattoo-white/90">Dallas/Fort Worth Metroplex, Texas</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
-                    <Clock className="w-5 h-5 text-tattoo-red" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-tattoo-white mb-1">Working Hours</h3>
-                    <p className="text-tattoo-white/70 mb-1">Available for appointments</p>
-                    <div className="space-y-1">
-                      <p className="text-tattoo-white/90">Tuesday - Saturday: 11:00 AM - 7:00 PM</p>
-                      <p className="text-tattoo-white/90">Sunday - Monday: Closed</p>
+                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Email</h3>
+                    <p className="text-tattoo-white/70 mb-3">For inquiries and appointments</p>
+                    <div className="flex items-center">
+                      <a href="mailto:fennyg83@gmail.com" className="text-tattoo-red hover:text-tattoo-red/80 transition-colors text-lg">
+                        fennyg83@gmail.com
+                      </a>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => copyToClipboard('fennyg83@gmail.com', 'Email')}
+                        className="ml-3 text-tattoo-red hover:text-tattoo-red/80 transition-colors bg-tattoo-red/5 p-2 rounded-full"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </motion.button>
+                      {copySuccess === 'Email' && (
+                        <motion.span
+                          initial={{ opacity: 0, x: 5 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className="ml-2 text-tattoo-green bg-tattoo-green/5 px-2 py-1 rounded text-sm"
+                        >
+                          Copied!
+                        </motion.span>
+                      )}
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
-                    <Instagram className="w-5 h-5 text-tattoo-red" />
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="flex items-start space-x-5 bg-tattoo-black/20 p-5 rounded-xl border border-tattoo-white/5 hover:border-tattoo-red/20 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
+                    <MapPin className="w-6 h-6 text-tattoo-red" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-tattoo-white mb-1">Social Media</h3>
-                    <p className="text-tattoo-white/70 mb-1">Follow my latest work</p>
-                    <a
-                      href="https://instagram.com/fernando_tattoos"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-tattoo-red hover:text-tattoo-red/80 transition-colors"
-                    >
-                      @fernando_tattoos
-                    </a>
-                    <button
-                      onClick={() => copyToClipboard('@fernando_tattoos', 'Instagram')}
-                      className="ml-2 text-tattoo-red hover:text-tattoo-red/80 transition-colors"
-                    >
-                      <Copy className="w-4 h-4 inline-block" />
-                    </button>
-                    {copySuccess === 'Instagram' && <span className="ml-2 text-tattoo-green">Copied!</span>}
+                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Location</h3>
+                    <p className="text-tattoo-white/70 mb-3">Private studio by appointment only</p>
+                    <p className="text-tattoo-white/90 text-lg">Dallas/Fort Worth Metroplex, Texas</p>
                   </div>
-                </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="flex items-start space-x-5 bg-tattoo-black/20 p-5 rounded-xl border border-tattoo-white/5 hover:border-tattoo-red/20 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
+                    <Clock className="w-6 h-6 text-tattoo-red" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Working Hours</h3>
+                    <p className="text-tattoo-white/70 mb-3">Available for appointments</p>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-lg">
+                        <span className="text-tattoo-white/80">Tuesday - Saturday:</span>
+                        <span className="text-tattoo-white">11:00 AM - 7:00 PM</span>
+                      </div>
+                      <div className="flex justify-between text-lg">
+                        <span className="text-tattoo-white/80">Sunday - Monday:</span>
+                        <span className="text-tattoo-white">Closed</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className="flex items-start space-x-5 bg-tattoo-black/20 p-5 rounded-xl border border-tattoo-white/5 hover:border-tattoo-red/20 transition-all duration-300"
+                >
+                  <div className="w-14 h-14 rounded-full bg-tattoo-red/10 flex items-center justify-center shrink-0">
+                    <Instagram className="w-6 h-6 text-tattoo-red" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Social Media</h3>
+                    <p className="text-tattoo-white/70 mb-3">Follow my latest work</p>
+                    <div className="flex items-center">
+                      <a
+                        href="https://instagram.com/fernando_tattoos"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-tattoo-red hover:text-tattoo-red/80 transition-colors text-lg"
+                      >
+                        @fernando_tattoos
+                      </a>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => copyToClipboard('@fernando_tattoos', 'Instagram')}
+                        className="ml-3 text-tattoo-red hover:text-tattoo-red/80 transition-colors bg-tattoo-red/5 p-2 rounded-full"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </motion.button>
+                      {copySuccess === 'Instagram' && (
+                        <motion.span
+                          initial={{ opacity: 0, x: 5 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          className="ml-2 text-tattoo-green bg-tattoo-green/5 px-2 py-1 rounded text-sm"
+                        >
+                          Copied!
+                        </motion.span>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
               </div>
 
               <div className="mt-12">
-                <div className="p-6 border border-tattoo-white/10 rounded-lg bg-tattoo-black/50">
-                  <h3 className="text-xl font-bold text-tattoo-white mb-4 flex items-center">
-                    <Calendar className="w-5 h-5 mr-2 text-tattoo-red" />
+                <motion.div
+                  whileHover={{ y: -5, boxShadow: "0 10px 30px -15px rgba(214, 40, 40, 0.2)" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                  className="p-8 border border-tattoo-white/10 rounded-xl bg-gradient-to-br from-tattoo-black to-tattoo-black/80"
+                >
+                  <h3 className="text-2xl font-bold text-tattoo-white mb-4 flex items-center">
+                    <Calendar className="w-6 h-6 mr-3 text-tattoo-red" />
                     Ready to Book?
                   </h3>
-                  <p className="text-tattoo-white/80 mb-6">
+                  <p className="text-tattoo-white/80 mb-8 text-lg">
                     If you already have a clear idea of what you want, you can skip straight to booking a consultation.
                   </p>
-                  <Button asChild className="w-full bg-tattoo-red hover:bg-tattoo-red/90">
-                    <Link href="/book">Book a Consultation</Link>
-                  </Button>
-                </div>
+                  <motion.div whileTap={{ scale: 0.98 }}>
+                    <Button asChild className="w-full bg-tattoo-red hover:bg-tattoo-red/90 py-6 text-lg font-medium">
+                      <Link href="/book">Book a Consultation</Link>
+                    </Button>
+                  </motion.div>
+                </motion.div>
               </div>
             </motion.div>
 
@@ -364,189 +454,302 @@ export default function ContactPage() {
               transition={{ duration: 0.6 }}
             >
               {/* Show different contact methods based on user selection */}
-              {preferredContact === 'form' ? (
-                <div className="bg-tattoo-black/30 border border-tattoo-white/10 rounded-xl p-6 md:p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-4">
-                      <MessageSquare className="w-5 h-5 text-tattoo-blue" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-tattoo-white">Send Me a Message</h2>
-                      <p className="text-tattoo-white/70">I'll get back to you within 24-48 hours</p>
-                    </div>
-                  </div>
-
-                  {formSubmitted ? (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="bg-tattoo-blue/10 border border-tattoo-blue/20 rounded-lg p-6 text-center"
-                    >
-                      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-tattoo-blue/20 mb-4">
-                        <CheckCircle2 className="w-8 h-8 text-tattoo-blue" />
+              <AnimatePresence mode="wait">
+                {preferredContact === 'form' ? (
+                  <motion.div
+                    key="form-option"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-gradient-to-br from-tattoo-black/40 to-tattoo-black/20 border border-tattoo-white/10 rounded-xl p-8 md:p-10 shadow-lg"
+                  >
+                    <div className="flex items-center mb-8">
+                      <div className="w-12 h-12 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-5">
+                        <MessageSquare className="w-6 h-6 text-tattoo-blue" />
                       </div>
-                      <h3 className="text-xl font-bold text-tattoo-white mb-2">Message Sent Successfully!</h3>
-                      <p className="text-tattoo-white/80 mb-6">
-                        Thank you for reaching out. I'll review your message and get back to you as soon as possible.
-                      </p>
-                      <Button
-                        onClick={() => setFormSubmitted(false)}
-                        variant="outline"
-                        className="border-tattoo-white/20 text-tattoo-white hover:bg-tattoo-white/5"
+                      <div>
+                        <h2 className="text-2xl font-bold text-tattoo-white">Send Me a Message</h2>
+                        <p className="text-tattoo-white/70">I'll get back to you within 24-48 hours</p>
+                      </div>
+                    </div>
+
+                    {formSubmitted ? (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-tattoo-blue/10 border border-tattoo-blue/20 rounded-lg p-10 text-center"
                       >
-                        Send Another Message
-                      </Button>
-                    </motion.div>
-                  ) : (
-                    <ContactForm onFormSubmit={() => setFormSubmitted(true)} />
-                  )}
-                </div>
-              ) : preferredContact === 'email' ? (
-                <div className="bg-tattoo-black/30 border border-tattoo-white/10 rounded-xl p-6 md:p-8 h-full flex flex-col">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-4">
-                      <Mail className="w-5 h-5 text-tattoo-blue" />
+                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-tattoo-blue/20 mb-6">
+                          <CheckCircle2 className="w-10 h-10 text-tattoo-blue" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-tattoo-white mb-4">Message Sent Successfully!</h3>
+                        <p className="text-tattoo-white/80 mb-8 text-lg">
+                          Thank you for reaching out. I'll review your message and get back to you as soon as possible.
+                        </p>
+                        <motion.div whileTap={{ scale: 0.98 }}>
+                          <Button
+                            onClick={() => setFormSubmitted(false)}
+                            variant="outline"
+                            size="lg"
+                            className="border-tattoo-white/20 text-tattoo-white hover:bg-tattoo-white/5"
+                          >
+                            Send Another Message
+                          </Button>
+                        </motion.div>
+                      </motion.div>
+                    ) : (
+                      <ContactForm onFormSubmit={() => setFormSubmitted(true)} />
+                    )}
+                  </motion.div>
+                ) : preferredContact === 'email' ? (
+                  <motion.div
+                    key="email-option"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-gradient-to-br from-tattoo-black/40 to-tattoo-black/20 border border-tattoo-white/10 rounded-xl p-8 md:p-10 h-full flex flex-col shadow-lg"
+                  >
+                    <div className="flex items-center mb-8">
+                      <div className="w-12 h-12 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-5">
+                        <Mail className="w-6 h-6 text-tattoo-blue" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold text-tattoo-white">Email Me Directly</h2>
+                        <p className="text-tattoo-white/70">For detailed inquiries and consultations</p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-tattoo-white">Email Me Directly</h2>
-                      <p className="text-tattoo-white/70">For detailed inquiries and consultations</p>
-                    </div>
-                  </div>
 
-                  <div className="grow flex flex-col items-center justify-center py-10 text-center">
-                    <div className="w-20 h-20 rounded-full bg-tattoo-red/10 flex items-center justify-center mb-6">
-                      <Mail className="w-10 h-10 text-tattoo-red" />
-                    </div>
-
-                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Ready to get in touch?</h3>
-                    <p className="text-tattoo-white/80 mb-6 max-w-md">
-                      Send me an email with your ideas, questions, or to schedule a consultation. I'm always excited to discuss new projects!
-                    </p>
-
-                    <div className="relative group inline-block">
-                      <p className="text-xl text-tattoo-red font-medium mb-4 group-hover:text-tattoo-red/80 transition-colors">
-                        fennyg83@gmail.com
-                      </p>
-                      {copySuccess === 'EmailDirect' && (
-                        <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-tattoo-green text-sm bg-tattoo-black/70 px-2 py-1 rounded">
-                          Copied!
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex gap-4">
-                      <Button
-                        onClick={() => copyToClipboard('fennyg83@gmail.com', 'EmailDirect')}
-                        variant="outline"
-                        className="border-tattoo-white/20 text-tattoo-white hover:bg-tattoo-white/5"
+                    <div className="grow flex flex-col items-center justify-center py-12 text-center">
+                      <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="w-24 h-24 rounded-full bg-gradient-to-br from-tattoo-red/20 to-tattoo-red/5 flex items-center justify-center mb-8 shadow-lg"
                       >
-                        <Copy className="w-4 h-4 mr-2" />
-                        Copy Email Address
-                      </Button>
+                        <Mail className="w-12 h-12 text-tattoo-red" />
+                      </motion.div>
 
-                      <Button asChild className="bg-tattoo-red hover:bg-tattoo-red/90">
-                        <a href="mailto:fennyg83@gmail.com">
-                          <Mail className="w-4 h-4 mr-2" />
-                          Open Mail App
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ) : preferredContact === 'social' ? (
-                <div className="bg-tattoo-black/30 border border-tattoo-white/10 rounded-xl p-6 md:p-8 h-full">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-4">
-                      <Instagram className="w-5 h-5 text-tattoo-blue" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-tattoo-white">Reach Out on Social Media</h2>
-                      <p className="text-tattoo-white/70">Send me a quick DM for faster responses</p>
-                    </div>
-                  </div>
+                      <motion.h3
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="text-2xl font-bold text-tattoo-white mb-4"
+                      >
+                        Ready to get in touch?
+                      </motion.h3>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-                    <a
-                      href="https://instagram.com/fernando_tattoos"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center p-6 rounded-lg border border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-red/30 hover:bg-tattoo-black/70 transition-all duration-300"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mb-4">
-                        <Instagram className="w-8 h-8 text-white" />
+                      <motion.p
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="text-tattoo-white/80 mb-8 max-w-md text-lg"
+                      >
+                        Send me an email with your ideas, questions, or to schedule a consultation. I'm always excited to discuss new projects!
+                      </motion.p>
+
+                      <motion.div
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="relative group inline-block"
+                      >
+                        <p className="text-2xl text-tattoo-red font-medium mb-6 group-hover:text-tattoo-red/80 transition-colors">
+                          fennyg83@gmail.com
+                        </p>
+                        {copySuccess === 'EmailDirect' && (
+                          <motion.span
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-tattoo-green text-sm bg-tattoo-black/70 px-3 py-1 rounded-full"
+                          >
+                            Copied!
+                          </motion.span>
+                        )}
+                      </motion.div>
+
+                      <motion.div
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        className="flex gap-6"
+                      >
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button
+                            onClick={() => copyToClipboard('fennyg83@gmail.com', 'EmailDirect')}
+                            variant="outline"
+                            size="lg"
+                            className="border-tattoo-white/20 text-tattoo-white hover:bg-tattoo-white/5"
+                          >
+                            <Copy className="w-5 h-5 mr-2" />
+                            Copy Email Address
+                          </Button>
+                        </motion.div>
+
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                          <Button asChild size="lg" className="bg-tattoo-red hover:bg-tattoo-red/90">
+                            <a href="mailto:fennyg83@gmail.com">
+                              <Mail className="w-5 h-5 mr-2" />
+                              Open Mail App
+                            </a>
+                          </Button>
+                        </motion.div>
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ) : preferredContact === 'social' ? (
+                  <motion.div
+                    key="social-option"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-gradient-to-br from-tattoo-black/40 to-tattoo-black/20 border border-tattoo-white/10 rounded-xl p-8 md:p-10 h-full shadow-lg"
+                  >
+                    <div className="flex items-center mb-8">
+                      <div className="w-12 h-12 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-5">
+                        <Instagram className="w-6 h-6 text-tattoo-blue" />
                       </div>
-                      <h3 className="text-lg font-bold text-tattoo-white mb-1">Instagram</h3>
-                      <p className="text-tattoo-white/80 mb-4">@fernando_tattoos</p>
-                      <span className="text-sm text-tattoo-white/60">Best for tattoo inspiration and updates</span>
-                    </a>
-
-                    <a
-                      href="https://facebook.com/fernandotattoostudio"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center p-6 rounded-lg border border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-red/30 hover:bg-tattoo-black/70 transition-all duration-300"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-4">
-                        <Facebook className="w-8 h-8 text-white" />
+                      <div>
+                        <h2 className="text-2xl font-bold text-tattoo-white">Reach Out on Social Media</h2>
+                        <p className="text-tattoo-white/70">Send me a quick DM for faster responses</p>
                       </div>
-                      <h3 className="text-lg font-bold text-tattoo-white mb-1">Facebook</h3>
-                      <p className="text-tattoo-white/80 mb-4">Fernando Tattoo Studio</p>
-                      <span className="text-sm text-tattoo-white/60">Schedule booking details and consultations</span>
-                    </a>
+                    </div>
 
-                    <a
-                      href="https://tiktok.com/@fernando_ink"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex flex-col items-center p-6 rounded-lg border border-tattoo-white/10 bg-tattoo-black/50 hover:border-tattoo-red/30 hover:bg-tattoo-black/70 transition-all duration-300 sm:col-span-2"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-4">
-                        <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-6">
+                      <motion.a
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.1 }}
+                        whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                        href="https://instagram.com/fernando_tattoos"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center p-8 rounded-xl border border-tattoo-white/10 bg-gradient-to-br from-tattoo-black/50 to-tattoo-black/30 hover:border-tattoo-red/30 transition-all duration-300"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center mb-6 shadow-lg">
+                          <Instagram className="w-10 h-10 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold text-tattoo-white mb-2">Instagram</h3>
+                        <p className="text-tattoo-white/80 mb-6 text-lg">@fernando_tattoos</p>
+                        <span className="text-sm text-tattoo-white/60 bg-tattoo-black/30 px-4 py-2 rounded-full">Best for tattoo inspiration and updates</span>
+                      </motion.a>
+
+                      <motion.a
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.2 }}
+                        whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                        href="https://facebook.com/fernandotattoostudio"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center p-8 rounded-xl border border-tattoo-white/10 bg-gradient-to-br from-tattoo-black/50 to-tattoo-black/30 hover:border-tattoo-red/30 transition-all duration-300"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-500 flex items-center justify-center mb-6 shadow-lg">
+                          <Facebook className="w-10 h-10 text-white" />
+                        </div>
+                        <h3 className="text-xl font-bold text-tattoo-white mb-2">Facebook</h3>
+                        <p className="text-tattoo-white/80 mb-6 text-lg">Fernando Tattoo Studio</p>
+                        <span className="text-sm text-tattoo-white/60 bg-tattoo-black/30 px-4 py-2 rounded-full">Schedule booking details and consultations</span>
+                      </motion.a>
+
+                      <motion.a
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.4, delay: 0.3 }}
+                        whileHover={{ y: -8, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}
+                        href="https://tiktok.com/@fernando_ink"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex flex-col items-center p-8 rounded-xl border border-tattoo-white/10 bg-gradient-to-br from-tattoo-black/50 to-tattoo-black/30 hover:border-tattoo-red/30 transition-all duration-300 sm:col-span-2"
+                      >
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-gray-900 to-black flex items-center justify-center mb-6 shadow-lg">
+                          <svg className="w-10 h-10 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>
+                        </div>
+                        <h3 className="text-xl font-bold text-tattoo-white mb-2">TikTok</h3>
+                        <p className="text-tattoo-white/80 mb-6 text-lg">@fernando_ink</p>
+                        <span className="text-sm text-tattoo-white/60 bg-tattoo-black/30 px-4 py-2 rounded-full">Watch process videos and follow my work</span>
+                      </motion.a>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="booking-option"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-gradient-to-br from-tattoo-black/40 to-tattoo-black/20 border border-tattoo-white/10 rounded-xl p-8 md:p-10 h-full shadow-lg"
+                  >
+                    <div className="flex items-center mb-8">
+                      <div className="w-12 h-12 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-5">
+                        <Calendar className="w-6 h-6 text-tattoo-blue" />
                       </div>
-                      <h3 className="text-lg font-bold text-tattoo-white mb-1">TikTok</h3>
-                      <p className="text-tattoo-white/80 mb-4">@fernando_ink</p>
-                      <span className="text-sm text-tattoo-white/60">Watch process videos and follow my work</span>
-                    </a>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-tattoo-black/30 border border-tattoo-white/10 rounded-xl p-6 md:p-8 h-full">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 rounded-full bg-tattoo-blue/10 flex items-center justify-center mr-4">
-                      <Calendar className="w-5 h-5 text-tattoo-blue" />
-                    </div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-tattoo-white">Ready to Book?</h2>
-                      <p className="text-tattoo-white/70">Skip directly to scheduling a consultation</p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center justify-center py-10 text-center">
-                    <div className="w-20 h-20 rounded-full bg-tattoo-red/10 flex items-center justify-center mb-6">
-                      <Calendar className="w-10 h-10 text-tattoo-red" />
+                      <div>
+                        <h2 className="text-2xl font-bold text-tattoo-white">Ready to Book?</h2>
+                        <p className="text-tattoo-white/70">Skip directly to scheduling a consultation</p>
+                      </div>
                     </div>
 
-                    <h3 className="text-xl font-bold text-tattoo-white mb-2">Schedule a Consultation</h3>
-                    <p className="text-tattoo-white/80 mb-6 max-w-md">
-                      Consultations help me understand your vision and allow us to discuss design options, pricing, and scheduling for your tattoo.
-                    </p>
+                    <div className="flex flex-col items-center justify-center py-12 text-center">
+                      <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="w-24 h-24 rounded-full bg-gradient-to-br from-tattoo-red/20 to-tattoo-red/5 flex items-center justify-center mb-8 shadow-lg"
+                      >
+                        <Calendar className="w-12 h-12 text-tattoo-red" />
+                      </motion.div>
 
-                    <div className="space-y-4">
-                      <p className="text-tattoo-white/70 text-sm">
-                        A $50 deposit is required to secure your consultation appointment.
-                        <br />This deposit will be applied toward your tattoo if you decide to proceed.
-                      </p>
+                      <motion.h3
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        className="text-2xl font-bold text-tattoo-white mb-4"
+                      >
+                        Schedule a Consultation
+                      </motion.h3>
 
-                      <Button asChild size="lg" className="bg-tattoo-red hover:bg-tattoo-red/90">
-                        <Link href="/book">
-                          <Calendar className="w-5 h-5 mr-2" />
-                          Schedule Now
-                        </Link>
-                      </Button>
+                      <motion.p
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="text-tattoo-white/80 mb-8 max-w-md text-lg"
+                      >
+                        Consultations help me understand your vision and allow us to discuss design options, pricing, and scheduling for your tattoo.
+                      </motion.p>
+
+                      <motion.div
+                        initial={{ y: 10, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="space-y-8 w-full max-w-md"
+                      >
+                        <div className="bg-tattoo-black/40 border border-tattoo-white/10 rounded-lg p-6">
+                          <p className="text-tattoo-white/80 text-base">
+                            A $50 deposit is required to secure your consultation appointment.
+                            <br />This deposit will be applied toward your tattoo if you decide to proceed.
+                          </p>
+                        </div>
+
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="inline-block"
+                        >
+                          <Button asChild size="lg" className="bg-tattoo-red hover:bg-tattoo-red/90 py-6 px-8 text-lg shadow-lg">
+                            <Link href="/book">
+                              <Calendar className="w-5 h-5 mr-3" />
+                              Schedule Now
+                            </Link>
+                          </Button>
+                        </motion.div>
+                      </motion.div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </div>
         </section>
@@ -560,18 +763,18 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="tattoo-display text-tattoo-white mb-4">
+            <h2 className="tattoo-section-title">
               Frequently <span className="text-tattoo-red relative">
                 Asked Questions
                 <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
               </span>
             </h2>
-            <p className="tattoo-paragraph max-w-2xl mx-auto">
+            <p className="tattoo-paragraph max-w-2xl mx-auto text-lg text-tattoo-white/80">
               Everything you need to know before booking with me
             </p>
           </motion.div>
 
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto bg-gradient-to-br from-tattoo-black/50 to-transparent p-6 md:p-8 rounded-2xl border border-tattoo-white/5">
             {faqs.map((faq, index) => (
               <motion.div
                 key={index}
@@ -581,30 +784,38 @@ export default function ContactPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="mb-6"
               >
-                <button
+                <motion.button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className={`w-full flex items-center justify-between p-5 rounded-lg text-left transition-all duration-300 ${
+                  whileHover={{ x: openFaq === index ? 0 : 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  className={`w-full flex items-center justify-between p-6 rounded-xl text-left transition-all duration-300 ${
                     openFaq === index
-                      ? "bg-tattoo-black border-2 border-tattoo-red/30 shadow-lg"
-                      : "bg-tattoo-black/50 border border-tattoo-white/10 hover:border-tattoo-red/20"
+                      ? "bg-gradient-to-r from-tattoo-black to-tattoo-black/90 border-2 border-tattoo-red/30 shadow-lg"
+                      : "bg-tattoo-black/40 border border-tattoo-white/10 hover:border-tattoo-red/20"
                   }`}
                 >
                   <div className="flex items-center">
-                    <div className={`mr-4 transition-colors duration-300 ${openFaq === index ? "text-tattoo-red" : "text-tattoo-red/70"}`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 transition-colors duration-300 ${
+                      openFaq === index
+                        ? "bg-tattoo-red/10 text-tattoo-red"
+                        : "bg-tattoo-black/50 text-tattoo-red/70"
+                    }`}>
                       <FileQuestion className="w-5 h-5" />
                     </div>
-                    <span className={`font-medium ${openFaq === index ? "text-tattoo-red" : "text-tattoo-white"}`}>
+                    <span className={`font-medium text-lg ${openFaq === index ? "text-tattoo-red" : "text-tattoo-white"}`}>
                       {faq.question}
                     </span>
                   </div>
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-full transition-colors duration-300 ${
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-full transition-all duration-300 ${
                     openFaq === index
-                      ? "bg-tattoo-red/10 text-tattoo-red"
+                      ? "bg-tattoo-red/10 text-tattoo-red rotate-180 transform"
                       : "bg-tattoo-black/30 text-tattoo-white/70"
                   }`}>
-                    {openFaq === index ? '−' : '+'}
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 5.25L7 9.25L11 5.25" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </div>
-                </button>
+                </motion.button>
 
                 <AnimatePresence>
                   {openFaq === index && (
@@ -613,7 +824,7 @@ export default function ContactPage() {
                       animate={{ opacity: 1, height: "auto", marginTop: 8 }}
                       exit={{ opacity: 0, height: 0, marginTop: 0 }}
                       transition={{ duration: 0.3 }}
-                      className="bg-gradient-to-r from-tattoo-black to-tattoo-black/90 border border-tattoo-red/10 p-5 rounded-lg text-tattoo-white/80 ml-9"
+                      className="bg-gradient-to-r from-tattoo-black/80 to-tattoo-black/60 border border-tattoo-red/10 p-6 rounded-xl text-tattoo-white/90 text-lg ml-10"
                     >
                       {faq.answer}
                     </motion.div>
@@ -631,24 +842,68 @@ export default function ContactPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
-            <h2 className="tattoo-display text-tattoo-white mb-4">
+            <h2 className="tattoo-section-title">
               Studio <span className="text-tattoo-red relative">
                 Location
                 <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
               </span>
             </h2>
-            <p className="tattoo-paragraph max-w-2xl mx-auto">
+            <p className="tattoo-paragraph max-w-2xl mx-auto text-lg text-tattoo-white/80">
               Located in the heart of the Dallas-Fort Worth metroplex
             </p>
           </motion.div>
 
-          <div className="rounded-xl overflow-hidden border border-tattoo-white/10 shadow-lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="rounded-xl overflow-hidden border border-tattoo-white/10 shadow-lg relative"
+          >
+            {/* Map overlay with info */}
+            <div className="absolute top-5 right-5 z-10 bg-tattoo-black/80 backdrop-blur-md p-5 rounded-lg border border-tattoo-white/10 max-w-sm">
+              <div className="flex gap-4 items-start">
+                <div className="bg-tattoo-red/20 p-2 rounded-lg">
+                  <MapPin className="w-6 h-6 text-tattoo-red" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg text-tattoo-white mb-1">Private Studio</h3>
+                  <p className="text-tattoo-white/70 text-sm mb-1">By appointment only</p>
+                  <p className="text-tattoo-white/90">Dallas/Fort Worth Area, Texas</p>
+                  <div className="mt-4 flex gap-3">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs border-tattoo-white/20 text-tattoo-white hover:bg-tattoo-white/5"
+                      asChild
+                    >
+                      <a href="https://maps.google.com/?q=Dallas,TX" target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="w-3 h-3 mr-1" />
+                        Open in Maps
+                      </a>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-xs bg-tattoo-red/10 border-tattoo-red/20 text-tattoo-red hover:bg-tattoo-red/20"
+                      asChild
+                    >
+                      <a href="/book">
+                        <Calendar className="w-3 h-3 mr-1" />
+                        Book Visit
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d214434.95223867716!2d-97.16250590505372!3d32.81355550639026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864e6e122dc807ad%3A0xa4af8bf8dd69acbd!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1711418424713!5m2!1sen!2sus"
               width="100%"
-              height="450"
+              height="500"
               style={{ border: 0 }}
               allowFullScreen={true}
               loading="lazy"
@@ -656,7 +911,7 @@ export default function ContactPage() {
               className="w-full"
               title="Tattoo Studio Location"
             ></iframe>
-          </div>
+          </motion.div>
         </section>
 
         {/* Enhanced Social Media Section */}
@@ -668,7 +923,7 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 className="tattoo-display text-tattoo-white mb-4">
+            <h2 className="tattoo-section-title">
               Connect <span className="text-tattoo-red relative">
                 Socially
                 <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-red/80"></span>
@@ -766,7 +1021,7 @@ export default function ContactPage() {
             </div>
 
             <div className="relative z-10 py-16 px-8 md:px-16 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-tattoo-white mb-4">
+              <h2 className="tattoo-heading text-shadow-bold mb-6">
                 Let's Create Something <span className="text-tattoo-red">Unforgettable</span>
               </h2>
 

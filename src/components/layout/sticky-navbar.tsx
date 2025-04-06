@@ -55,7 +55,7 @@ export function StickyNavbar() {
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
               className={cn(
@@ -64,13 +64,12 @@ export function StickyNavbar() {
               )}
             >
               {link.label}
-            </Link>
+            </a>
           ))}
           <Button
             className="bg-tattoo-red text-tattoo-white hover:bg-tattoo-red/90 transition-all"
-            asChild
           >
-            <Link href='/book'>Book Now</Link>
+            <a href='/book'>Book Now</a>
           </Button>
           <ModeToggle />
         </div>
@@ -94,7 +93,7 @@ export function StickyNavbar() {
         <div className="md:hidden bg-background/95 backdrop-blur-sm p-4">
           <div className="flex flex-col space-y-4">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 className={cn(
@@ -104,13 +103,12 @@ export function StickyNavbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
             <Button
               className="bg-tattoo-red text-tattoo-white hover:bg-tattoo-red/90 transition-all w-full mt-2"
-              asChild
             >
-              <Link href='/book' onClick={() => setIsMobileMenuOpen(false)}>Book Now</Link>
+              <a href='/book' onClick={() => setIsMobileMenuOpen(false)}>Book Now</a>
             </Button>
           </div>
         </div>

@@ -386,7 +386,7 @@ export default function GalleryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8 }}
-            className="font-script text-2xl text-tattoo-red mb-4"
+            className="font-script text-3xl text-tattoo-red mb-6"
           >
             The Portfolio of
           </motion.p>
@@ -395,7 +395,7 @@ export default function GalleryPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
-            className="text-6xl md:text-7xl lg:text-8xl font-display font-bold text-tattoo-white mb-6 tracking-wider uppercase"
+            className="tattoo-heading text-shadow-bold mb-6 tracking-wider uppercase"
           >
             Fernando <span className="text-tattoo-red relative">
               Govea
@@ -679,7 +679,7 @@ export default function GalleryPage() {
         {/* Process Videos Section - Fernando specific */}
         <div className="mb-28">
           <div className="text-center mb-16">
-            <h2 className="tattoo-display text-tattoo-white mb-4">
+            <h2 className="tattoo-section-title">
               Behind the <span className="text-tattoo-blue relative">
                 Process
                 <span className="absolute -bottom-2 left-1/4 right-1/4 h-1 bg-tattoo-blue/80"></span>
@@ -751,7 +751,7 @@ export default function GalleryPage() {
 
           <div className="relative z-10 py-16 px-8 md:px-16 text-center">
             <motion.h2
-              className="text-3xl md:text-4xl font-bold text-tattoo-white mb-4"
+              className="tattoo-heading text-shadow-bold mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
