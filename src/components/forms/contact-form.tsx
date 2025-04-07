@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react' // Import React at the top of the file
 import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Loader2, FileImage, X, UploadCloud, AlertCircle, CheckCircle } from 'lucide-react'
+import { Loader2, FileImage, X, UploadCloud, AlertCircle } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -281,7 +282,7 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
           <FormField
             control={form.control}
             name='referenceImages'
-            render={({ field: { onChange, value, ...field } }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormLabel className='text-tattoo-white'>Reference Images (Optional)</FormLabel>
                 <FormDescription className='text-tattoo-white/60 text-sm'>
@@ -311,8 +312,13 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
                         className='hidden'
                         accept='image/*'
                         multiple
-                        onChange={handleFileChange}
-                        {...field}
+                        onChange={(e) => {
+                          handleFileChange(e);
+                          field.onChange(e);
+                        }}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
                       />
                     </label>
                   </div>

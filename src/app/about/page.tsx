@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Slot } from '@radix-ui/react-slot'
 import { Badge } from '@/components/ui/badge'
@@ -11,13 +11,12 @@ import { Brush, BookOpen, Award, Clock, MapPin, Instagram } from 'lucide-react'
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
+
+  // Initialize scroll tracking without using the return value
+  useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9])
 
   // Artist specialties with descriptions
   const specialties = [
@@ -50,6 +49,9 @@ export default function AboutPage() {
     { year: '2020', event: 'Started mentoring aspiring tattoo artists' },
     { year: '2023', event: 'Launched expanded studio in Dallas/Fort Worth area' },
   ]
+
+  // Using useState to implement a modal/feature highlight
+  const [highlightedSpecialty, setHighlightedSpecialty] = useState<number | null>(null)
 
   return (
     <main className='bg-tattoo-black min-h-screen'>
@@ -310,10 +312,11 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className='bg-tattoo-black/50 border border-tattoo-white/10 rounded-lg p-6 hover:border-tattoo-red/30 transition-all duration-300'
+                className={`bg-tattoo-black/50 border ${highlightedSpecialty === index ? 'border-tattoo-red' : 'border-tattoo-white/10'} rounded-lg p-6 hover:border-tattoo-red/30 transition-all duration-300 cursor-pointer`}
+                onClick={() => setHighlightedSpecialty(index)}
               >
                 <div className='w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center mb-4'>
-                  {specialty.icon}
+                  <Slot>{specialty.icon}</Slot>
                 </div>
                 <h3 className='text-xl font-bold text-tattoo-white mb-3'>{specialty.title}</h3>
                 <p className='text-tattoo-white/70'>{specialty.description}</p>

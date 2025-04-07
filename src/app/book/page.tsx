@@ -5,13 +5,119 @@ import { BookingForm } from '@/components/booking/booking-form'
 import { Button } from '@/components/ui/button'
 import { Clock, Shield, CreditCard, Info, Calendar, ArrowRight } from 'lucide-react'
 import { motion } from 'framer-motion'
+// Removed unused toast import
+import { useState } from 'react'
+import type { form } from 'framer-motion/client'
+import { DepositPaymentForm } from '../../components/booking/deposit-payment-form'
 
 export const metadata: Metadata = {
   title: 'Book an Appointment | Ink 37 Studio',
   description: 'Schedule your tattoo appointment with Fernando Govea at Ink 37 Studio.',
 }
 
+interface BookingFormValues {
+  firstName: string;
+  date: string;
+  time: string;
+  clientName: string;
+  email: string;
+  phone: string;
+  notes: string;
+  tattooDepositAmount: string;
+  duration: number;
+  clientEmail: string;
+  clientPhone: string;
+  designDescription: string;
+  referenceImages: string[];
+  tattooType: "NEW_TATTOO" | "TOUCH_UP" | "COVER_UP" | "CONSULTATION";
+  bodyPart: string;
+}
+
+// Define booking steps
+enum BookingStep {
+  BOOKING_DETAILS = 0,
+  PAYMENT = 1,
+  CONFIRMATION = 2,
+}
+
 export default function BookingPage() {
+  // State to manage the current step in the booking process
+  const [currentStep, setCurrentStep] = useState(BookingStep.BOOKING_DETAILS)
+  const [_isSubmitting, _setIsSubmitting] = useState(false)
+  const [formKey, setFormKey] = useState(`booking-form-${Date.now()}`)
+  const [_selectedDate, _setSelectedDate] = useState<Date | null>(null)
+  // State to store the booking data
+  const [bookingData, setBookingData] = useState<BookingFormValues | null>(null)
+  // State to store the booking ID
+  const [_bookingId, setBookingId] = useState<string | null>(null)
+  // State to manage form submission status
+  const [_isSubmitting, _setIsSubmitting] = useState(false)
+
+  // Handle the initial form submission
+
+  // Handle payment success
+  function handlePaymentSuccess(paymentId: string) {
+    // Store the booking ID (if needed for future reference)
+    setBookingId(paymentId)
+
+    // Generate new form key to clear localStorage and reset form state
+    setFormKey(`booking-form-${Date.now()}`)
+
+    // Move to confirmation step
+    setCurrentStep(BookingStep.CONFIRMATION)
+  // Reset the entire booking process
+  function resetBooking() {
+    setBookingData(null)
+    setBookingId(null)
+    setCurrentStep(BookingStep.BOOKING_DETAILS)
+    setFormKey(`booking-form-${Date.now()}`)
+  }
+    form.reset()
+  // Reset the entire booking process
+  function resetBooking() {
+    setBookingData(null)
+    setBookingId(null)
+    setCurrentStep(BookingStep.BOOKING_DETAILS)
+    setFormKey(`booking-form-${Date.now()}`)
+  }
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className='p-6 bg-tattoo-black/50 backdrop-blur-sm rounded-lg shadow-md border border-white/10 text-center'
+      >
+        <h2 className='text-2xl font-extrabold mb-4 text-tattoo-red'>
+          Confirmed
+          <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-tattoo-red/60'></span>
+        </h2>
+
+        <p className='text-tattoo-white/80 mb-6'>
+          Thank you for your booking. We've sent a confirmation email with all the details.
+        </p>
+
+        <Button
+          onClick={resetBooking}
+          className='bg-tattoo-red hover:bg-tattoo-red-dark text-white'
+        >
+          Book Another Appointment
+        </Button>
+      </motion.div>
+    )
+  }
+
+  // Show payment form
+  if (currentStep === BookingStep.PAYMENT && bookingData) {
+    return (
+      <DepositPaymentForm
+        bookingData={bookingData}
+        onPaymentSuccess={handlePaymentSuccess}
+        onCancel={handlePaymentCancel}
+      />
+    )
+  }
+
+  // Default: Show booking form
   return (
     <main className='bg-tattoo-black min-h-screen'>
       {/* Hero Section - Side by Side Layout */}

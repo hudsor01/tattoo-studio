@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState } from 'react'
 import { Upload, X } from 'lucide-react'
 import Image from 'next/image'
@@ -46,7 +47,7 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
     const newPreviews = combinedFiles.map((file) => URL.createObjectURL(file))
     setPreviews(newPreviews)
 
-    simulateUpload(combinedFiles)
+    simulateUpload()
   }
 
   const removeFile = (index: number) => {
@@ -54,7 +55,9 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
     updatedFiles.splice(index, 1)
     setFiles(updatedFiles)
 
-    URL.revokeObjectURL(previews[index])
+    if (previews[index]) {
+      URL.revokeObjectURL(previews[index])
+    }
 
     const updatedPreviews = [...previews]
     updatedPreviews.splice(index, 1)
@@ -63,7 +66,7 @@ export function UploadDropzone({ onUploadComplete }: UploadDropzoneProps) {
     onUploadComplete(updatedPreviews)
   }
 
-  const simulateUpload = async (filesToUpload: File[]) => {
+  const simulateUpload = async () => {
     setIsUploading(true)
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setIsUploading(false)

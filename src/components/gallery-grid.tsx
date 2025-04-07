@@ -1,9 +1,10 @@
 'use client'
 
+import React from 'react'
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog'
-import { X, ChevronLeft, ChevronRight, Filter } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type GalleryImage = {

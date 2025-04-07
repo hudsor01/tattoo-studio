@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useDropzone } from '@uploadthing/react'
 import { generateClientDropzoneAccept } from 'uploadthing/client'
 import { useState, useCallback } from 'react'

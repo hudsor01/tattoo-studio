@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
@@ -70,12 +71,14 @@ export function DepositPaymentForm({ bookingData, onPaymentSuccess, onCancel }: 
       const now = new Date()
       const currentYear = now.getFullYear() % 100
       const currentMonth = now.getMonth() + 1
+      const expMonth = month || '0'
+      const expYear = year || '0'
 
       if (
-        parseInt(month) < 1 ||
-        parseInt(month) > 12 ||
-        parseInt(year) < currentYear ||
-        (parseInt(year) === currentYear && parseInt(month) < currentMonth)
+        parseInt(expMonth) < 1 ||
+        parseInt(expMonth) > 12 ||
+        parseInt(expYear) < currentYear ||
+        (parseInt(expYear) === currentYear && parseInt(expMonth) < currentMonth)
       ) {
         errors.expiryDate = 'Card has expired'
       }
