@@ -1,5 +1,6 @@
 import js from '@eslint/js'
 import nextPlugin from '@next/eslint-plugin-next'
+import reactPlugin from 'eslint-plugin-react'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import prettierConfig from 'eslint-config-prettier'
@@ -24,6 +25,7 @@ export default [
     plugins: {
       '@typescript-eslint': tsPlugin,
       '@next/next': nextPlugin,
+      'react': reactPlugin,
     },
     languageOptions: {
       parser: tsParser,
@@ -39,6 +41,11 @@ export default [
         React: 'readonly',
         JSX: 'readonly',
       },
+    },
+    settings: {
+      react: {
+        version: 'detect'
+      }
     },
     rules: {
       // Turning off unused vars rules to fix build errors
