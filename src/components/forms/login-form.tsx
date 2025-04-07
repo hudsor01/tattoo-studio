@@ -44,7 +44,7 @@ export function LoginForm() {
   async function onSubmit(values: LoginFormValues) {
     try {
       // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500))
 
       // Placeholder - just show success message and redirect
       toast.success('Login successful! (This is a demo)')
@@ -58,7 +58,7 @@ export function LoginForm() {
   const handleGitHubLogin = async () => {
     try {
       setIsGitHubLoading(true)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500))
       toast.info('GitHub login is not implemented yet')
     } catch (_error) {
       toast.error('Failed to login with GitHub')
@@ -71,7 +71,7 @@ export function LoginForm() {
   const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await new Promise((resolve) => setTimeout(resolve, 1500))
       toast.info('Google login is not implemented yet')
     } catch (_error) {
       toast.error('Failed to login with Google')

@@ -73,9 +73,8 @@ export async function POST(req: Request) {
       success: true,
       appointmentId: appointment.id,
       paymentId: payment.id,
-      message: 'Deposit payment successful. Your appointment is confirmed.'
+      message: 'Deposit payment successful. Your appointment is confirmed.',
     })
-
   } catch (error) {
     console.error('Deposit payment error:', error)
 
@@ -86,9 +85,6 @@ export async function POST(req: Request) {
       )
     }
 
-    return NextResponse.json(
-      { error: 'Failed to process deposit payment' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to process deposit payment' }, { status: 500 })
   }
 }

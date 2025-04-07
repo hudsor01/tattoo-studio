@@ -11,7 +11,7 @@ import { Button } from './button'
 interface FileUploadProps {
   endpoint: 'tattooDesigns' | 'profilePhotos'
   value: string[]
-  onChange: (/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ urls: string[]) => void
+  onChange: (urls: string[]) => void
   maxFiles?: number
   maxSize?: string
   acceptedFileTypes?: string[]

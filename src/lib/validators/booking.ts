@@ -30,9 +30,9 @@ export type BookingDb = z.infer<typeof bookingDbSchema>
 
 // Helper function to validate booking form data
 export function validateBookingForm(data: unknown): {
-  success: boolean;
-  data?: BookingFormValues;
-  error?: string;
+  success: boolean
+  data?: BookingFormValues
+  error?: string
 } {
   try {
     const validData = bookingSchema.parse(data)
@@ -41,7 +41,7 @@ export function validateBookingForm(data: unknown): {
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        error: error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join(', ')
+        error: error.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join(', '),
       }
     }
     return { success: false, error: 'Invalid form data' }

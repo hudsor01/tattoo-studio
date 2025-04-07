@@ -12,10 +12,7 @@ interface RateLimitConfig {
  * @param config Rate limiting configuration
  * @returns Boolean indicating if request is allowed
  */
-export async function checkRateLimit(
-  ip: string,
-  config: RateLimitConfig
-): Promise<boolean> {
+export async function checkRateLimit(ip: string, config: RateLimitConfig): Promise<boolean> {
   // Skip rate limiting if not in production or KV is not configured
   if (process.env.NODE_ENV !== 'production' || !process.env.KV_URL) {
     return true

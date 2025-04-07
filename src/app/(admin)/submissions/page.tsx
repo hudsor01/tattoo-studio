@@ -1,5 +1,5 @@
 // This directive ensures the page is not statically generated at build time
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
 
 import { ModeToggle } from '@/components/theme/mode-toggle'
 import { DataTable } from '@/components/admin/submissions-table'
@@ -11,20 +11,20 @@ export default async function AdminSubmissions() {
   // Will add proper authentication later
 
   // Try to get submissions, but provide fallback empty array if database is not available
-  let submissions: Submission[] = [];
+  let submissions: Submission[] = []
 
   try {
     // Cast the returned data to ensure status is compatible with Submission type
-    const dbSubmissions = await getSubmissions();
-    submissions = dbSubmissions.map(sub => ({
+    const dbSubmissions = await getSubmissions()
+    submissions = dbSubmissions.map((sub) => ({
       ...sub,
       // Ensure status is one of the expected values, default to PENDING if not
       status: ['PENDING', 'CONTACTED', 'RESOLVED', 'ARCHIVED'].includes(sub.status)
-        ? sub.status as 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'ARCHIVED'
-        : 'PENDING'
-    })) as Submission[];
+        ? (sub.status as 'PENDING' | 'CONTACTED' | 'RESOLVED' | 'ARCHIVED')
+        : 'PENDING',
+    })) as Submission[]
   } catch (error) {
-    console.error('Failed to fetch submissions:', error);
+    console.error('Failed to fetch submissions:', error)
     // Just use empty array if database is not available
   }
 

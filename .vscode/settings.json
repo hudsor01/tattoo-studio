@@ -1,3 +1,4 @@
 {
-    "AutoPreview.serverURL": "http://localhost:3000"
+  "AutoPreview.serverURL": "http://localhost:3000",
+  "zencoder.enableRepoIndexing": true
 }

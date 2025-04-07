@@ -12,13 +12,9 @@ interface ErrorLogOptions {
  * @param message Custom error message
  * @param options Additional logging options
  */
-export function logError(
-  error: unknown,
-  message: string,
-  options: ErrorLogOptions = {}
-): void {
+export function logError(error: unknown, message: string, options: ErrorLogOptions = {}): void {
   const { severity = 'error', context = {}, user = 'anonymous' } = options
-  
+
   // Create structured log entry
   const logEntry = {
     timestamp: new Date().toISOString(),
@@ -28,7 +24,7 @@ export function logError(
     context,
     error: formatError(error),
   }
-  
+
   // In production, you might want to send this to a logging service
   if (process.env.NODE_ENV === 'production') {
     // TODO: Send to external logging service like Sentry, LogRocket, etc.
@@ -52,10 +48,10 @@ function formatError(error: unknown): Record<string, any> {
       message: error.message,
       stack: error.stack,
       // Add additional properties for specific error types
-      ...(error as any).code ? { code: (error as any).code } : {},
-      ...(error as any).status ? { status: (error as any).status } : {},
+      ...((error as any).code ? { code: (error as any).code } : {}),
+      ...((error as any).status ? { status: (error as any).status } : {}),
     }
   }
-  
+
   return { raw: String(error) }
 }

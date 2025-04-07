@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       // This allows deployment without the token
       console.log('Using mock upload in development or missing BLOB token')
       return NextResponse.json({
-        url: `https://placeholder-image.vercel.app/${file.name}?mock=true&t=${Date.now()}`
+        url: `https://placeholder-image.vercel.app/${file.name}?mock=true&t=${Date.now()}`,
       })
     }
 
@@ -34,9 +34,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ url: blob.url })
   } catch (error) {
     console.error('Error uploading file:', error)
-    return NextResponse.json(
-      { error: 'Error uploading file' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error uploading file' }, { status: 500 })
   }
 }

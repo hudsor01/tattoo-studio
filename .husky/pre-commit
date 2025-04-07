@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run just the quick checks (lint and typecheck)
+docker-compose -f docker-compose.verify.yml run verify lint
+docker-compose -f docker-compose.verify.yml run verify typecheck

@@ -38,13 +38,10 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       id: booking.id,
-      message: 'Booking request submitted successfully'
+      message: 'Booking request submitted successfully',
     })
   } catch (error) {
     console.error('Error creating booking:', error)
-    return NextResponse.json(
-      { message: 'Failed to create booking' },
-      { status: 500 }
-    )
+    return NextResponse.json({ message: 'Failed to create booking' }, { status: 500 })
   }
 }

@@ -77,11 +77,14 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          String    @default("USER")
-  accounts      Account[]
-  sessions      Session[]
+  password      String
+  role          String    @default("user")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  // Add the missing relation fields
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model Account {
@@ -129,7 +132,7 @@ model GalleryItem {
   tags          String[]
   featured      Boolean  @default(false)
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now())
 }
 
 model PortfolioProject {
@@ -142,7 +145,7 @@ model PortfolioProject {
   clientStory   String?  // Client testimonial or story
   featured      Boolean  @default(false)
   createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  updatedAt     DateTime @default(now())
 }
 
 model StudioInfo {

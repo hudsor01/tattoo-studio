@@ -1,12 +1,26 @@
 import * as React from 'react'
+import { ReactNode } from 'react'
 
 import { cn } from '@/lib/utils'
 
-const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
+const TableRoot = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
     <div className='relative w-full overflow-auto'>
       <table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
     </div>
+  )
+)
+TableRoot.displayName = 'Table'
+
+const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
+  ({ className, children, ...props }, ref) => (
+    <table
+      ref={ref}
+      className={cn('w-full border-collapse border border-gray-300', className)}
+      {...props}
+    >
+      {children}
+    </table>
   )
 )
 Table.displayName = 'Table'
@@ -91,4 +105,14 @@ const TableCaption = React.forwardRef<
 ))
 TableCaption.displayName = 'TableCaption'
 
-export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
+export {
+  TableRoot,
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+}

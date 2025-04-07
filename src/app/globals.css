@@ -4,14 +4,34 @@
 
 @layer base {
   :root {
+    /* Font families */
+    --font-bebas-neue: "Bebas Neue", sans-serif;
+    --font-pacifico: "Pacifico", cursive;
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    /* Font weights */
+    --font-extrabold: 800;
+    --font-bold: 700;
+    --font-italic: italic;
+    --font-medium: 500;
+    --font-light: 300;
+
+    /* Spacing scale - adding more granular control */
+    --spacing: 0.25rem;
+
+    /* Custom container query breakpoints */
+    --container-card: 30rem;
+    --container-form: 36rem;
+    --container-gallery: 40rem;
+
+    /* CSS Variables for shadcn/ui theming */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 346 84% 61%;
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
+    --foreground: 224 71.4% 4.1%;
+    --primary: 346 84% 61%;
+    --primary-foreground: 210 20% 98%;
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
@@ -19,45 +39,202 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
+    --destructive-foreground: 210 20% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
     --radius: 0.5rem;
+
+    /* Brand colors */
+    --color-tattoo-white: 255 255 255;
+    --color-tattoo-black: 10 10 10;
+    --color-tattoo-red: 220 53 69;
+    --color-tattoo-red-dark: 178 40 53;
+    --color-tattoo-red-light: 247 82 95;
+    --color-tattoo-blue: 66 135 245;
+    --color-tattoo-green: 106 200 80;
+
+    /* Grays */
+    --color-tattoo-gray-50: 250 250 250;
+    --color-tattoo-gray-100: 235 235 235;
+    --color-tattoo-gray-200: 219 219 219;
+    --color-tattoo-gray-300: 196 196 196;
+    --color-tattoo-gray-400: 173 173 173;
+    --color-tattoo-gray-500: 150 150 150;
+    --color-tattoo-gray-600: 127 127 127;
+    --color-tattoo-gray-700: 102 102 102;
+    --color-tattoo-gray-800: 76 76 76;
+    --color-tattoo-gray-900: 51 51 51;
+    --color-tattoo-gray-950: 25 25 25;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+
+    /* Animation timings */
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Scrollbar colors */
+    --scrollbar-track: var(--color-tattoo-black);
+    --scrollbar-thumb: var(--color-tattoo-red);
+    --scrollbar-thumb-hover: var(--color-tattoo-red-dark);
+  }
+
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 346 84% 61%;
+    --primary-foreground: 210 20% 98%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 346 84% 61%;
+  }
+}
+
+@layer utilities {
+  .border-tattoo-red {
+    border-color: rgb(var(--color-tattoo-red) / var(--tw-border-opacity, 1));
+  }
+  .border-tattoo-red-dark {
+    border-color: rgb(var(--color-tattoo-red-dark) / var(--tw-border-opacity, 1));
+  }
+  .border-tattoo-white {
+    border-color: rgb(var(--color-tattoo-white) / var(--tw-border-opacity, 1));
+  }
+  .border-tattoo-black {
+    border-color: rgb(var(--color-tattoo-black) / var(--tw-border-opacity, 1));
+  }
+
+  .bg-tattoo-red {
+    background-color: rgb(var(--color-tattoo-red) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-red-dark {
+    background-color: rgb(var(--color-tattoo-red-dark) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-red-light {
+    background-color: rgb(var(--color-tattoo-red-light) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-white {
+    background-color: rgb(var(--color-tattoo-white) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-black {
+    background-color: rgb(var(--color-tattoo-black) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-blue {
+    background-color: rgb(var(--color-tattoo-blue) / var(--tw-bg-opacity, 1));
+  }
+  .bg-tattoo-green {
+    background-color: rgb(var(--color-tattoo-green) / var(--tw-bg-opacity, 1));
+  }
+
+  .text-tattoo-red {
+    color: rgb(var(--color-tattoo-red) / var(--tw-text-opacity, 1));
+  }
+  .text-tattoo-white {
+    color: rgb(var(--color-tattoo-white) / var(--tw-text-opacity, 1));
+  }
+  .text-tattoo-black {
+    color: rgb(var(--color-tattoo-black) / var(--tw-text-opacity, 1));
+  }
+
+  .text-gradient-red {
+    background-image: linear-gradient(to right, rgb(var(--color-tattoo-red)), rgb(var(--color-tattoo-red-light)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+  }
+
+  .backdrop-blur-md {
+    backdrop-filter: blur(8px);
+  }
+
+  .backdrop-blur-lg {
+    backdrop-filter: blur(16px);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 15px 5px rgba(var(--color-tattoo-red), 0.5);
+  }
+
+  .glow-white {
+    box-shadow: 0 0 15px 5px rgba(var(--color-tattoo-white), 0.3);
   }
 }
 
 @layer components {
-  .shadow-glow {
-    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
-  }
-
-  .bg-fixed {
-    background-attachment: fixed;
-  }
-
   .tattoo-heading {
-    @apply text-5xl md:text-6xl lg:text-7xl font-extrabold text-tattoo-white leading-tight;
-  }
-
-  .tattoo-script {
-    @apply font-script text-6xl md:text-7xl lg:text-8xl tracking-wide;
+    @apply text-5xl md:text-6xl lg:text-7xl font-bold text-tattoo-white;
   }
 
   .tattoo-display {
-    @apply font-display text-5xl md:text-6xl lg:text-7xl tracking-wider uppercase font-bold;
+    @apply text-5xl md:text-6xl lg:text-7xl uppercase font-bold tracking-wider;
+    font-family: var(--font-bebas-neue);
+  }
+
+  .tattoo-script {
+    @apply text-6xl md:text-7xl lg:text-8xl tracking-wide;
+    font-family: var(--font-pacifico);
   }
 
   .tattoo-subheading {
-    @apply text-3xl md:text-4xl font-bold text-tattoo-white leading-snug;
+    @apply text-3xl md:text-4xl font-bold leading-snug text-tattoo-white;
   }
 
   .tattoo-section-title {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold text-tattoo-white mb-8 tracking-wide;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-8 tracking-wide text-tattoo-white;
   }
 
   .tattoo-paragraph {
-    @apply text-lg md:text-xl text-tattoo-white/80 leading-relaxed;
+    @apply text-lg md:text-xl leading-relaxed text-tattoo-white/80;
+  }
+
+  .tattoo-container {
+    @apply container max-w-6xl mx-auto py-12 px-4 md:px-6;
+  }
+
+  .tattoo-card {
+    @apply p-6 rounded-lg shadow-lg border bg-tattoo-black border-tattoo-white/10;
+  }
+
+  /* Tailwind v3 compatible component styles */
+  .tattoo-responsive-card {
+    @apply p-4 sm:p-6 rounded-lg shadow-lg border border-white/10 bg-tattoo-black;
+  }
+
+  .tattoo-gallery-item {
+    @apply relative overflow-hidden rounded-lg;
+  }
+
+  .tattoo-form-container {
+    @apply bg-tattoo-black/50 backdrop-blur-sm rounded-lg shadow-md border border-white/10 p-4 sm:p-6;
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3);
   }
 
   .text-shadow-bold {
@@ -68,33 +245,79 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
 
-  .tattoo-container {
-    @apply container max-w-6xl mx-auto py-12 px-4 md:px-6;
+  .btn-primary {
+    @apply px-6 py-3 rounded-full font-bold text-white bg-tattoo-red hover:bg-tattoo-red-dark transition-colors;
   }
 
-  .tattoo-card {
-    @apply bg-tattoo-black p-6 rounded-lg shadow-lg border border-tattoo-white/10;
+  .btn-secondary {
+    @apply px-6 py-3 rounded-full font-bold border border-white/20 hover:bg-white/10 transition-colors;
   }
+
+  .tattoo-hover-effect {
+    @apply relative overflow-hidden transition-all duration-300;
+
+    &::after {
+      content: '';
+      @apply absolute inset-0 bg-tattoo-red/0 transition-all duration-300;
+    }
+
+    &:hover::after {
+      @apply bg-tattoo-red/20;
+    }
+  }
+
+  .tattoo-image-zoom {
+    @apply overflow-hidden;
+
+    & img {
+      @apply transition-transform duration-500;
+    }
+
+    &:hover img {
+      @apply scale-110;
+    }
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-down {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+body {
+  @apply bg-tattoo-black text-tattoo-white;
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #0a0a0a;
+  background: var(--scrollbar-track);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #d62828;
+  background: var(--scrollbar-thumb);
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #b21e1e;
+  background: var(--scrollbar-thumb-hover);
 }
 
-/* Smooth scrolling */
+/* Enables smooth scrolling for anchor links */
 html {
   scroll-behavior: smooth;
 }

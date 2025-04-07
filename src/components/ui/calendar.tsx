@@ -1,42 +1,66 @@
-'use client'
+'use client';
 
-import React, { forwardRef } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import { cn } from '@/lib/utils'
+import * as React from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { DayPicker } from 'react-day-picker';
 
-interface CalendarProps {
-  value?: /* eslint-disable-next-line @typescript-eslint/no-unused-vars */ Date
-  onChange: (date: Date | null) => void
-  className?: string
-  placeholder?: string
-  disabled?: boolean
-  minDate?: Date
-  maxDate?: Date
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
+
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+  mode?: 'single' | 'range' | 'multiple';
+  initialFocus?: boolean;
+};
+
+function Calendar({
+  className,
+  classNames,
+  showOutsideDays = true,
+  mode = 'single',
+  initialFocus,
+  ...props
+}: CalendarProps) {
+  return (
+    <DayPicker
+      mode={mode as any}
+      showOutsideDays={showOutsideDays}
+      className={cn('p-3', className)}
+      classNames={{
+        months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
+        month: 'space-y-4',
+        caption: 'flex justify-center pt-1 relative items-center',
+        caption_label: 'text-sm font-medium',
+        nav: 'space-x-1 flex items-center',
+        nav_button: cn(
+          buttonVariants({ variant: 'outline' }),
+          'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100'
+        ),
+        nav_button_previous: 'absolute left-1',
+        nav_button_next: 'absolute right-1',
+        table: 'w-full border-collapse space-y-1',
+        head_row: 'flex',
+        head_cell: 'text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]',
+        row: 'flex w-full mt-2',
+        cell: 'text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
+        day: cn(
+          buttonVariants({ variant: 'ghost' }),
+          'h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-tattoo-red/20 rounded-full'
+        ),
+        day_selected:
+          'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
+        day_today: 'bg-accent text-accent-foreground',
+        day_outside: 'text-muted-foreground opacity-50',
+        day_disabled: 'text-muted-foreground opacity-50',
+        day_range_middle:
+          'aria-selected:bg-accent aria-selected:text-accent-foreground',
+        day_hidden: 'invisible',
+        ...classNames,
+      }}
+      {...props}
+    />
+  );
 }
 
-export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(
-  ({ value, onChange, className, placeholder = 'Select date', disabled, minDate, maxDate }, ref) => {
-    return (
-      <div ref={ref} className={cn('relative', className)}>
-        <DatePicker
-          selected={value}
-          onChange={onChange}
-          className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          placeholderText={placeholder}
-          disabled={disabled}
-          minDate={minDate}
-          maxDate={maxDate}
-          dateFormat="MMMM d, yyyy"
-          showPopperArrow={false}
-          // Add tattoo-studio theme customizations
-          calendarClassName="bg-tattoo-gray border border-tattoo-white/10 rounded-md shadow-lg"
-          dayClassName={/* eslint-disable-next-line @typescript-eslint/no-unused-vars */ (_date) => "hover:bg-tattoo-red/20 rounded-full"}
-          popperClassName="z-50"
-        />
-      </div>
-    )
-  }
-)
+Calendar.displayName = 'Calendar';
 
-Calendar.displayName = 'Calendar'
+export { Calendar };

@@ -1,39 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { DateRange } from 'react-day-picker'
 import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { DateRangePicker } from '@/components/ui/date-range-picker'
-import { useToast } from '@/components/ui/use-toast'
-import {
-  ArrowUpDown,
-  Download,
-  MoreHorizontal,
-  Search,
-  Calendar,
-  CreditCard,
-  DollarSign,
-  FileText
-} from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { format, subDays } from 'date-fns'
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
+import { cn } from '@/lib/utils'
 
 // Define transaction types
 type PaymentMethod = 'cash' | 'credit_card' | 'venmo' | 'paypal' | 'cashapp' | 'other'
@@ -66,7 +40,7 @@ const mockTransactions: Transaction[] = [
     paymentMethod: 'credit_card',
     appointmentId: '1',
     appointmentType: 'Full Sleeve Consultation',
-    receipt: 'receipt_1.pdf'
+    receipt: 'receipt_1.pdf',
   },
   {
     id: 'txn_2',
@@ -79,7 +53,7 @@ const mockTransactions: Transaction[] = [
     appointmentId: '2',
     appointmentType: 'Back Piece Session',
     notes: 'Payment for second session',
-    receipt: 'receipt_2.pdf'
+    receipt: 'receipt_2.pdf',
   },
   {
     id: 'txn_3',
@@ -91,7 +65,7 @@ const mockTransactions: Transaction[] = [
     paymentMethod: 'cashapp',
     appointmentId: '3',
     appointmentType: 'Cover-up Consultation',
-    receipt: 'receipt_3.pdf'
+    receipt: 'receipt_3.pdf',
   },
   {
     id: 'txn_4',
@@ -104,7 +78,7 @@ const mockTransactions: Transaction[] = [
     appointmentId: '4',
     appointmentType: 'Geometric Tattoo',
     notes: 'Payment in full',
-    receipt: 'receipt_4.pdf'
+    receipt: 'receipt_4.pdf',
   },
   {
     id: 'txn_5',
@@ -116,7 +90,7 @@ const mockTransactions: Transaction[] = [
     paymentMethod: 'paypal',
     appointmentId: '5',
     appointmentType: 'Traditional Arm Tattoo',
-    receipt: 'receipt_5.pdf'
+    receipt: 'receipt_5.pdf',
   },
   {
     id: 'txn_6',
@@ -129,7 +103,7 @@ const mockTransactions: Transaction[] = [
     appointmentId: '6',
     appointmentType: 'Portrait Session',
     notes: 'Final payment',
-    receipt: 'receipt_6.pdf'
+    receipt: 'receipt_6.pdf',
   },
   {
     id: 'txn_7',
@@ -140,7 +114,7 @@ const mockTransactions: Transaction[] = [
     type: 'refund',
     paymentMethod: 'paypal',
     notes: 'Refund for cancelled appointment',
-    receipt: 'receipt_7.pdf'
+    receipt: 'receipt_7.pdf',
   },
   {
     id: 'txn_8',
@@ -152,7 +126,7 @@ const mockTransactions: Transaction[] = [
     paymentMethod: 'venmo',
     appointmentId: '8',
     appointmentType: 'Leg Sleeve Session',
-    receipt: 'receipt_8.pdf'
+    receipt: 'receipt_8.pdf',
   },
   {
     id: 'txn_9',
@@ -165,7 +139,7 @@ const mockTransactions: Transaction[] = [
     appointmentId: '9',
     appointmentType: 'Small Piece',
     notes: 'Payment in full, walk-in client',
-    receipt: 'receipt_9.pdf'
+    receipt: 'receipt_9.pdf',
   },
   {
     id: 'txn_10',
@@ -177,381 +151,148 @@ const mockTransactions: Transaction[] = [
     paymentMethod: 'cashapp',
     appointmentId: '10',
     appointmentType: 'Flash Tattoo',
-    receipt: 'receipt_10.pdf'
-  }
-];
+    receipt: 'receipt_10.pdf',
+  },
+]
 
 export default function TransactionsPage() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [dateRange, setDateRange] = useState<{from: Date, to: Date}>({
-    from: subDays(new Date(), 30),
-    to: new Date()
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: subDays(new Date(), 7),
+    to: new Date(),
   })
-  const [transactionTypeFilter, setTransactionTypeFilter] = useState<TransactionType | 'all'>('all')
-  const [paymentMethodFilter, setPaymentMethodFilter] = useState<PaymentMethod | 'all'>('all')
-  const { toast } = useToast()
 
-  // Filter transactions based on search, date range, type, and method
-  const filteredTransactions = mockTransactions
-    .filter(transaction =>
-      // Search by client name or email
-      transaction.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.clientEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.appointmentType?.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter(transaction =>
-      // Filter by date range
-      transaction.date >= dateRange.from && transaction.date <= dateRange.to
-    )
-    .filter(transaction =>
-      // Filter by transaction type
-      transactionTypeFilter === 'all' || transaction.type === transactionTypeFilter
-    )
-    .filter(transaction =>
-      // Filter by payment method
-      paymentMethodFilter === 'all' || transaction.paymentMethod === paymentMethodFilter
-    )
-    .sort((a, b) => b.date.getTime() - a.date.getTime()); // Sort by date, newest first
-
-  // Calculate total amounts
-  const totalRevenue = filteredTransactions
-    .filter(t => t.type !== 'refund')
-    .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-  const totalDeposits = filteredTransactions
-    .filter(t => t.type === 'deposit')
-    .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-  const totalPayments = filteredTransactions
-    .filter(t => t.type === 'payment')
-    .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-  const totalRefunds = filteredTransactions
-    .filter(t => t.type === 'refund')
-    .reduce((sum, transaction) => sum + transaction.amount, 0);
-
-  // Export transactions as CSV
-  const handleExportCSV = () => {
-    // Convert to CSV
-    const headers = [
-      'Date',
-      'Client Name',
-      'Client Email',
-      'Amount',
-      'Type',
-      'Payment Method',
-      'Appointment Type',
-      'Notes'
-    ]
-
-    const csvData = filteredTransactions.map(txn => {
-      return [
-        format(txn.date, 'yyyy-MM-dd'),
-        txn.clientName,
-        txn.clientEmail,
-        txn.amount.toFixed(2),
-        txn.type,
-        txn.paymentMethod,
-        txn.appointmentType || 'N/A',
-        txn.notes || ''
-      ]
-    })
-
-    // Create CSV content
-    const csvContent = [
-      headers.join(','),
-      ...csvData.map(row => row.join(','))
-    ].join('\n')
-
-    // Create download link
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.setAttribute('href', url)
-    link.setAttribute('download', `transactions_${format(dateRange.from, 'yyyy-MM-dd')}_to_${format(dateRange.to, 'yyyy-MM-dd')}.csv`)
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-
-    toast({
-      title: 'Export successful',
-      description: `${filteredTransactions.length} transactions exported to CSV file`,
-    })
-  }
-
-  // Render badge for transaction type
-  const renderTransactionTypeBadge = (type: TransactionType) => {
-    switch (type) {
-      case 'deposit':
-        return <Badge className="bg-blue-500 hover:bg-blue-600">Deposit</Badge>;
-      case 'payment':
-        return <Badge className="bg-green-500 hover:bg-green-600">Payment</Badge>;
-      case 'refund':
-        return <Badge variant="destructive">Refund</Badge>;
-      default:
-        return <Badge variant="outline">Unknown</Badge>;
-    }
-  };
-
-  // Render payment method
-  const renderPaymentMethod = (method: PaymentMethod) => {
-    switch (method) {
-      case 'cash':
-        return <div className="flex items-center"><DollarSign className="h-3 w-3 mr-1" /> Cash</div>;
-      case 'credit_card':
-        return <div className="flex items-center"><CreditCard className="h-3 w-3 mr-1" /> Credit Card</div>;
-      case 'venmo':
-        return <div className="flex items-center">Venmo</div>;
-      case 'paypal':
-        return <div className="flex items-center">PayPal</div>;
-      case 'cashapp':
-        return <div className="flex items-center">Cash App</div>;
-      default:
-        return <div>Other</div>;
-    }
-  };
+  // Filter transactions based on date range
+  const filteredTransactions = mockTransactions.filter((transaction) => {
+    if (!date?.from || !date?.to) return true;
+    return transaction.date >= date.from && transaction.date <= date.to;
+  });
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Transactions</h1>
-        <p className="text-muted-foreground">
-          Track and manage all payments, deposits, and refunds.
-        </p>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Transactions</h1>
+
+      {/* Date Range Picker */}
+      <div className="mb-6">
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              id="date"
+              variant={"outline"}
+              className={cn(
+                "w-[300px] justify-start text-left font-normal",
+                !date ? "text-muted-foreground" : undefined
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date?.from ? (
+                date.to ? (
+                  <>
+                    {format(date.from, "LLL dd, y")} -{" "}
+                    {format(date.to, "LLL dd, y")}
+                  </>
+                ) : (
+                  format(date.from, "LLL dd, y")
+                )
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0" autoFocus>
+            <Calendar
+              selected={date}
+              onSelect={setDate}
+              numberOfMonths={2}
+              mode="range"
+              defaultMonth={date?.from}
+            />
+          </PopoverContent>
+        </Popover>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Revenue
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalRevenue.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              For selected period
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Deposits
-            </CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalDeposits.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {filteredTransactions.filter(t => t.type === 'deposit').length} total deposits
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Payments
-            </CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalPayments.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {filteredTransactions.filter(t => t.type === 'payment').length} total payments
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Refunds
-            </CardTitle>
-            <ArrowUpDown className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">${totalRefunds.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {filteredTransactions.filter(t => t.type === 'refund').length} total refunds
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Transactions table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Transaction History</CardTitle>
-          <CardDescription>
-            View and manage all financial transactions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between">
-              <div className="flex flex-1 sm:max-w-sm items-center">
-                <Input
-                  placeholder="Search by client or transaction..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full"
-                  prefix={<Search className="h-4 w-4 text-muted-foreground" />}
-                />
-              </div>
-
-              <div className="flex flex-wrap gap-2 items-center">
-                <DateRangePicker
-                  value={dateRange}
-                  onChange={setDateRange}
-                />
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Type: {transactionTypeFilter === 'all' ? 'All' : transactionTypeFilter}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => setTransactionTypeFilter('all')}>All</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTransactionTypeFilter('deposit')}>Deposit</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTransactionTypeFilter('payment')}>Payment</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTransactionTypeFilter('refund')}>Refund</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      Method: {paymentMethodFilter === 'all' ? 'All' : paymentMethodFilter.replace('_', ' ')}
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('all')}>All</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('cash')}>Cash</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('credit_card')}>Credit Card</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('venmo')}>Venmo</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('paypal')}>PayPal</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('cashapp')}>Cash App</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setPaymentMethodFilter('other')}>Other</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                <Button onClick={handleExportCSV}>
-                  <Download className="h-4 w-4 mr-2" />
-                  Export
-                </Button>
-              </div>
-            </div>
-
-            {/* Table */}
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Client</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead>Appointment</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredTransactions.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="h-24 text-center">
-                        No transactions found.
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    filteredTransactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell>
-                          {format(transaction.date, 'MMM d, yyyy')}
-                        </TableCell>
-                        <TableCell>
-                          <div className="font-medium">{transaction.clientName}</div>
-                          <div className="text-sm text-muted-foreground">{transaction.clientEmail}</div>
-                        </TableCell>
-                        <TableCell className={transaction.type === 'refund' ? 'text-red-500' : 'text-green-600'}>
-                          {transaction.type === 'refund' ? '-' : ''}${transaction.amount}
-                        </TableCell>
-                        <TableCell>
-                          {renderTransactionTypeBadge(transaction.type)}
-                        </TableCell>
-                        <TableCell>
-                          {renderPaymentMethod(transaction.paymentMethod)}
-                        </TableCell>
-                        <TableCell>
-                          {transaction.appointmentType ? (
-                            <div>
-                              <div className="text-sm">{transaction.appointmentType}</div>
-                              {transaction.appointmentId && (
-                                <div className="text-xs text-muted-foreground">ID: {transaction.appointmentId}</div>
-                              )}
-                            </div>
-                          ) : (
-                            <span className="text-muted-foreground">—</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Open menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              {transaction.receipt && (
-                                <DropdownMenuItem>
-                                  <FileText className="h-4 w-4 mr-2" />
-                                  View Receipt
-                                </DropdownMenuItem>
-                              )}
-                              <DropdownMenuItem>
-                                Edit Transaction
-                              </DropdownMenuItem>
-                              {transaction.appointmentId && (
-                                <DropdownMenuItem>
-                                  <Calendar className="h-4 w-4 mr-2" />
-                                  View Appointment
-                                </DropdownMenuItem>
-                              )}
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem>
-                                <Download className="h-4 w-4 mr-2" />
-                                Download Receipt
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-
-            <div className="text-sm text-muted-foreground">
-              Showing {filteredTransactions.length} transactions
-              {searchTerm && ` matching "${searchTerm}"`}
-              {transactionTypeFilter !== 'all' && ` of type "${transactionTypeFilter}"`}
-              {paymentMethodFilter !== 'all' && ` paid by "${paymentMethodFilter.replace('_', ' ')}"`}
-              {` from ${format(dateRange.from, 'MMM d, yyyy')} to ${format(dateRange.to, 'MMM d, yyyy')}`}
-            </div>
+      <div className="bg-[#0a0a0a] rounded-lg p-6 border border-[#ffffff]/10">
+        <div className="flex justify-between items-center mb-4">
+          <p className="text-[#ffffff]">Showing {filteredTransactions.length} transactions</p>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">
+              Export CSV
+            </Button>
+            <Button variant="outline" size="sm">
+              Print
+            </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-[#ffffff]/10 text-left text-[#ffffff]/70">
+                <th className="px-4 py-3 font-medium">Date</th>
+                <th className="px-4 py-3 font-medium">Client</th>
+                <th className="px-4 py-3 font-medium">Amount</th>
+                <th className="px-4 py-3 font-medium">Type</th>
+                <th className="px-4 py-3 font-medium">Payment Method</th>
+                <th className="px-4 py-3 font-medium">Appointment</th>
+                <th className="px-4 py-3 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredTransactions.length > 0 ? (
+                filteredTransactions.map((transaction) => (
+                  <tr
+                    key={transaction.id}
+                    className="border-b border-[#ffffff]/10 hover:bg-[#ffffff]/5 transition-colors"
+                  >
+                    <td className="px-4 py-3 text-[#ffffff]">
+                      {format(transaction.date, 'MMM dd, yyyy')}
+                    </td>
+                    <td className="px-4 py-3 text-[#ffffff]">
+                      <div>{transaction.clientName}</div>
+                      <div className="text-sm text-[#ffffff]/70">{transaction.clientEmail}</div>
+                    </td>
+                    <td className="px-4 py-3 text-[#ffffff]">
+                      <span className={transaction.type === 'refund' ? 'text-red-500' : 'text-green-500'}>
+                        ${transaction.amount.toFixed(2)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${
+                        transaction.type === 'deposit' ? 'bg-blue-500/20 text-blue-500' :
+                        transaction.type === 'payment' ? 'bg-green-500/20 text-green-500' :
+                        'bg-red-500/20 text-red-500'
+                      }`}>
+                        {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-[#ffffff] capitalize">
+                      {transaction.paymentMethod.replace('_', ' ')}
+                    </td>
+                    <td className="px-4 py-3 text-[#ffffff]">
+                      {transaction.appointmentType || '-'}
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex gap-2">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#ffffff]"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#ffffff]"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={7} className="px-4 py-6 text-center text-[#ffffff]/70">
+                    No transactions found for the selected date range
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

@@ -7,21 +7,15 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url)
     const dateParam = searchParams.get('date')
 
-    if (!dateParam) {
-      return NextResponse.json(
-        { message: 'Date parameter is required' },
-        { status: 400 }
-      )
-    }
+if (!dateParam) {
+  return NextResponse.json({ message: 'Date parameter is required' }, { status: 400 })
+}
 
-    const date = new Date(dateParam)
+const date = new Date(dateParam)
 
     // Check if the date is valid
     if (isNaN(date.getTime())) {
-      return NextResponse.json(
-        { message: 'Invalid date format' },
-        { status: 400 }
-      )
+      return NextResponse.json({ message: 'Invalid date format' }, { status: 400 })
     }
 
     // Get all bookings for the selected date
@@ -42,7 +36,7 @@ export async function GET(req: Request) {
     // Determine which time slots are already booked
     const bookedSlots = new Set<string>()
 
-    bookings.forEach(booking => {
+    bookings.forEach((booking) => {
       // Use the correct field names from your schema
       const startTime = booking.time // If this doesn't exist, you need to update your schema
       const durationInMinutes = booking.duration
@@ -55,12 +49,15 @@ export async function GET(req: Request) {
 
       // Mark all slots occupied by this booking
       for (let i = 0; i < slotsOccupied && startIndex + i < TIME_SLOTS.length; i++) {
-        bookedSlots.add(TIME_SLOTS[startIndex + i])
+        const slot = TIME_SLOTS[startIndex + i];
+        if (slot) {
+          bookedSlots.add(slot);
+        }
       }
     })
 
     // Filter out booked slots
-    const availableSlots = TIME_SLOTS.filter(slot => !bookedSlots.has(slot))
+    const availableSlots = TIME_SLOTS.filter((slot) => !bookedSlots.has(slot))
 
     // Apply weekend restrictions if needed
     const isWeekend = date.getDay() === 0 || date.getDay() === 6
@@ -69,8 +66,9 @@ export async function GET(req: Request) {
 
     if (isWeekend) {
       // Weekend has limited slots (12pm-5pm)
-      finalAvailableSlots = availableSlots.filter(slot => {
-        const hour = parseInt(slot.split(':')[0])
+      finalAvailableSlots = availableSlots.filter((slot) => {
+        if (!slot) return false;
+        const hour = parseInt(slot.split(':')[0] ?? '0')
         return hour >= 12 && hour < 17
       })
     }
@@ -78,9 +76,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ availableSlots: finalAvailableSlots })
   } catch (error) {
     console.error('Error fetching availability:', error)
-    return NextResponse.json(
-      { message: 'Failed to fetch availability' },
-      { status: 500 }
-    )
+    return NextResponse.json({ message: 'Failed to fetch availability' }, { status: 500 })
   }
 }

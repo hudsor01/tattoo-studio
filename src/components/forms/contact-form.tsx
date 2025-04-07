@@ -11,28 +11,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  FormDescription
+  FormDescription,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import {
-  Loader2,
-  FileImage,
-  X,
-  UploadCloud,
-  AlertCircle,
-  CheckCircle
-} from 'lucide-react'
+import { Loader2, FileImage, X, UploadCloud, AlertCircle, CheckCircle } from 'lucide-react'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from '@/components/ui/select'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { toast } from "@/components/ui/use-toast"
+import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 
 // Define the form schema with file upload and inquiry type
@@ -47,7 +40,7 @@ const formSchema = z.object({
 
 // Define the ContactForm props type - renamed to avoid Server Action naming pattern
 export interface ContactFormProps {
-  onFormSubmit: () => void;
+  onFormSubmit: () => void
 }
 
 export function ContactForm({ onFormSubmit }: ContactFormProps) {
@@ -76,7 +69,7 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
     const newFiles = Array.from(files)
 
     // Validate file types (only images)
-    const invalidFiles = newFiles.filter(file => !file.type.includes('image/'))
+    const invalidFiles = newFiles.filter((file) => !file.type.includes('image/'))
     if (invalidFiles.length > 0) {
       toast({
         title: 'Invalid file type',
@@ -87,7 +80,7 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
     }
 
     // Validate file size (max 5MB each)
-    const oversizedFiles = newFiles.filter(file => file.size > 5 * 1024 * 1024)
+    const oversizedFiles = newFiles.filter((file) => file.size > 5 * 1024 * 1024)
     if (oversizedFiles.length > 0) {
       toast({
         title: 'File too large',
@@ -134,17 +127,17 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
       }
 
       // In a real implementation, you would send this formData to your API
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
       console.log('Form submitted:', {
         ...values,
-        referenceImages: values.referenceImages ? `${values.referenceImages.length} files` : 'none'
+        referenceImages: values.referenceImages ? `${values.referenceImages.length} files` : 'none',
       })
 
       toast({
-        title: "Message sent successfully!",
+        title: 'Message sent successfully!',
         description: "We'll get back to you soon.",
-        variant: "default",
+        variant: 'default',
       })
 
       // Reset form
@@ -160,212 +153,222 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {formError && (
-          <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{formError}</AlertDescription>
-          </Alert>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-tattoo-white">Name</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your name"
-                    {...field}
-                    className="bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-tattoo-white">Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your email"
-                    type="email"
-                    {...field}
-                    className="bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-tattoo-white">Phone (Optional)</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Your phone number"
-                    type="tel"
-                    {...field}
-                    className="bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="inquiryType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-tattoo-white">Inquiry Type</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white">
-                      <SelectValue placeholder="Select inquiry type" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="bg-tattoo-black border-tattoo-white/10">
-                    <SelectItem value="custom-tattoo" className="text-tattoo-white">Custom Tattoo Design</SelectItem>
-                    <SelectItem value="coverup" className="text-tattoo-white">Cover-up Work</SelectItem>
-                    <SelectItem value="consultation" className="text-tattoo-white">Consultation</SelectItem>
-                    <SelectItem value="pricing" className="text-tattoo-white">Pricing Information</SelectItem>
-                    <SelectItem value="other" className="text-tattoo-white">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <FormField
-          control={form.control}
-          name="message"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-tattoo-white">Message</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell me about your tattoo idea"
-                  {...field}
-                  className="bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40 min-h-32"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+    <div className="@container">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-6'>
+          {formError && (
+            <Alert variant='destructive'>
+              <AlertCircle className='h-4 w-4' />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{formError}</AlertDescription>
+            </Alert>
           )}
-        />
 
-        {/* File Upload */}
-        <FormField
-          control={form.control}
-          name="referenceImages"
-          render={({ field: { onChange, value, ...field } }) => (
-            <FormItem>
-              <FormLabel className="text-tattoo-white">Reference Images (Optional)</FormLabel>
-              <FormDescription className="text-tattoo-white/60">
-                Upload photos of tattoo designs or placements you like (max 5MB each)
-              </FormDescription>
-
-              <div className="mt-2">
-                <div className="flex items-center justify-center w-full">
-                  <label
-                    htmlFor="fileUpload"
-                    className={cn(
-                      "flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-tattoo-white/20",
-                      "rounded-lg cursor-pointer bg-tattoo-black/30 hover:bg-tattoo-black/50 transition-colors",
-                      "focus-within:border-tattoo-red/50"
-                    )}
-                  >
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <UploadCloud className="w-8 h-8 mb-2 text-tattoo-red/70" />
-                      <p className="mb-2 text-sm text-tattoo-white/70">
-                        <span className="font-semibold">Click to upload</span> or drag and drop
-                      </p>
-                      <p className="text-xs text-tattoo-white/50">
-                        PNG, JPG, GIF up to 5MB
-                      </p>
-                    </div>
-                    <input
-                      id="fileUpload"
-                      type="file"
-                      className="hidden"
-                      accept="image/*"
-                      multiple
-                      onChange={handleFileChange}
+          <div className='grid grid-cols-1 @sm:grid-cols-2 gap-4 sm:gap-6'>
+            <FormField
+              control={form.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-tattoo-white'>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Your name'
                       {...field}
+                      className='bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40'
                     />
-                  </label>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-tattoo-white'>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Your email'
+                      type='email'
+                      {...field}
+                      className='bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className='grid grid-cols-1 @sm:grid-cols-2 gap-4 sm:gap-6'>
+            <FormField
+              control={form.control}
+              name='phone'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-tattoo-white'>Phone (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='Your phone number'
+                      type='tel'
+                      {...field}
+                      className='bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='inquiryType'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-tattoo-white'>Inquiry Type</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className='bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white'>
+                        <SelectValue placeholder='Select inquiry type' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className='bg-tattoo-black border-tattoo-white/10'>
+                      <SelectItem value='custom-tattoo' className='text-tattoo-white'>
+                        Custom Tattoo Design
+                      </SelectItem>
+                      <SelectItem value='coverup' className='text-tattoo-white'>
+                        Cover-up Work
+                      </SelectItem>
+                      <SelectItem value='consultation' className='text-tattoo-white'>
+                        Consultation
+                      </SelectItem>
+                      <SelectItem value='pricing' className='text-tattoo-white'>
+                        Pricing Information
+                      </SelectItem>
+                      <SelectItem value='other' className='text-tattoo-white'>
+                        Other
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <FormField
+            control={form.control}
+            name='message'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className='text-tattoo-white'>Message</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder='Tell me about your tattoo idea'
+                    {...field}
+                    className='bg-tattoo-black/50 border-tattoo-white/10 text-tattoo-white placeholder:text-tattoo-white/40 min-h-[120px] @md:min-h-[160px]'
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* File Upload */}
+          <FormField
+            control={form.control}
+            name='referenceImages'
+            render={({ field: { onChange, value, ...field } }) => (
+              <FormItem>
+                <FormLabel className='text-tattoo-white'>Reference Images (Optional)</FormLabel>
+                <FormDescription className='text-tattoo-white/60 text-sm'>
+                  Upload photos of tattoo designs or placements you like (max 5MB each)
+                </FormDescription>
+
+                <div className='mt-2'>
+                  <div className='flex items-center justify-center w-full'>
+                    <label
+                      htmlFor='fileUpload'
+                      className={cn(
+                        'flex flex-col items-center justify-center w-full h-24 sm:h-32 border-2 border-dashed border-tattoo-white/20',
+                        'rounded-lg cursor-pointer bg-tattoo-black/30 hover:bg-tattoo-black/50 transition-colors',
+                        'focus-within:border-tattoo-red/50'
+                      )}
+                    >
+                      <div className='flex flex-col items-center justify-center pt-4 pb-5 sm:pt-5 sm:pb-6'>
+                        <UploadCloud className='w-6 h-6 sm:w-8 sm:h-8 mb-2 text-tattoo-red/70' />
+                        <p className='mb-1 sm:mb-2 text-xs sm:text-sm text-tattoo-white/70'>
+                          <span className='font-semibold'>Click to upload</span> or drag and drop
+                        </p>
+                        <p className='text-xs text-tattoo-white/50'>PNG, JPG, GIF up to 5MB</p>
+                      </div>
+                      <input
+                        id='fileUpload'
+                        type='file'
+                        className='hidden'
+                        accept='image/*'
+                        multiple
+                        onChange={handleFileChange}
+                        {...field}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Preview uploaded files */}
+                  {uploadedFiles.length > 0 && (
+                    <div className='mt-4 space-y-2'>
+                      <p className='text-sm font-medium text-tattoo-white'>Uploaded Images:</p>
+                      <div className='flex flex-wrap gap-2 sm:gap-3'>
+                        {uploadedFiles.map((file, index) => (
+                          <div key={index} className='relative group'>
+                            <div className='w-16 h-16 sm:w-20 sm:h-20 rounded-md bg-tattoo-black/70 border border-tattoo-white/20 overflow-hidden'>
+                              <div className='absolute inset-0 flex items-center justify-center'>
+                                <FileImage className='w-5 h-5 sm:w-6 sm:h-6 text-tattoo-white/50' />
+                              </div>
+                              <img
+                                src={URL.createObjectURL(file)}
+                                alt={`Preview ${index}`}
+                                className='w-full h-full object-cover'
+                              />
+                            </div>
+                            <button
+                              type='button'
+                              onClick={() => removeFile(index)}
+                              className='absolute -top-2 -right-2 bg-tattoo-red text-tattoo-white rounded-full p-0.5 opacity-90 hover:opacity-100 transition-opacity'
+                            >
+                              <X className='w-3 h-3 sm:w-4 sm:h-4' />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Preview uploaded files */}
-                {uploadedFiles.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    <p className="text-sm font-medium text-tattoo-white">Uploaded Images:</p>
-                    <div className="flex flex-wrap gap-3">
-                      {uploadedFiles.map((file, index) => (
-                        <div key={index} className="relative group">
-                          <div className="w-20 h-20 rounded-md bg-tattoo-black/70 border border-tattoo-white/20 overflow-hidden">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <FileImage className="w-6 h-6 text-tattoo-white/50" />
-                            </div>
-                            <img
-                              src={URL.createObjectURL(file)}
-                              alt={`Preview ${index}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(index)}
-                            className="absolute -top-2 -right-2 bg-tattoo-red text-white rounded-full p-0.5 opacity-90 hover:opacity-100 transition-opacity"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-tattoo-red hover:bg-tattoo-red/90 text-white"
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sending Message...
-            </>
-          ) : (
-            'Send Message'
-          )}
-        </Button>
-      </form>
-    </Form>
+          <Button
+            type='submit'
+            disabled={isSubmitting}
+            className='w-full bg-tattoo-red hover:bg-tattoo-red-dark text-tattoo-white mt-2 sm:mt-4'
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                Sending Message...
+              </>
+            ) : (
+              'Send Message'
+            )}
+          </Button>
+        </form>
+      </Form>
+    </div>
   )
 }

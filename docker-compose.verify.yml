@@ -1,0 +1,8 @@
+services:
+  verify:
+    build:
+      context: .
+      dockerfile: Dockerfile.ci
+    volumes:
+      - .:/app
+    entrypoint: ["npm", "run"]

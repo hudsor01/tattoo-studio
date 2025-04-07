@@ -14,7 +14,7 @@ async function sendNotificationEmails(validatedData: any, studioEmail: string) {
   try {
     // Notification to studio
     await resend.emails.send({
-      from: "Tattoo Studio <notifications@tattoo-studio.com>",
+      from: 'Tattoo Studio <notifications@tattoo-studio.com>',
       to: [studioEmail],
       subject: `New Appointment Request from ${validatedData.clientName}`,
       text: `
@@ -27,14 +27,14 @@ Tattoo Type: ${validatedData.tattooType}
 Body Part: ${validatedData.bodyPart}
 Description: ${validatedData.designDescription}
 Reference Images: ${validatedData.referenceImages?.length || 0} image(s) uploaded
-      `
+      `,
     })
 
     // Confirmation to client
     await resend.emails.send({
-      from: "Tattoo Studio <bookings@tattoo-studio.com>",
+      from: 'Tattoo Studio <bookings@tattoo-studio.com>',
       to: [validatedData.clientEmail],
-      subject: "Your Tattoo Studio Appointment Request",
+      subject: 'Your Tattoo Studio Appointment Request',
       text: `
 Hi ${validatedData.clientName},
 
@@ -50,7 +50,7 @@ We look forward to working with you!
 
 Best regards,
 The Tattoo Studio Team
-      `
+      `,
     })
   } catch (error) {
     console.error('Failed to send notification emails:', error)
@@ -66,9 +66,9 @@ export async function POST(req: NextRequest) {
   const isAllowed = await checkRateLimit(ip, {
     limit: 3,
     duration: 60 * 60 * 24, // 24 hours
-    identifier: 'booking'
+    identifier: 'booking',
   })
-  
+
   if (!isAllowed) {
     return NextResponse.json(
       { error: 'Too many booking requests. Please try again tomorrow.' },
@@ -100,7 +100,10 @@ export async function POST(req: NextRequest) {
     })
 
     // Send notification emails
-    await sendNotificationEmails(validatedData, process.env.STUDIO_EMAIL || 'studio@tattoo-studio.com')
+    await sendNotificationEmails(
+      validatedData,
+      process.env.STUDIO_EMAIL || 'studio@tattoo-studio.com'
+    )
 
     return NextResponse.json({
       success: true,
@@ -117,8 +120,8 @@ export async function POST(req: NextRequest) {
         endpoint: '/api/booking',
         ip,
         // Include partial data that doesn't contain sensitive information
-        partialData: req.headers.get('content-type')
-      }
+        partialData: req.headers.get('content-type'),
+      },
     })
 
     if (error.name === 'ZodError') {
