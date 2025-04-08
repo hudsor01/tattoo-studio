@@ -1,6 +1,12 @@
 import React from 'react';
-import { Masonry } from 'masonic';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+
+// Import the client component with dynamic import to avoid SSR issues
+const MasonryGallery = dynamic(
+  () => import('@/components/gallery/masonry-gallery'),
+  { ssr: false }
+);
 
 const images = [
   '5082639F-3D97-45F8-8BFE-D28EBEE539DF.jpg',
@@ -55,10 +61,9 @@ export default function GalleryPage() {
           </p>
         </div>
 
-        <Masonry
+        <MasonryGallery
           items={galleryItems}
-          columnGutter={16}
-          columnWidth={300}
+          columnCount={3}
           overscanBy={2}
           render={MasonryCard}
         />
