@@ -6,8 +6,9 @@ WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 
-# Install dependencies (postinstall will run prisma generate)
-RUN npm install
+# Install dependencies with cache optimization
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
 
 # Copy the rest of the source code
 COPY . .

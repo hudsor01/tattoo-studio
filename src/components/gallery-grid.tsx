@@ -254,7 +254,7 @@ export function GalleryGrid() {
               columnCount={width ? getColumns(width) : 3}
               columnGutter={16}
               rowGutter={16}
-              itemKey={item => item.src}
+              itemKey={(data: unknown, index: number) => (data as GalleryImage).src}
               render={({ data, index }) => (
                 <MasonryCard data={data as GalleryImage} index={index} />
               )}

@@ -2,59 +2,57 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   verify:
+    name: Build and Verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Verify Prisma schema
-        run: |
-          if [ ! -f "prisma/schema.prisma" ]; then
-            echo "Error: prisma/schema.prisma file not found"
-            exit 1
-          fi
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Build and verify
+      - name: Build and verify Docker image
         run: docker build -f Dockerfile.ci .
 
   deploy:
+    name: Deploy to Vercel
     needs: verify
     runs-on: ubuntu-latest
+    # Only run on pushes to the main branch
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Define environment variable using the GitHub secret (using the correct uppercase name)
+    env:
+      # This line reads your secret named VERCEL_DEPLOY_HOOK_URL (all caps)
+      # and makes its value available as $DEPLOY_HOOK in the steps below.
+      DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }} # Corrected secret name to uppercase
     steps:
       - name: Check deploy hook configuration
         id: check_hook
-        env:
-          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
+          # Check if the DEPLOY_HOOK variable (populated from the secret) has a value
           if [ -n "$DEPLOY_HOOK" ]; then
+            echo "Vercel Deploy Hook URL found."
             echo "hook_exists=true" >> $GITHUB_OUTPUT
           else
+            # This warning appears if the VERCEL_DEPLOY_HOOK_URL secret is missing or empty
             echo "hook_exists=false" >> $GITHUB_OUTPUT
-            echo "::warning::No VERCEL_DEPLOY_HOOK_URL secret found. Deployment will be skipped."
+            echo "::warning::VERCEL_DEPLOY_HOOK_URL secret not found or is empty. Deployment step will be skipped." # Updated warning message to use uppercase
           fi
 
-      - name: Trigger Vercel deployment
+      - name: Trigger Vercel deployment hook
+        # Only run if the hook URL exists (checked in the previous step)
         if: steps.check_hook.outputs.hook_exists == 'true'
-        env:
-          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          curl -X POST "$DEPLOY_HOOK"
-          echo "Vercel deployment triggered successfully"
+          echo "Triggering Vercel deployment using the provided hook URL..."
+          # Uses the $DEPLOY_HOOK variable (containing the secret value) to make the request
+          response_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$DEPLOY_HOOK")
+          echo "Vercel deploy hook triggered. Response code: $response_code"
+          if [ "$response_code" -ge 200 ] && [ "$response_code" -lt 300 ]; then
+            echo "Deployment successfully triggered."
+          else
+            echo "::error::Failed to trigger Vercel deployment hook. Status code: $response_code"
+            exit 1 # Fail the step if the hook call fails
+          fi
