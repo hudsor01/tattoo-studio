@@ -15,12 +15,15 @@ WORKDIR /app
 # Copy installed node_modules from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 
-# Copy source code (including prisma directory)
+# Copy prisma directory first to ensure schema is available
+COPY prisma ./prisma/
+
+# Copy remaining source code
 COPY . .
 
 # Verify prisma schema exists before running commands that depend on it
 RUN ls -la prisma/
-RUN cat prisma/schema.prisma || echo "Schema file not found"
+RUN cat prisma/schema.prisma
 
 # Explicitly run prisma generate with schema path before other build steps
 RUN npx prisma generate --schema=./prisma/schema.prisma
