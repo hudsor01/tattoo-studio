@@ -34,6 +34,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        {/* Add ResizeObserver polyfill for server rendering */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && !window.ResizeObserver) {
+                window.ResizeObserver = function(callback) {
+                  this.observe = function() {};
+                  this.unobserve = function() {};
+                  this.disconnect = function() {};
+                };
+              }
+            `
+          }}
+        />
       </head>
       <body
         className={cn(
