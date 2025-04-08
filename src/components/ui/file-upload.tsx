@@ -8,6 +8,7 @@ import { Upload, X, Loader2 } from 'lucide-react'
 import { useUploadThing } from '@/lib/uploadthing'
 import { cn } from '@/lib/utils'
 import { Button } from './button'
+import Image from 'next/image'
 
 interface FileUploadProps {
   endpoint: 'tattooDesigns' | 'profilePhotos'
@@ -113,9 +114,11 @@ export function FileUpload({
               key={url}
               className='relative group aspect-square rounded-lg overflow-hidden border'
             >
-              <img
+              <Image
                 src={url}
                 alt={`Uploaded file ${index + 1}`}
+                width={500}
+                height={300}
                 className='w-full h-full object-cover transition-all group-hover:opacity-70'
               />
               <Button

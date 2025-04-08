@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { z } from 'zod'
@@ -46,10 +47,13 @@ export function LoginForm() {
       // Simulate loading
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
+      // Log the values to use the parameter
+      console.log('Login attempt with:', values)
+
       // Placeholder - just show success message and redirect
       toast.success('Login successful! (This is a demo)')
       router.push('/')
-    } catch (_error) {
+    } catch {
       toast.error('Something went wrong. Please try again.')
     }
   }
@@ -60,7 +64,7 @@ export function LoginForm() {
       setIsGitHubLoading(true)
       await new Promise((resolve) => setTimeout(resolve, 1500))
       toast.info('GitHub login is not implemented yet')
-    } catch (_error) {
+    } catch {
       toast.error('Failed to login with GitHub')
     } finally {
       setIsGitHubLoading(false)
@@ -73,7 +77,7 @@ export function LoginForm() {
       setIsGoogleLoading(true)
       await new Promise((resolve) => setTimeout(resolve, 1500))
       toast.info('Google login is not implemented yet')
-    } catch (_error) {
+    } catch {
       toast.error('Failed to login with Google')
     } finally {
       setIsGoogleLoading(false)

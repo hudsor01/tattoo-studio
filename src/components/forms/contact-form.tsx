@@ -28,6 +28,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
 // Define the form schema with file upload and inquiry type
 const formSchema = z.object({
@@ -334,9 +335,11 @@ export function ContactForm({ onFormSubmit }: ContactFormProps) {
                               <div className='absolute inset-0 flex items-center justify-center'>
                                 <FileImage className='w-5 h-5 sm:w-6 sm:h-6 text-tattoo-white/50' />
                               </div>
-                              <img
+                              <Image
                                 src={URL.createObjectURL(file)}
                                 alt={`Preview ${index}`}
+                                width={500} // Set appropriate width
+                                height={300} // Set appropriate height
                                 className='w-full h-full object-cover'
                               />
                             </div>

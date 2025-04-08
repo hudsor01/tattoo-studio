@@ -75,7 +75,7 @@ function getDefaultTimeSlots(date: Date): string[] {
   if (isWeekend) {
     // Weekend has limited slots (12pm-5pm)
     return allTimeSlots.filter((slot) => {
-      const hour = parseInt(slot.split(':')[0])
+      const hour = parseInt(slot.split(':')[0] ?? '0')
       return hour >= 12 && hour < 17
     })
   }

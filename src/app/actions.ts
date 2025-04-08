@@ -1,107 +1,83 @@
-'use server'
+'use server';
 
-import { z } from 'zod'
-import { saveContactSubmission, getAllComments, getNeonClient } from '@/lib/neon'
+import { revalidatePath } from 'next/cache';
+import { addComment, deleteComment } from '@/lib/neon';
+import { CommentSchema } from '@/lib/validators/comment';
 
-const contactSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().optional(),
-  message: z.string().min(10, 'Message must be at least 10 characters'),
-  files: z.string().transform((val) => {
-    try {
-      return JSON.parse(val) as string[]
-    } catch {
-      return [] as string[]
-    }
-  }),
-})
-
-export async function submitContactForm(prevState: unknown, formData: FormData) {
-  // Validate form data
-  const validatedFields = contactSchema.safeParse({
-    name: formData.get('name'),
-    email: formData.get('email'),
-    phone: formData.get('phone'),
-    message: formData.get('message'),
-    files: formData.get('files'),
-  })
-
-  // Return errors if validation fails
-  if (!validatedFields.success) {
-    return {
-      success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
-    }
-  }
-
-  // Process the form data and store in database
+/**
+ * Server action to add a new comment
+ */
+export async function createComment(formData: FormData) {
   try {
-    // Save submission to the database using our utility function
-    await saveContactSubmission({
-      name: validatedFields.data.name,
-      email: validatedFields.data.email,
-      phone: validatedFields.data.phone,
-      message: validatedFields.data.message,
-      files: validatedFields.data.files,
-    });
+    // Extract and validate the comment
+    const comment = formData.get('comment');
 
-    // Return success
+    // Validate with Zod
+    const result = CommentSchema.safeParse({ comment });
+
+    if (!result.success) {
+      return {
+        success: false,
+        error: result.error.flatten().fieldErrors.comment?.[0] || 'Invalid comment',
+      };
+    }
+
+    // Add the comment to the database
+    const newComment = await addComment(result.data.comment);
+
+    // Revalidate the comments page to show the new comment
+    revalidatePath('/comments');
+
     return {
       success: true,
-      errors: {},
-    }
+      comment: newComment,
+    };
   } catch (error) {
-    console.error('Error submitting form:', error)
+    console.error('Error creating comment:', error);
     return {
       success: false,
-      errors: {
-        form: 'Failed to submit the form. Please try again later.',
-      },
+      error: error instanceof Error ? error.message : 'Failed to create comment',
+    };
+  }
+}
+
+/**
+ * Server action to delete a comment
+ */
+export async function removeComment(formData: FormData) {
+  try {
+    const id = formData.get('id');
+
+    if (!id || typeof id !== 'string') {
+      return {
+        success: false,
+        error: 'Invalid comment ID',
+      };
     }
-  }
-}
 
-// Generic function to get data from any table
-export async function getData(tableName = 'posts') {
-  // Use the getNeonClient utility to get a connection
-  const sql = getNeonClient();
+    const commentId = parseInt(id, 10);
 
-  // Dynamic query based on table name using SQL template parameter
-  try {
-    const data = await sql`SELECT * FROM ${sql(tableName)}`;
-    return data;
+    if (isNaN(commentId)) {
+      return {
+        success: false,
+        error: 'Comment ID must be a number',
+      };
+    }
+
+    // Delete the comment
+    await deleteComment(commentId);
+
+    // Revalidate the comments page
+    revalidatePath('/comments');
+
+    return {
+      success: true,
+    };
   } catch (error) {
-    console.error(`Error fetching data from ${tableName}:`, error);
-    return [];
-  }
-}
-
-// Function to get contact submissions
-export async function getContactSubmissions() {
-  try {
-    // Use the utility function from our neon.ts file
-    return await getAllComments();
-  } catch (error) {
-    console.error('Error fetching contact submissions:', error);
-    return [];
-  }
-}
-
-// Function to add a test post
-export async function addTestPost(title: string, content: string) {
-  const sql = getNeonClient();
-
-  try {
-    const result = await sql`
-      INSERT INTO posts (title, content)
-      VALUES (${title}, ${content})
-      RETURNING id, title, content, created_at
-    `;
-
-    return result[0];
-  } catch (error) {
-    console.error('Error adding test post:', error);
-    throw error;
+    console.error('Error deleting comment:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to delete comment',
+    };
   }
 }

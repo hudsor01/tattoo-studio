@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/components/theme/theme-provider'
 import { cn } from '@/lib/utils'
 import { Navbar } from '@/components/layout/navbar'
 import { Toaster } from '@/components/ui/toaster'
-import { Analytics } from '@vercel/analytics/next'
+// import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 const pacifico = Pacifico({
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           {children}
           <Toaster />
-          <Analytics />
+          {/* <Analytics /> */}
         </ThemeProvider>
       </body>
     </html>

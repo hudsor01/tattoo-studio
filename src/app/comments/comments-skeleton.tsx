@@ -1,7 +1,10 @@
+'use client';
+
+import React from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 
-export function CommentsSkeleton() {
+const CommentsSkeleton = () => {
   // Create an array of 5 items to represent loading comments
   return (
     <div className="space-y-4">
@@ -22,3 +25,5 @@ export function CommentsSkeleton() {
     </div>
   );
 }
+
+export default CommentsSkeleton;

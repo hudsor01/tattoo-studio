@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
@@ -182,7 +183,7 @@ export default function HomePage() {
               </span>
             </h2>
             <p className='tattoo-paragraph mx-auto max-w-2xl'>
-              From concept to completion, here's how we'll work together to create your perfect
+              From concept to completion, here is how we will work together to create your perfect
               tattoo
             </p>
           </div>
@@ -192,7 +193,7 @@ export default function HomePage() {
               <div className='mb-3 text-3xl font-bold text-tattoo-red sm:mb-4 sm:text-4xl'>01</div>
               <h3 className='mb-2 text-lg font-bold text-white sm:mb-3 sm:text-xl'>Consultation</h3>
               <p className='text-sm text-tattoo-white/80 sm:text-base'>
-                We'll discuss your ideas, placement, size, and design elements to create a concept
+                We will discuss your ideas, placement, size, and design elements to create a concept
                 that perfectly matches your vision.
               </p>
             </div>
@@ -201,7 +202,7 @@ export default function HomePage() {
               <div className='mb-3 text-3xl font-bold text-tattoo-blue sm:mb-4 sm:text-4xl'>02</div>
               <h3 className='mb-2 text-lg font-bold text-white sm:mb-3 sm:text-xl'>Design</h3>
               <p className='text-sm text-tattoo-white/80 sm:text-base'>
-                I'll create a custom design based on our consultation, with revisions until you're
+                I will create a custom design based on our consultation, with revisions until you are
                 completely satisfied with the artwork.
               </p>
             </div>
@@ -210,7 +211,7 @@ export default function HomePage() {
               <div className='mb-3 text-3xl font-bold text-tattoo-green sm:mb-4 sm:text-4xl'>03</div>
               <h3 className='mb-2 text-lg font-bold text-white sm:mb-3 sm:text-xl'>Tattooing</h3>
               <p className='text-sm text-tattoo-white/80 sm:text-base'>
-                Using premium equipment and inks, I'll bring your design to life with meticulous
+                Using premium equipment and inks, I will bring your design to life with meticulous
                 attention to detail and your comfort.
               </p>
             </div>
@@ -270,9 +271,9 @@ export default function HomePage() {
                     </div>
                     <Separator className="bg-zinc-800" />
                     <blockquote className="italic text-tattoo-white/80 text-sm sm:text-base pt-2">
-                      "Fernando's attention to detail is incredible. He took my concept and transformed it
+                      &quot;Fernando&apos;s attention to detail is incredible. He took my concept and transformed it
                       into something better than I could have imagined. The entire process was comfortable
-                      and professional."
+                      and professional.&quot;
                     </blockquote>
                   </div>
                 </CardContent>
@@ -310,9 +311,9 @@ export default function HomePage() {
                     </div>
                     <Separator className="bg-zinc-800" />
                     <blockquote className="italic text-tattoo-white/80 text-sm sm:text-base pt-2">
-                      "I was nervous about getting such a large piece, but Fernando made me feel at ease
-                      throughout the entire process. His black and grey work is unmatched, and I couldn't
-                      be happier with my tattoo."
+                      &quot;I was nervous about getting such a large piece, but Fernando made me feel at ease
+                      throughout the entire process. His black and grey work is unmatched, and I could not
+                      be happier with my tattoo.&quot;
                     </blockquote>
                   </div>
                 </CardContent>
@@ -351,8 +352,8 @@ export default function HomePage() {
                     </div>
                     <Separator className="bg-zinc-800" />
                     <blockquote className="italic text-tattoo-white/80 text-sm sm:text-base pt-2">
-                      "The detail in my chest piece is mind-blowing. Fernando has a unique ability to bring ideas to life.
-                      Six months later and I'm still getting compliments every time I show it off."
+                      &quot;The detail in my chest piece is mind-blowing. Fernando has a unique ability to bring ideas to life.
+                      Six months later and I am still getting compliments every time I show it off.&quot;
                     </blockquote>
                   </div>
                 </CardContent>
@@ -399,7 +400,7 @@ export default function HomePage() {
                 </AccordionTrigger>
                 <AccordionContent className="text-tattoo-white/80 pb-4 pt-1">
                   Pricing depends on size, detail, and placement. Small pieces start at $150, while
-                  larger custom work is priced by the hour at $180/hr. After our consultation, I'll
+                  larger custom work is priced by the hour at $180/hr. After our consultation, I will
                   provide you with a detailed quote before we proceed.
                 </AccordionContent>
               </AccordionItem>
@@ -420,8 +421,8 @@ export default function HomePage() {
                   Do you do cover-ups?
                 </AccordionTrigger>
                 <AccordionContent className="text-tattoo-white/80 pb-4 pt-1">
-                  Yes, I specialize in transforming old or unwanted tattoos into new designs you'll
-                  love. Cover-ups require a consultation to assess the existing tattoo. I'll evaluate factors
+                  Yes, I specialize in transforming old or unwanted tattoos into new designs you will
+                  love. Cover-ups require a consultation to assess the existing tattoo. I will evaluate factors
                   like ink density, color, and age to create the best possible cover-up solution.
                 </AccordionContent>
               </AccordionItem>
@@ -442,8 +443,8 @@ export default function HomePage() {
                   What aftercare is required?
                 </AccordionTrigger>
                 <AccordionContent className="text-tattoo-white/80 pb-4 pt-1">
-                  I'll provide detailed aftercare instructions tailored to your specific tattoo. Generally,
-                  you'll need to keep the area clean, apply recommended ointment, avoid direct sunlight,
+                  I will provide detailed aftercare instructions tailored to your specific tattoo. Generally,
+                  you will need to keep the area clean, apply recommended ointment, avoid direct sunlight,
                   and stay away from pools, hot tubs, and saunas during the healing process (2-3 weeks).
                 </AccordionContent>
               </AccordionItem>

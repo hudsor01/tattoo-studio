@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
-import { CommentsSkeleton } from './components/comments-skeleton';
+import CommentsSkeleton from './comments-skeleton';
 
 export default function Loading() {
   return (

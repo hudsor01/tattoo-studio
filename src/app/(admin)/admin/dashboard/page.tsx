@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import {
   CalendarIcon,
@@ -200,7 +200,7 @@ export default function DashboardPage() {
             <CardDescription className="text-[#ffffff]/70">You have {recentAppointments.length} upcoming appointments</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="today" className="w-full">
+            <Tabs value={tabView} onValueChange={setTabView} className="w-full">
               <TabsList className="grid w-full grid-cols-3 bg-[#ffffff]/5">
                 <TabsTrigger value="today" className="data-[state=active]:bg-[#d62828] data-[state=active]:text-[#ffffff]">Today</TabsTrigger>
                 <TabsTrigger value="week" className="data-[state=active]:bg-[#d62828] data-[state=active]:text-[#ffffff]">This Week</TabsTrigger>
@@ -372,7 +372,7 @@ export default function DashboardPage() {
                     <span className="text-[#ffffff] text-sm">Morgan Campbell</span>
                   </div>
                   <div className="text-[#ffffff]/70 text-sm mt-2 line-clamp-2">
-                    I'm interested in getting a full sleeve with a mix of geometric and floral elements. I'd like to schedule a consultation...
+                    I&apos;m interested in getting a full sleeve with a mix of geometric and floral elements. I&apos;d like to schedule a consultation...
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
@@ -391,7 +391,7 @@ export default function DashboardPage() {
                     <span className="text-[#ffffff] text-sm">Jamie Rodriguez</span>
                   </div>
                   <div className="text-[#ffffff]/70 text-sm mt-2 line-clamp-2">
-                    I'm looking to get a small tattoo on my wrist, probably around 2 inches. It would be a simple line drawing of a wave...
+                    I&apos;m looking to get a small tattoo on my wrist, probably around 2 inches. It would be a simple line drawing of a wave...
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">
@@ -410,7 +410,7 @@ export default function DashboardPage() {
                     <span className="text-[#ffffff] text-sm">Taylor Washington</span>
                   </div>
                   <div className="text-[#ffffff]/70 text-sm mt-2 line-clamp-2">
-                    I have an old tribal tattoo on my shoulder that I'd like to cover with something more meaningful. I was thinking of a nature-inspired design...
+                    I have an old tribal tattoo on my shoulder that I&apos;d like to cover with something more meaningful. I was thinking of a nature-inspired design...
                   </div>
                 </div>
                 <div className="flex flex-col items-end gap-2">

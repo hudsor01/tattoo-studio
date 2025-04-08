@@ -36,8 +36,8 @@ export function Navbar() {
 
   const navLinks = [
     { href: '/', label: 'Home' },
-    { href: '/gallery', label: 'Gallery' },
     { href: '/about', label: 'About' },
+    { href: '/gallery', label: 'Gallery' },
     { href: '/contact', label: 'Contact' },
   ]
 
@@ -51,7 +51,7 @@ export function Navbar() {
       )}
     >
       <div className='container mx-auto px-4 max-w-7xl'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-center'>
           <div className='flex items-center'>
             <Link
               href='/'

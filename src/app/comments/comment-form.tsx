@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { createComment } from '../actions';
 import { useRouter } from 'next/navigation';
 
-export function CommentForm() {
+const CommentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
@@ -58,7 +58,7 @@ export function CommentForm() {
           variant: 'destructive',
         });
       }
-    } catch (_error) {
+    } catch { // Using a parameterless catch block since we don't use the error
       // Show error toast
       toast({
         title: 'Error',
@@ -92,3 +92,5 @@ export function CommentForm() {
     </form>
   );
 }
+
+export default CommentForm;

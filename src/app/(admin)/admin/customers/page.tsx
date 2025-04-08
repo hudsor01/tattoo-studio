@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { useState, useRef, type ComponentType, type JSXElementConstructor, type Key, type ReactElement, type ReactNode, type ReactPortal } from 'react'
+import React, { useState } from 'react'
 import {
   ColumnDef,
   flexRender,
@@ -186,7 +186,7 @@ export default function CustomersPage() {
   const columns: ColumnDef<Customer>[] = [
     {
       accessorKey: 'name',
-      header: ({ column }: { column: any }) => {
+      header: ({ column }: HeaderContext<Customer, unknown>) => {
         return (
           <Button
             variant='ghost'
@@ -197,12 +197,12 @@ export default function CustomersPage() {
           </Button>
         )
       },
-      cell: ({ row }: { row: any }) => <div className='font-medium'>{row.getValue('name')}</div>,
+      cell: ({ row }: CellContext<Customer, unknown>) => <div className='font-medium'>{row.getValue('name')}</div>,
     },
     {
       accessorKey: 'email',
       header: 'Email',
-      cell: ({ row }: { row: any }) => (
+      cell: ({ row }: CellContext<Customer, unknown>) => (
         <a
           href={`mailto:${row.getValue('email')}`}
           className='flex items-center text-blue-600 hover:underline'
@@ -218,7 +218,7 @@ export default function CustomersPage() {
     },
     {
       accessorKey: 'dateAdded',
-      header: ({ column }: { column: any }) => {
+      header: ({ column }: HeaderContext<Customer, unknown>) => {
         return (
           <Button
             variant='ghost'
@@ -229,14 +229,14 @@ export default function CustomersPage() {
           </Button>
         )
       },
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const date = new Date(row.getValue('dateAdded'))
         return <div>{date.toLocaleDateString()}</div>
       },
     },
     {
       accessorKey: 'lastBooking',
-      header: ({ column }: { column: any }) => {
+      header: ({ column }: HeaderContext<Customer, unknown>) => {
         return (
           <Button
             variant='ghost'
@@ -247,7 +247,7 @@ export default function CustomersPage() {
           </Button>
         )
       },
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const value = row.getValue('lastBooking')
         return value ? (
           <div>{new Date(value as Date).toLocaleDateString()}</div>
@@ -258,7 +258,7 @@ export default function CustomersPage() {
     },
     {
       accessorKey: 'totalSpent',
-      header: ({ column }: { column: any }) => {
+      header: ({ column }: HeaderContext<Customer, unknown>) => {
         return (
           <Button
             variant='ghost'
@@ -269,7 +269,7 @@ export default function CustomersPage() {
           </Button>
         )
       },
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const amount = parseFloat(row.getValue('totalSpent'))
         const formatted = new Intl.NumberFormat('en-US', {
           style: 'currency',
@@ -281,7 +281,7 @@ export default function CustomersPage() {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const status = row.getValue('status') as string
         return (
           <Badge
@@ -300,14 +300,14 @@ export default function CustomersPage() {
           </Badge>
         )
       },
-      filterFn: (row: { getValue: (arg0: string) => any }, id: string, value: unknown) => {
+      filterFn: (row: { getValue: (arg0: string) => unknown }, id: string, value: unknown) => {
         return value === 'all' ? true : row.getValue(id) === value
       },
     },
     {
       accessorKey: 'tags',
       header: 'Tags',
-      cell: ({ row }: { row: any }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const tags = row.getValue('tags') as string[]
         return (
           <div className='flex flex-wrap gap-1'>
@@ -322,7 +322,7 @@ export default function CustomersPage() {
     },
     {
       id: 'actions',
-      cell: ({ row }: { row: ReturnType<typeof table.getRowModel>["rows"][number] }) => {
+      cell: ({ row }: CellContext<Customer, unknown>) => {
         const customer = row.original
 
         return (
@@ -509,7 +509,7 @@ export default function CustomersPage() {
                         <DropdownMenuCheckboxItem
                           key={column.id}
                           checked={column.getIsVisible()}
-                          onCheckedChange={(value: any) => column.toggleVisibility(!!value)}
+                          onCheckedChange={(value: boolean) => column.toggleVisibility(value)}
                         >
                           {column.id.charAt(0).toUpperCase() + column.id.slice(1)}
                         </DropdownMenuCheckboxItem>

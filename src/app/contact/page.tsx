@@ -1,14 +1,12 @@
-'use client'
+'use client';
 
-import { useState, useRef, useEffect } from 'react'
+import React from 'react';
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ContactForm } from '@/components/forms/contact-form'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   Mail,
   Clock,
@@ -25,16 +23,8 @@ import {
 
 export default function ContactPage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9])
 
   const [formSubmitted, setFormSubmitted] = useState(false)
-  const [preferredContact, setPreferredContact] = useState('email')
   const [copySuccess, setCopySuccess] = useState<string | null>(null)
 
   // Copy to clipboard function
@@ -124,7 +114,7 @@ export default function ContactPage() {
                 transition={{ duration: 0.8, type: 'spring', stiffness: 100 }}
                 className='tattoo-heading text-shadow-bold mb-6 tracking-wider uppercase text-center lg:text-left'
               >
-                Let's Talk About Your{' '}
+                Let&apos;s Talk About Your{' '}
                 <span className='relative inline-block'>
                   Vision
                   <span className='absolute -bottom-2 left-0 right-0 h-2 bg-tattoo-red'></span>
@@ -138,7 +128,7 @@ export default function ContactPage() {
                 className='text-xl md:text-2xl text-tattoo-white/90 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed text-center lg:text-left'
               >
                 Whether you have questions about the tattoo process or want to discuss your ideas,
-                I'm here to help bring your vision to life.
+                I&apos;m here to help bring your vision to life.
               </motion.p>
 
               <div className='space-y-5 text-tattoo-white/90 mb-8 hidden lg:block'>
@@ -205,7 +195,7 @@ export default function ContactPage() {
               <h2 className='text-xl font-bold text-white mb-6 relative z-10'>Send a Message</h2>
 
               <div className='relative z-10'>
-                <ContactForm onSubmitSuccess={() => setFormSubmitted(true)} />
+                <ContactForm onFormSubmit={() => setFormSubmitted(true)} />
               </div>
 
               <AnimatePresence>
@@ -219,7 +209,7 @@ export default function ContactPage() {
                     <CheckCircle2 className='text-tattoo-red w-16 h-16 mb-4' />
                     <h3 className='text-2xl font-bold text-white mb-2'>Message Sent!</h3>
                     <p className='text-tattoo-white/70 text-center max-w-xs mb-6'>
-                      Thanks for reaching out. I'll get back to you within 24-48 hours.
+                      Thanks for reaching out. I&apos;ll get back to you within 24-48 hours.
                     </p>
                     <Button
                       onClick={() => setFormSubmitted(false)}

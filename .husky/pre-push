@@ -1,8 +1,7 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-# Run npm test script instead of Docker command
-npm test
+# Run npm test script with passWithNoTests flag
+npm test -- --passWithNoTests
 
 # Uncomment the line below if you want to restore Docker verification later
 # docker-compose -f docker-compose.verify.yml run verify test

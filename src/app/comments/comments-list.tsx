@@ -20,7 +20,8 @@ interface CommentsListProps {
   currentPage: number;
 }
 
-export function CommentsList({ comments, totalPages, currentPage }: CommentsListProps) {
+// Convert to default export
+const CommentsList = ({ comments, totalPages, currentPage }: CommentsListProps) => {
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const { toast } = useToast();
   const router = useRouter();
@@ -49,7 +50,7 @@ export function CommentsList({ comments, totalPages, currentPage }: CommentsList
           variant: 'destructive',
         });
       }
-    } catch (_error) {
+    } catch { // Empty catch block without parameter
       toast({
         title: 'Error',
         description: 'An unexpected error occurred',
@@ -120,3 +121,5 @@ export function CommentsList({ comments, totalPages, currentPage }: CommentsList
     </div>
   );
 }
+
+export default CommentsList;

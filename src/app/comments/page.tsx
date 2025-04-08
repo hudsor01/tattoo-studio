@@ -1,18 +1,17 @@
 import { Suspense } from 'react';
 import { getNeonClient, getComments, initDatabase } from '@/lib/neon';
 import { Card, CardContent } from '@/components/ui/card';
-import { CommentForm } from './components/comment-form';
-import { CommentsList } from './components/comments-list';
-import { CommentsSkeleton } from './components/comments-skeleton';
+import CommentForm from './comment-form';
+import CommentsList from './comments-list';
+import CommentsSkeleton from './comments-skeleton';
 
 // Get database version
 async function getDatabaseVersion() {
   try {
     const sql = getNeonClient();
-    type VersionRow = { version: string };
-    const response = await sql(`SELECT version()`);
+    const response = await sql`SELECT version()`;
     return response[0].version;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error fetching database version:', error);
     throw new Error('Failed to connect to database');
   }
@@ -22,7 +21,7 @@ async function getDatabaseVersion() {
 async function ensureDatabase() {
   try {
     await initDatabase();
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error initializing database:', error);
     throw new Error('Failed to initialize database');
   }
@@ -45,7 +44,7 @@ export default async function CommentsPage({ searchParams }: PageProps) {
   const dbVersion = await getDatabaseVersion();
 
   // Get paginated comments
-  const { comments, totalPages } = await getComments(currentPage, 5);
+  const { comments, totalPages } = await getComments(currentPage, 5) as { comments: any[]; totalPages: number };
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
