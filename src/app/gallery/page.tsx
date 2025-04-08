@@ -1,12 +1,5 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-
-// Import the client component with dynamic import to avoid SSR issues
-const MasonryGallery = dynamic(
-  () => import('@/components/gallery/masonry-gallery'),
-  { ssr: false }
-);
+import { MasonryGalleryWrapper } from '@/components/gallery/masonry-gallery-wrapper';
 
 const images = [
   '5082639F-3D97-45F8-8BFE-D28EBEE539DF.jpg',
@@ -23,26 +16,11 @@ const images = [
   'leg-piece.jpg'
 ];
 
+// Create a data array with src and alt for each image
 const galleryItems = images.map((img, index) => ({
   src: `/images/${img}`,
   alt: `Gallery image ${index + 1}`,
 }));
-
-const MasonryCard = ({ data }: { data: { src: string; alt: string } }) => (
-  <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    <Image
-      src={data.src}
-      alt={data.alt}
-      width={300}
-      height={200}
-      className="object-cover w-full h-auto"
-      loading="lazy"
-    />
-    <div className="absolute inset-0 bg-black/30 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-      <span className="text-white text-sm font-medium">{data.alt}</span>
-    </div>
-  </div>
-);
 
 export default function GalleryPage() {
   return (
@@ -61,12 +39,7 @@ export default function GalleryPage() {
           </p>
         </div>
 
-        <MasonryGallery
-          items={galleryItems}
-          columns={3}
-          overscanBy={2}
-          render={MasonryCard}
-        />
+        <MasonryGalleryWrapper galleryItems={galleryItems} />
       </div>
     </main>
   );

@@ -19,18 +19,18 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
-      - name: Check for deployment configuration
-        id: check_config
+      - name: Check deploy hook configuration
+        id: check_hook
         run: |
-          if [[ -n "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]]; then
-            echo "deploy=true" >> $GITHUB_OUTPUT
+          if [ -n "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+            echo "hook_exists=true" >> $GITHUB_OUTPUT
           else
-            echo "deploy=false" >> $GITHUB_OUTPUT
-            echo "::warning::VERCEL_DEPLOY_HOOK_URL secret is not configured. Deployment will be skipped."
+            echo "hook_exists=false" >> $GITHUB_OUTPUT
+            echo "::warning::No VERCEL_DEPLOY_HOOK_URL secret found. Deployment will be skipped."
           fi
 
-      - name: Trigger Vercel Deployment
-        if: steps.check_config.outputs.deploy == 'true'
+      - name: Trigger Vercel deployment
+        if: steps.check_hook.outputs.hook_exists == 'true'
         run: |
-          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
           echo "Vercel deployment triggered successfully"
