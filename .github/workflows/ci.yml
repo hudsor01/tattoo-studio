@@ -11,6 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Verify Prisma schema
+        run: |
+          if [ ! -f "prisma/schema.prisma" ]; then
+            echo "Error: prisma/schema.prisma file not found"
+            exit 1
+          fi
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
       - name: Build and verify
         run: docker build -f Dockerfile.ci .
 
@@ -21,8 +41,10 @@ jobs:
     steps:
       - name: Check deploy hook configuration
         id: check_hook
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          if [ -n "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]; then
+          if [ -n "$DEPLOY_HOOK" ]; then
             echo "hook_exists=true" >> $GITHUB_OUTPUT
           else
             echo "hook_exists=false" >> $GITHUB_OUTPUT
@@ -31,6 +53,8 @@ jobs:
 
       - name: Trigger Vercel deployment
         if: steps.check_hook.outputs.hook_exists == 'true'
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
         run: |
-          curl -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
+          curl -X POST "$DEPLOY_HOOK"
           echo "Vercel deployment triggered successfully"
