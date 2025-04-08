@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { GalleryGrid } from '@/components/gallery-grid'
 import { motion } from 'framer-motion'
+import ClientOnly from '@/components/client-only'
 import {
   Card,
   CardHeader,
@@ -149,7 +150,10 @@ export default function HomePage() {
             </p>
           </div>
 
-          <GalleryGrid />
+          {/* Client-side only Gallery Grid with fallback */}
+          <ClientOnly>
+            <GalleryGrid />
+          </ClientOnly>
 
           <div className='mt-8 text-center'>
             <Button

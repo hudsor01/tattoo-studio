@@ -7,7 +7,12 @@ import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useWindowSize } from '@/hooks/use-window-size'
-import { Masonry } from 'masonic'
+import dynamic from 'next/dynamic'
+
+// Import Masonry component with dynamic import to ensure it only runs client-side
+const Masonry = dynamic(() => import('masonic').then(mod => mod.Masonry), {
+  ssr: false
+})
 
 type GalleryImage = {
   src: string
@@ -250,7 +255,9 @@ export function GalleryGrid() {
               columnGutter={16}
               rowGutter={16}
               itemKey={item => item.src}
-              render={MasonryCard}
+              render={({ data, index }) => (
+                <MasonryCard data={data as GalleryImage} index={index} />
+              )}
               overscanBy={2}
             />
           </div>
