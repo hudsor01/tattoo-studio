@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -10,6 +10,27 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Build and verify
         run: docker build -f Dockerfile.ci .
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Check for deployment configuration
+        id: check_config
+        run: |
+          if [[ -n "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}" ]]; then
+            echo "deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "deploy=false" >> $GITHUB_OUTPUT
+            echo "::warning::VERCEL_DEPLOY_HOOK_URL secret is not configured. Deployment will be skipped."
+          fi
+
+      - name: Trigger Vercel Deployment
+        if: steps.check_config.outputs.deploy == 'true'
+        run: |
+          curl -X POST ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          echo "Vercel deployment triggered successfully"
