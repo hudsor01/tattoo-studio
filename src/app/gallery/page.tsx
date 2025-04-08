@@ -63,7 +63,7 @@ export default function GalleryPage() {
 
         <MasonryGallery
           items={galleryItems}
-          columnCount={3}
+          columns={3}
           overscanBy={2}
           render={MasonryCard}
         />

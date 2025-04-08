@@ -4,6 +4,7 @@ import React from 'react';
 import { Masonry } from 'masonic';
 import Image from 'next/image';
 import { useWindowSize } from '@/hooks/use-window-size';
+import type { JSX } from 'react'
 
 type GalleryItem = {
   src: string;
@@ -12,6 +13,9 @@ type GalleryItem = {
 
 interface MasonryGalleryProps {
   items: GalleryItem[];
+  columns?: number;
+  overscanBy?: number;
+  render?: ({ data }: { data: GalleryItem }) => JSX.Element;
 }
 
 const MasonryCard = ({ data }: { data: GalleryItem }) => (
@@ -30,26 +34,39 @@ const MasonryCard = ({ data }: { data: GalleryItem }) => (
   </div>
 );
 
-export default function MasonryGallery({ items }: MasonryGalleryProps) {
+export default function MasonryGallery({
+  items,
+  columns: columnsProp,
+  overscanBy = 2,
+  render = MasonryCard
+}: MasonryGalleryProps) {
   const { width } = useWindowSize();
 
-  // Calculate columns based on screen width
-  const getColumnWidth = () => {
+  // Calculate columns based on screen width or use the provided columns prop
+  const getColumns = () => {
+    if (columnsProp) return columnsProp;
+
     if (width) {
-      if (width < 640) return width / 2 - 16;
-      if (width < 1024) return width / 3 - 16;
-      return width / 4 - 16;
+      if (width < 640) return 1;
+      if (width < 1024) return 2;
+      return 3;
     }
-    return 300;
+    return 3;
+  };
+
+  const getColumnWidth = () => {
+    if (!width) return 300;
+    return Math.floor(width / getColumns()) - 16;
   };
 
   return (
     <Masonry
       items={items}
+      columnCount={getColumns()}
       columnGutter={16}
       columnWidth={getColumnWidth()}
-      overscanBy={2}
-      render={MasonryCard}
+      overscanBy={overscanBy}
+      render={render}
     />
   );
 }

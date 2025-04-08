@@ -15,9 +15,11 @@ WORKDIR /app
 # Copy installed node_modules from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 
-# Copy only the necessary files
-COPY prisma ./prisma/
+# Copy source code (including prisma directory)
 COPY . .
+
+# Verify prisma schema exists before running commands that depend on it
+RUN ls -la prisma/
 
 # Run validation and build steps
 RUN npm run lint

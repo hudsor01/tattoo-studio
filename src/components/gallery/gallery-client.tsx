@@ -20,5 +20,5 @@ interface GalleryClientProps {
 }
 
 export default function GalleryClient({ galleryItems }: GalleryClientProps) {
-  return <MasonryGallery galleryItems={galleryItems} />;
+  return <MasonryGallery items={galleryItems} />;
 }
