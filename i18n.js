@@ -1,8 +1,11 @@
-module.exports = {
+/* eslint-env node */
+export default {
   locales: ['en', 'es'],
   defaultLocale: 'en',
   pages: {
     '*': ['common'],
+    '/': ['home'],
+    '/about': ['about'],
     '/booking': ['booking'],
     '/contact': ['contact'],
     '/gallery': ['gallery'],

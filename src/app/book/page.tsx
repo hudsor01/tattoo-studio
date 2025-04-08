@@ -1,17 +1,125 @@
-import { Metadata } from 'next'
-import Image from 'next/image'
-import Link from 'next/link'
-import { BookingForm } from '@/components/booking/booking-form'
-import { Button } from '@/components/ui/button'
-import { Clock, Shield, CreditCard, Info, Calendar, ArrowRight } from 'lucide-react'
-import { motion } from 'framer-motion'
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Book an Appointment | Ink 37 Studio',
-  description: 'Schedule your tattoo appointment with Fernando Govea at Ink 37 Studio.',
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { BookingForm } from '@/components/booking/booking-form';
+import { Button } from '@/components/ui/button';
+import { Clock, Shield, CreditCard, Info, Calendar, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { DepositPaymentForm } from '../../components/booking/deposit-payment-form';
+
+// Note: Metadata should be defined in a separate layout.tsx file since this is a Client Component
+
+interface BookingFormValues {
+  firstName: string;
+  date: string;
+  time: string;
+  clientName: string;
+  email: string;
+  phone: string;
+  notes: string;
+  tattooDepositAmount: string;
+  duration: number;
+  clientEmail: string;
+  clientPhone: string;
+  designDescription: string;
+  referenceImages: string[];
+  tattooType: "NEW_TATTOO" | "TOUCH_UP" | "COVER_UP" | "CONSULTATION";
+  bodyPart: string;
+}
+
+// Define booking steps
+enum BookingStep {
+  BOOKING_DETAILS = 0,
+  PAYMENT = 1,
+  CONFIRMATION = 2
 }
 
 export default function BookingPage() {
+  const [formKey, setFormKey] = useState(`booking-form-${Date.now()}`);
+  const [bookingData, setBookingData] = useState<BookingFormValues | null>(null);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(BookingStep.BOOKING_DETAILS);
+
+  // Handle payment success
+  function handlePaymentSuccess(paymentId: string) {
+    setBookingId(paymentId);
+    setFormKey(`booking-form-${Date.now()}`);
+    setCurrentStep(BookingStep.CONFIRMATION);
+  }
+
+  // Reset the entire booking process
+  function resetBooking() {
+    setBookingData(null);
+    setBookingId(null);
+    setCurrentStep(BookingStep.BOOKING_DETAILS);
+    setFormKey(`booking-form-${Date.now()}`);
+  }
+
+  // Handle payment cancel
+  function handlePaymentCancel() {
+    resetBooking();
+  }
+
+  // Show payment form if in PAYMENT step and have booking data
+  if (currentStep === BookingStep.PAYMENT && bookingData) {
+    return (
+      <DepositPaymentForm
+        bookingData={{
+          clientName: bookingData.clientName || bookingData.firstName || '',
+          clientEmail: bookingData.clientEmail || bookingData.email || '',
+          clientPhone: bookingData.clientPhone || bookingData.phone || '',
+          designDescription: bookingData.designDescription || bookingData.notes || '',
+          referenceImages: bookingData.referenceImages || [],
+          time: bookingData.time || '',
+          duration: bookingData.duration || 0,
+          date: new Date(bookingData.date),
+          tattooType: bookingData.tattooType || "NEW_TATTOO",
+          bodyPart: bookingData.bodyPart || ''
+        }}
+        onPaymentSuccess={handlePaymentSuccess}
+        onCancel={handlePaymentCancel}
+      />
+    );
+  }
+
+  // Show confirmation screen if in CONFIRMATION step
+  if (currentStep === BookingStep.CONFIRMATION) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className='p-6 bg-tattoo-black/50 backdrop-blur-sm rounded-lg shadow-md border border-white/10 text-center'
+      >
+        <h2 className='text-2xl font-extrabold mb-4 text-tattoo-red'>
+          Confirmed
+          <span className='absolute -bottom-1 left-0 right-0 h-0.5 bg-tattoo-red/60'></span>
+        </h2>
+
+        <p className='text-tattoo-white/80 mb-2'>
+          Thank you for your booking. We&apos;ve sent a confirmation email with all the details.
+        </p>
+
+        {bookingId && (
+          <p className='text-tattoo-white/90 mb-6'>
+            Your booking reference: <span className='font-semibold text-tattoo-red'>{bookingId}</span>
+          </p>
+        )}
+
+        <Button
+          onClick={resetBooking}
+          className='bg-tattoo-red hover:bg-tattoo-red-dark text-white'
+        >
+          Book Another Appointment
+        </Button>
+      </motion.div>
+    );
+  }
+
+  // Default: Show booking form
   return (
     <main className='bg-tattoo-black min-h-screen'>
       {/* Hero Section - Side by Side Layout */}
@@ -171,10 +279,9 @@ export default function BookingPage() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className='bg-tattoo-black/50 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-white/10'
             >
-              <BookingForm />
+              <BookingForm key={formKey} />
             </motion.div>
           </div>
-
           <motion.div
             className='space-y-8'
             initial={{ opacity: 0, y: 20 }}
@@ -297,5 +404,5 @@ export default function BookingPage() {
         </div>
       </div>
     </main>
-  )
+  );
 }

@@ -1,15 +1,71 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import React from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog'
-import { X, ChevronLeft, ChevronRight, Filter } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useWindowSize } from '@/hooks/use-window-size'
+import { Masonry } from 'masonic'
 
 type GalleryImage = {
   src: string
   alt: string
   category?: string
+}
+
+// MasonryCard component to render each individual card in the masonry grid
+const MasonryCard = ({ data, index }: { data: GalleryImage; index: number }) => {
+  // We need to access the openImage function from the parent component
+  // This is a limitation of using Masonic, as we can't directly use the parent component's function
+  // We'll use a workaround to get this working
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.9 }}
+      transition={{ duration: 0.3, delay: index * 0.03 }}
+      className='group relative overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-xl transition-all duration-300 masonic-item'
+      data-src={data.src}
+      data-index={index}
+    >
+      <div className="absolute inset-0 bg-gradient-to-t from-tattoo-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 z-10" />
+
+      <div className="relative w-full masonic-image-container">
+        <Image
+          src={data.src}
+          alt={data.alt}
+          fill
+          sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 25vw"
+          className='object-cover transition-all duration-500 group-hover:scale-105'
+          quality={85}
+          onLoad={(e) => {
+            // Adjust container height based on image aspect ratio
+            if (
+              e.target instanceof HTMLImageElement &&
+              e.target.naturalWidth &&
+              e.target.naturalHeight
+            ) {
+              const container = e.target.closest('.masonic-image-container') as HTMLElement;
+              if (container) {
+                const aspectRatio = e.target.naturalHeight / e.target.naturalWidth;
+                container.style.paddingBottom = `${aspectRatio * 100}%`;
+              }
+            }
+          }}
+        />
+      </div>
+
+      <div className='absolute inset-x-0 bottom-0 p-3 z-20 transform translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300'>
+        <h3 className='text-sm sm:text-base font-medium text-white truncate'>{data.alt}</h3>
+        {data.category && (
+          <p className='text-xs text-white/80 mt-1'>{data.category}</p>
+        )}
+      </div>
+    </motion.div>
+  )
 }
 
 export function GalleryGrid() {
@@ -76,6 +132,9 @@ export function GalleryGrid() {
     },
   ]
 
+  // Window dimensions for responsive masonry
+  const { width } = useWindowSize()
+
   // Get unique categories for filter buttons
   const categories = Array.from(new Set(galleryImages.map(img => img.category).filter(Boolean)));
 
@@ -83,6 +142,13 @@ export function GalleryGrid() {
   const filteredImages = filter
     ? galleryImages.filter(img => img.category === filter)
     : galleryImages;
+
+  // Calculate columns based on screen width
+  const getColumns = (width: number) => {
+    if (width < 640) return 2
+    if (width < 1024) return 3
+    return 4
+  }
 
   // Navigate to next/previous image in lightbox
   const navigateImage = (direction: 'next' | 'prev') => {
@@ -112,6 +178,33 @@ export function GalleryGrid() {
     setSelectedImage(image);
     setSelectedIndex(index);
   }
+
+  // Set up event delegation for masonry items
+  useEffect(() => {
+    const handleMasonryClick = (e: MouseEvent) => {
+      // Find the closest masonic-item parent element
+      const target = e.target as HTMLElement;
+      const masonicItem = target.closest('.masonic-item') as HTMLElement;
+
+      if (masonicItem) {
+        const src = masonicItem.getAttribute('data-src');
+        const index = parseInt(masonicItem.getAttribute('data-index') || '0', 10);
+
+        if (src) {
+          const image = filteredImages.find(img => img.src === src);
+          if (image) {
+            openImage(image, index);
+          }
+        }
+      }
+    };
+
+    document.addEventListener('click', handleMasonryClick);
+
+    return () => {
+      document.removeEventListener('click', handleMasonryClick);
+    };
+  }, [filteredImages]);
 
   return (
     <>
@@ -147,44 +240,20 @@ export function GalleryGrid() {
         ))}
       </div>
 
-      {/* Main Gallery Grid with symmetrical layout */}
+      {/* Masonic Gallery Grid */}
       <div className="w-full px-1">
         <AnimatePresence>
-          <motion.div
-            layout
-            className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-fr'
-          >
-            {filteredImages.map((image, index) => (
-              <motion.div
-                layout
-                key={image.src}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className='group relative aspect-square overflow-hidden rounded-lg cursor-pointer shadow-md hover:shadow-xl transition-all duration-300'
-                onClick={() => openImage(image, index)}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-tattoo-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 z-10" />
-
-                <Image
-                  src={image.src}
-                  alt={image.alt}
-                  fill
-                  sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 25vw"
-                  className='object-cover transition-all duration-500 group-hover:scale-105'
-                  quality={85}
-                />
-
-                <div className='absolute inset-x-0 bottom-0 p-3 z-20 transform translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300'>
-                  <h3 className='text-sm sm:text-base font-medium text-white truncate'>{image.alt}</h3>
-                  {image.category && (
-                    <p className='text-xs text-white/80 mt-1'>{image.category}</p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="masonic-container">
+            <Masonry
+              items={filteredImages}
+              columnCount={width ? getColumns(width) : 3}
+              columnGutter={16}
+              rowGutter={16}
+              itemKey={item => item.src}
+              render={MasonryCard}
+              overscanBy={2}
+            />
+          </div>
         </AnimatePresence>
       </div>
 

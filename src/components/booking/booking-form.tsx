@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -55,7 +56,6 @@ export function BookingForm() {
   const [isLoadingTimeSlots, setIsLoadingTimeSlots] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [bookingData, setBookingData] = useState<BookingFormValues | null>(null)
-  const [bookingId, setBookingId] = useState<string | null>(null)
 
   // Define the form with explicit types
   const form = useForm<BookingFormValues>({
@@ -149,13 +149,9 @@ export function BookingForm() {
   }
 
   // Handle payment success
-  function handlePaymentSuccess(paymentId: string) {
-    // Store the booking ID (if needed for future reference)
-    setBookingId(paymentId)
-
+  function handlePaymentSuccess() {
     // Clear the form data since the booking is complete
     form.reset()
-
     // Generate new form key to clear localStorage
     setFormKey(`booking-form-${Date.now()}`)
 
@@ -173,7 +169,6 @@ export function BookingForm() {
   function resetBooking() {
     form.reset()
     setBookingData(null)
-    setBookingId(null)
     setCurrentStep(BookingStep.BOOKING_DETAILS)
     setFormKey(`booking-form-${Date.now()}`)
   }
@@ -214,7 +209,7 @@ export function BookingForm() {
         </h2>
 
         <p className='text-tattoo-white/80 mb-6'>
-          Thank you for your booking. We've sent a confirmation email with all the details.
+          Thank you for your booking. I sent a confirmation email with all the details.
         </p>
 
         <Button
@@ -612,7 +607,7 @@ export function BookingForm() {
           </Button>
 
           <p className='text-xs text-center text-tattoo-white/60 mt-4'>
-            By proceeding, you agree to our cancellation policy. We'll contact you within 24-48
+            By proceeding, you agree to our cancellation policy. I will contact you within 24-48
             hours to discuss any details about your tattoo design.
           </p>
         </form>

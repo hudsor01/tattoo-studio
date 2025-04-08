@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ReactNode } from 'react'
+import PropTypes from 'prop-types'
 
 import { cn } from '@/lib/utils'
 
@@ -66,21 +66,28 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
   )
 )
 TableRow.displayName = 'TableRow'
+TableRow.propTypes = {
+  className: PropTypes.string,
+}
 
-const TableHead = React.forwardRef<
-  HTMLTableCellElement,
-  React.ThHTMLAttributes<HTMLTableCellElement>
->(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(
-      'h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-      className
-    )}
-    {...props}
-  />
-))
+const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttributes<HTMLTableCellElement>>(
+  function TableHead({ className, ...props }, ref) {
+    return (
+      <th
+        ref={ref}
+        className={cn(
+          'h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
 TableHead.displayName = 'TableHead'
+TableHead.propTypes = {
+  className: PropTypes.string,
+}
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
@@ -96,13 +103,19 @@ const TableCell = React.forwardRef<
   />
 ))
 TableCell.displayName = 'TableCell'
-
+TableCell.propTypes = {
+  className: PropTypes.string,
+}
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
   React.HTMLAttributes<HTMLTableCaptionElement>
 >(({ className, ...props }, ref) => (
   <caption ref={ref} className={cn('mt-4 text-sm text-muted-foreground', className)} {...props} />
 ))
+TableCaption.displayName = 'TableCaption'
+TableCaption.propTypes = {
+  className: PropTypes.string,
+}
 TableCaption.displayName = 'TableCaption'
 
 export {

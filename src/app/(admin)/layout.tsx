@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { ModeToggle } from '@/components/theme/mode-toggle'
+import { ModeToggle } from '../../components/theme/mode-toggle'
 import { Users, Calendar, CreditCard, Inbox, BarChart3, LogOut, Menu, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { Button } from '../../components/ui/button'
+import { cn } from '../../lib/utils'
 import { useRouter } from 'next/navigation'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -32,6 +32,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     verifyAuth()
   }, [router])
+
+  // Handle navigation closing for mobile
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
 
   if (!isAuthenticated) {
     return null // Show nothing until authentication is verified

@@ -1,5 +1,6 @@
-'use client'
+'use client';
 
+import React from 'react';
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -7,7 +8,6 @@ import {
   Calendar,
   CreditCard,
   Inbox,
-  TrendingUp,
   Clock,
   Calendar as CalendarIcon,
   DollarSign,
@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       <div>
         <h1 className='text-3xl font-bold tracking-tight'>Dashboard</h1>
         <p className='text-muted-foreground'>
-          Welcome back, Fernando. Here's an overview of your business.
+          Welcome back, Fernando. Here is an overview of your business.
         </p>
       </div>
 

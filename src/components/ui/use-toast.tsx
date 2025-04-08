@@ -10,7 +10,9 @@ interface ToastProps {
   variant?: 'default' | 'destructive'
 }
 
-interface ToastActionElement extends React.ReactElement {}
+interface ToastActionElement extends React.ReactElement {
+  altText?: string;
+}
 
 const TOAST_LIMIT = 5
 const TOAST_REMOVE_DELAY = 1000000
@@ -22,7 +24,7 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement
 }
 
-const actionTypes = {
+export const actionTypes = {
   ADD_TOAST: 'ADD_TOAST',
   UPDATE_TOAST: 'UPDATE_TOAST',
   DISMISS_TOAST: 'DISMISS_TOAST',

@@ -1,9 +1,10 @@
-'use client'
+'use client';
 
+import React from 'react';
 import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Slot } from '@radix-ui/react-slot'
 import { Badge } from '@/components/ui/badge'
@@ -11,13 +12,12 @@ import { Brush, BookOpen, Award, Clock, MapPin, Instagram } from 'lucide-react'
 
 export default function AboutPage() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
+
+  // Initialize scroll tracking without using the return value
+  useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
   })
-
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.9])
 
   // Artist specialties with descriptions
   const specialties = [
@@ -50,6 +50,9 @@ export default function AboutPage() {
     { year: '2020', event: 'Started mentoring aspiring tattoo artists' },
     { year: '2023', event: 'Launched expanded studio in Dallas/Fort Worth area' },
   ]
+
+  // Using useState to implement a modal/feature highlight
+  const [highlightedSpecialty, setHighlightedSpecialty] = useState<number | null>(null)
 
   return (
     <main className='bg-tattoo-black min-h-screen'>
@@ -248,13 +251,13 @@ export default function AboutPage() {
                   <p>
                     My approach to tattooing is deeply personal – I believe each piece should not
                     only be visually striking but also meaningful to the wearer. I specialize in
-                    creating custom designs that reflect my clients' unique stories and aesthetic
+                    creating custom designs that reflect my client&apos;s unique stories and aesthetic
                     preferences, with particular expertise in black and gray realism, Japanese
                     traditional styles, and precise fine linework.
                   </p>
 
                   <p>
-                    Throughout my career, I've been fortunate to work with clients from all walks of
+                    Throughout my career, I have been fortunate to work with clients from all walks of
                     life, each bringing their own narratives and ideas to the table. This diverse
                     clientele has allowed me to develop a versatile style while maintaining the
                     technical precision that has become my signature.
@@ -298,7 +301,7 @@ export default function AboutPage() {
               </span>
             </h2>
             <p className='tattoo-paragraph max-w-2xl mx-auto'>
-              Areas of expertise where I've developed my signature style and techniques
+              Areas of expertise where I have developed my signature style and techniques
             </p>
           </motion.div>
 
@@ -310,10 +313,11 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className='bg-tattoo-black/50 border border-tattoo-white/10 rounded-lg p-6 hover:border-tattoo-red/30 transition-all duration-300'
+                className={`bg-tattoo-black/50 border ${highlightedSpecialty === index ? 'border-tattoo-red' : 'border-tattoo-white/10'} rounded-lg p-6 hover:border-tattoo-red/30 transition-all duration-300 cursor-pointer`}
+                onClick={() => setHighlightedSpecialty(index)}
               >
                 <div className='w-12 h-12 rounded-full bg-tattoo-red/10 flex items-center justify-center mb-4'>
-                  {specialty.icon}
+                  <Slot>{specialty.icon}</Slot>
                 </div>
                 <h3 className='text-xl font-bold text-tattoo-white mb-3'>{specialty.title}</h3>
                 <p className='text-tattoo-white/70'>{specialty.description}</p>
@@ -351,9 +355,9 @@ export default function AboutPage() {
               </h2>
 
               <p className='text-2xl md:text-3xl text-tattoo-white/90 mb-10 font-light italic leading-relaxed tracking-wide'>
-                "A tattoo is more than ink on skin – it's a permanent expression of your journey,
-                your values, and your aesthetic. My goal is to create art that you'll carry with
-                pride for a lifetime."
+                &quot;A tattoo is more than ink on skin – it&apos;s a permanent expression of your journey,
+                your values, and your aesthetic. My goal is to create art that you&apos;ll carry with
+                pride for a lifetime.&quot;
               </p>
 
               <div className="w-24 h-1 bg-tattoo-red/60 mx-auto mb-10 rounded-full"></div>
@@ -439,7 +443,7 @@ export default function AboutPage() {
                 Ready to Start Your <span className='text-tattoo-black'>Tattoo Journey?</span>
               </h2>
               <p className='text-white/90 text-xl max-w-2xl mx-auto mb-10'>
-                Whether you have a specific design in mind or just an idea that needs refining, I'd
+                Whether you have a specific design in mind or just an idea that needs refining, I&apos;d
                 love to help bring your vision to life.
               </p>
 

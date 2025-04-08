@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
@@ -9,7 +8,6 @@ import { buttonVariants } from '@/components/ui/button';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   mode?: 'single' | 'range' | 'multiple';
-  initialFocus?: boolean;
 };
 
 function Calendar({
@@ -17,7 +15,7 @@ function Calendar({
   classNames,
   showOutsideDays = true,
   mode = 'single',
-  initialFocus,
+  // Remove initialFocus from props if it's unused
   ...props
 }: CalendarProps) {
   return (

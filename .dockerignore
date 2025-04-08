@@ -1,0 +1,4 @@
+postcss.config.cjs
+node_modules
+.next
+*.log
