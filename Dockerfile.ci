@@ -3,42 +3,36 @@ FROM node:22-alpine AS deps
 
 WORKDIR /app
 
-# Install dependencies first to leverage Docker layer caching
+# Copy package files and Prisma schema first
 COPY package*.json ./
-
-# Copy prisma directory first to ensure schema is available during npm install
 COPY prisma ./prisma/
 
 # Install dependencies with --ignore-scripts to prevent Prisma from generating during install
 RUN npm install --ignore-scripts
 
-# Explicitly run prisma generate after install
+# Generate Prisma client
 RUN npx prisma generate
 
-# Stage 2: Prepare source and build
+# Stage 2: Build and verify
 FROM node:22-alpine AS build
 
 WORKDIR /app
 
-# Copy installed node_modules from deps stage
+# Copy installed node_modules and generated prisma client from deps stage
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/prisma ./prisma
 
-# Copy prisma directory first to ensure schema is available
-COPY prisma ./prisma/
-
-# Copy remaining source code
+# Copy source code
 COPY . .
 
-# Verify prisma schema exists before running commands that depend on it
-RUN ls -la prisma/
-RUN cat prisma/schema.prisma
-
-# Explicitly run prisma generate with schema path before other build steps
-RUN npx prisma generate --schema=./prisma/schema.prisma
+# Verify environment and files
+RUN echo "Verifying Prisma setup..." && \
+    ls -la prisma/ && \
+    cat prisma/schema.prisma
 
 # Run validation and build steps
-RUN npm run lint
-RUN npm run typecheck
-RUN npm run build
+RUN npm run lint && \
+    npm run typecheck && \
+    npm run build
 
 # This image is not intended to be run, only used for validation
